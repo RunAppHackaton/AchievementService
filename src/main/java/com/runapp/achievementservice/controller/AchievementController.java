@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -179,6 +180,21 @@ public class AchievementController {
             return ResponseEntity.ok().build();
         } catch (FeignException.InternalServerError e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DeleteResponse("the image does not exist or the data was transferred incorrectly"));
+        }
+    }
+
+    @GetMapping("/random/{storyId}")
+    @Operation(summary = "Get a random achievement by story ID", description = "Retrieve a random achievement for a specific story by providing the story ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Random achievement found", content = {@Content(schema = @Schema(implementation = AchievementModel.class))}),
+            @ApiResponse(responseCode = "404", description = "Random achievement not found")
+    })
+    public ResponseEntity<AchievementModel> getRandomAchievement(@PathVariable int storyId) {
+        AchievementModel randomAchievement = achievementService.getRandomAchievement(storyId);
+        if (randomAchievement != null) {
+            return ResponseEntity.ok(randomAchievement);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

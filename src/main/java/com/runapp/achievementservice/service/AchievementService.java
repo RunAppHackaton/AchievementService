@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class AchievementService {
@@ -39,5 +40,15 @@ public class AchievementService {
 
     public List<AchievementModel> getAllAchievements() {
         return achievementRepository.findAll();
+    }
+
+    public AchievementModel getRandomAchievement(int storyId) {
+        List<AchievementModel> achievementModelList = achievementRepository.findByStory_id(storyId);
+        if (!achievementModelList.isEmpty()) {
+            Random random = new Random();
+            int randomIndex = random.nextInt(achievementModelList.size());
+            return achievementModelList.get(randomIndex);
+        }
+        return null;
     }
 }
