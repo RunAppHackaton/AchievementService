@@ -5,16 +5,18 @@ import com.runapp.achievementservice.model.TrainingModel;
 import com.runapp.achievementservice.repository.GoalRepository;
 import com.runapp.achievementservice.util.supportClasses.GoalCompletionPercentageCalculator;
 import com.runapp.achievementservice.util.supportClasses.GoalMark;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-@AllArgsConstructor
 public class TotalKilometersStrategy implements GoalStrategy {
 
     private final GoalRepository goalRepository;
+
+    public TotalKilometersStrategy(GoalRepository goalRepository) {
+        this.goalRepository = goalRepository;
+    }
 
     @Override
     public void execute(GoalModel model, List<TrainingModel> allTraining) {

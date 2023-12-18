@@ -23,7 +23,7 @@ public class UserProgressInAchievementModel {
     private Long numberOfWorkoutsPerMonth;
 
     @Column(name = "number_of_trainings_per_year")
-    private Long numberOfTrainingsPerYear;
+    private Long numberOfWorkoutsPerYear;
 
     @Column(name = "number_of_training_sessions_over_time")
     private Long numberOfTrainingSessionsOverTime;
