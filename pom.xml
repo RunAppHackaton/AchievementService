@@ -14,7 +14,7 @@
     <name>AchievementService</name>
     <description>AchievementService</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>20</java.version>
         <spring-cloud.version>2022.0.4</spring-cloud.version>
     </properties>
     <dependencies>
@@ -27,6 +27,10 @@
             <groupId>com.google.cloud.sql</groupId>
             <artifactId>postgres-socket-factory</artifactId>
             <version>1.14.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
