@@ -3,7 +3,6 @@ package com.runapp.achievementservice.service.userProgressObservable;
 import com.runapp.achievementservice.model.UserProgressInAchievementModel;
 import com.runapp.achievementservice.util.enums.GoalTypeEnum;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -11,7 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class UserProgressObservable {
-    private Map<GoalTypeEnum, UserProgressObserver> observers = new HashMap<>();
+    private final Map<GoalTypeEnum, UserProgressObserver> observers = new HashMap<>();
     private UserProgressInAchievementModel userProgress;
 
     public void addObserver(GoalTypeEnum goalType, UserProgressObserver observer) {

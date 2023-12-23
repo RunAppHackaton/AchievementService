@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class GoalResponse {
     private int id;
     private Long userId;
-    private Integer completionPercentage;
+    private float completionPercentage;
     private GoalTypeEnum goal_type;
     private GoalStatusEnum goal_status;
     private LocalDateTime startDate;

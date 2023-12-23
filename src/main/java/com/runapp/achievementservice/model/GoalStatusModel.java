@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Goal_Status")
+@Table(name = "goal_status")
 public class GoalStatusModel {
 
     @Id

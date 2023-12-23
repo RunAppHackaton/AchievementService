@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Goal_Type")
+@Table(name = "goal_type")
 public class GoalTypeModel {
 
     @Id
@@ -19,7 +19,7 @@ public class GoalTypeModel {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "goal_type_name")
     @Enumerated(EnumType.STRING)
     private GoalTypeEnum goalTypeEnum;
 

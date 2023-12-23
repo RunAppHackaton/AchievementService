@@ -34,14 +34,8 @@ public class DynamicSchedulerService {
     public void cancelTask(String taskName) {
         Runnable task = scheduledTasks.remove(taskName);
         if (task != null) {
-            // Отменяет задачу
-//             taskScheduler.cancelTask(task);
-        }
-    }
+             taskScheduler.cancelTask(taskName);
 
-    // Создает бин TaskScheduler для использования
-    @Bean
-    public TaskScheduler taskScheduler() {
-        return new ConcurrentTaskScheduler();
+        }
     }
 }
