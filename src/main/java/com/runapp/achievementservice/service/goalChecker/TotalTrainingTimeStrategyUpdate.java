@@ -1,10 +1,10 @@
-package com.runapp.achievementservice.service.goalValidationStrategy;
+package com.runapp.achievementservice.service.goalChecker;
 
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.TrainingModel;
-import com.runapp.achievementservice.model.UserProgressInAchievementModel;
+import com.runapp.achievementservice.model.UserStatistic;
 import com.runapp.achievementservice.repository.GoalRepository;
-import com.runapp.achievementservice.repository.UserProgressInAchievementRepository;
+import com.runapp.achievementservice.repository.UserStatisticRepository;
 import com.runapp.achievementservice.util.supportClasses.GoalCompletionPercentageCalculator;
 import com.runapp.achievementservice.util.supportClasses.GoalMark;
 import org.springframework.stereotype.Component;
@@ -13,19 +13,19 @@ import java.time.Duration;
 import java.util.List;
 
 @Component
-public class TotalTrainingTimeStrategy implements GoalStrategy {
+public class TotalTrainingTimeStrategyUpdate implements UpdateGoalStrategy {
 
     private final GoalRepository goalRepository;
-    private final UserProgressInAchievementRepository achievementRepository;
+    private final UserStatisticRepository achievementRepository;
 
-    public TotalTrainingTimeStrategy(GoalRepository goalRepository, UserProgressInAchievementRepository achievementRepository) {
+    public TotalTrainingTimeStrategyUpdate(GoalRepository goalRepository, UserStatisticRepository achievementRepository) {
         this.goalRepository = goalRepository;
         this.achievementRepository = achievementRepository;
     }
 
     @Override
-    public void execute(GoalModel model, List<TrainingModel> allTraining) {
-        UserProgressInAchievementModel userProgress = achievementRepository.findById(model.getUserId()).orElse(new UserProgressInAchievementModel());
+    public void updateGoal(GoalModel model, List<TrainingModel> allTraining) {
+        UserStatistic userProgress = achievementRepository.findById(model.getUserId()).orElse(new UserStatistic());
 
         Duration sumDurationAllTraining = userProgress.getTotalAmountOfTrainingTime();
         Duration currentGoalDuration = Duration.parse(model.getGoal());

@@ -1,4 +1,4 @@
-package com.runapp.achievementservice.service.goalValidationStrategy;
+package com.runapp.achievementservice.service.goalChecker;
 
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.TrainingModel;
@@ -10,18 +10,18 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class TotalKilometersStrategy implements GoalStrategy {
+public class TotalKilometersStrategyUpdate implements UpdateGoalStrategy {
 
     private final GoalRepository goalRepository;
 
-    public TotalKilometersStrategy(GoalRepository goalRepository) {
+    public TotalKilometersStrategyUpdate(GoalRepository goalRepository) {
         this.goalRepository = goalRepository;
     }
 
     @Override
-    public void execute(GoalModel model, List<TrainingModel> allTraining) {
+    public void updateGoal(GoalModel model, List<TrainingModel> allTraining) {
         int currentKilometers = allTraining.stream()
-                .mapToInt(TrainingModel::getKilometers)
+                .mapToInt(TrainingModel::getDistanceKm)
                 .sum();
 
         int goalKilometers = Integer.parseInt(model.getGoal());

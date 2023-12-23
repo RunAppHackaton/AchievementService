@@ -3,6 +3,7 @@ package com.runapp.achievementservice.service;
 import com.runapp.achievementservice.exception.NoEntityFoundException;
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.repository.GoalRepository;
+import com.runapp.achievementservice.util.supportClasses.GoalMark;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +37,11 @@ public class GoalService {
         } else {
             throw new NoEntityFoundException("Goal not found with id: " + updatedGoal.getId());
         }
+    }
+
+    public GoalModel markGoalCompleted(int goalId) {
+        GoalModel goalModel = goalRepository.findById(goalId)
+                .orElseThrow(() -> new NoEntityFoundException("Goal not found with id: " + goalId));
+        return GoalMark.finishGoal(goalModel);
     }
 }

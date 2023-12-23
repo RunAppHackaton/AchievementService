@@ -1,10 +1,10 @@
-package com.runapp.achievementservice.service.goalValidationStrategy;
+package com.runapp.achievementservice.service.goalChecker;
 
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.TrainingModel;
-import com.runapp.achievementservice.model.UserProgressInAchievementModel;
+import com.runapp.achievementservice.model.UserStatistic;
 import com.runapp.achievementservice.repository.GoalRepository;
-import com.runapp.achievementservice.repository.UserProgressInAchievementRepository;
+import com.runapp.achievementservice.repository.UserStatisticRepository;
 import com.runapp.achievementservice.util.supportClasses.GoalCompletionPercentageCalculator;
 import com.runapp.achievementservice.util.supportClasses.GoalMark;
 import org.springframework.stereotype.Component;
@@ -12,19 +12,19 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class TotalNumberTrainingStrategy implements GoalStrategy {
+public class TotalNumberTrainingStrategyUpdate implements UpdateGoalStrategy {
 
     private final GoalRepository goalRepository;
-    private final UserProgressInAchievementRepository achievementRepository;
+    private final UserStatisticRepository achievementRepository;
 
-    public TotalNumberTrainingStrategy(GoalRepository goalRepository, UserProgressInAchievementRepository achievementRepository) {
+    public TotalNumberTrainingStrategyUpdate(GoalRepository goalRepository, UserStatisticRepository achievementRepository) {
         this.goalRepository = goalRepository;
         this.achievementRepository = achievementRepository;
     }
 
     @Override
-    public void execute(GoalModel model, List<TrainingModel> allTraining) {
-        UserProgressInAchievementModel userProgress = achievementRepository.findById(model.getUserId()).orElse(new UserProgressInAchievementModel());
+    public void updateGoal(GoalModel model, List<TrainingModel> allTraining) {
+        UserStatistic userProgress = achievementRepository.findById(model.getUserId()).orElse(new UserStatistic());
 
         int currentCountTrainings = Math.toIntExact(userProgress.getNumberOfTrainingSessionsOverTime());
         int goalCountTrainings = Integer.parseInt(model.getGoal());

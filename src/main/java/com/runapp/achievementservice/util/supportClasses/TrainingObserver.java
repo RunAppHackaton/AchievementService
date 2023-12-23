@@ -1,8 +1,7 @@
 package com.runapp.achievementservice.util.supportClasses;
 
-import com.runapp.achievementservice.model.UserProgressInAchievementModel;
-import com.runapp.achievementservice.repository.UserProgressInAchievementRepository;
-import com.runapp.achievementservice.service.DynamicSchedulerService;
+import com.runapp.achievementservice.model.UserStatistic;
+import com.runapp.achievementservice.repository.UserStatisticRepository;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -10,33 +9,33 @@ import java.time.Duration;
 @Component
 public class TrainingObserver {
 
-    private final DynamicSchedulerService schedulerService;
-    private final UserProgressInAchievementRepository userProgressInAchievementRepository;
+    private final GoalScheduler schedulerService;
+    private final UserStatisticRepository userStatisticRepository;
     private final String TASK_PREFIX_FOR_WORKOUT_EVERY_WEEK = "CheckPerWeek_";
     private final String TASK_PREFIX_FOR_WORKOUT_EVERY_MONTH = "CheckPerMonth_";
     private final String TASK_PREFIX_FOR_WORKOUT_EVERY_YEAR = "CheckPerYear_";
 
-    public TrainingObserver(DynamicSchedulerService schedulerService, UserProgressInAchievementRepository userProgressInAchievementRepository) {
+    public TrainingObserver(GoalScheduler schedulerService, UserStatisticRepository userStatisticRepository) {
         this.schedulerService = schedulerService;
-        this.userProgressInAchievementRepository = userProgressInAchievementRepository;
+        this.userStatisticRepository = userStatisticRepository;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     //////////////////////Create Observer//////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
-    public void createNewObserverForUserAchievements(Long userId, UserProgressInAchievementModel model) {
+    public void createNewObserverForUserAchievements(Long userId, UserStatistic model) {
         createObserverForCheckPerWeek(userId, model);
         createObserverForCheckPerMonth(userId, model);
         createObserverForCheckPerYear(userId, model);
     }
 
-    private void createObserverForCheckPerWeek(Long userId, UserProgressInAchievementModel model) {
+    private void createObserverForCheckPerWeek(Long userId, UserStatistic model) {
         String taskName = TASK_PREFIX_FOR_WORKOUT_EVERY_WEEK + userId;
 
         Runnable taskAction = () -> {
             model.setNumberOfWorkoutsPerWeek(0L);
-            userProgressInAchievementRepository.save(model);
+            userStatisticRepository.save(model);
         };
 
         Duration interval = Duration.ofDays(7);
@@ -44,12 +43,12 @@ public class TrainingObserver {
         schedulerService.scheduleTask(taskName, interval, taskAction);
     }
 
-    private void createObserverForCheckPerMonth(Long userId, UserProgressInAchievementModel model) {
+    private void createObserverForCheckPerMonth(Long userId, UserStatistic model) {
         String taskName = TASK_PREFIX_FOR_WORKOUT_EVERY_MONTH + userId;
 
         Runnable taskAction = () -> {
             model.setNumberOfWorkoutsPerMonth(0L);
-            userProgressInAchievementRepository.save(model);
+            userStatisticRepository.save(model);
         };
 
         Duration interval = Duration.ofDays(30);
@@ -57,12 +56,12 @@ public class TrainingObserver {
         schedulerService.scheduleTask(taskName, interval, taskAction);
     }
 
-    private void createObserverForCheckPerYear(Long userId, UserProgressInAchievementModel model) {
+    private void createObserverForCheckPerYear(Long userId, UserStatistic model) {
         String taskName = TASK_PREFIX_FOR_WORKOUT_EVERY_YEAR + userId;
 
         Runnable taskAction = () -> {
             model.setNumberOfWorkoutsPerYear(0L);
-            userProgressInAchievementRepository.save(model);
+            userStatisticRepository.save(model);
         };
 
         Duration interval = Duration.ofDays(365);

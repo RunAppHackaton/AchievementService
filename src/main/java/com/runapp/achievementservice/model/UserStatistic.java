@@ -9,8 +9,8 @@ import java.time.Duration;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Progress_User_in_Achievement")
-public class UserProgressInAchievementModel {
+@Table(name = "user_statistic")
+public class UserStatistic {
 
     @Id
     @Column(name = "user_id")
