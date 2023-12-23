@@ -1,4 +1,4 @@
-package com.runapp.achievementservice.service.goalChecker;
+package com.runapp.achievementservice.service.goalUpdater;
 
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.TrainingModel;

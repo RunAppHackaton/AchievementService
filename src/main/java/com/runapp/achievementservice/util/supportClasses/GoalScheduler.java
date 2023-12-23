@@ -22,7 +22,6 @@ public class GoalScheduler {
         this.taskScheduler = taskScheduler;
     }
 
-    // Создает и запускает задачу с указанным именем, интервалом и действием
     public void scheduleTask(String taskName, Duration interval, Runnable taskAction) {
         ScheduledFuture<?> scheduledFuture = taskScheduler.schedule(taskAction, new CronTrigger("0 */" + interval.toMinutes() + " * * * *"));
         scheduledTasks.put(taskName, scheduledFuture);

@@ -22,7 +22,7 @@ public class TrainingModel {
     private LocalDate dateTraining;
 
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "training_duration")
     private Duration duration;

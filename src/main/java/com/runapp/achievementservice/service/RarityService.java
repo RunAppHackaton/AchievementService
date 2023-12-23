@@ -1,5 +1,6 @@
 package com.runapp.achievementservice.service;
 
+import com.runapp.achievementservice.exception.NoEntityFoundException;
 import com.runapp.achievementservice.model.RarityModel;
 import com.runapp.achievementservice.repository.RarityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,21 @@ public class RarityService {
     }
 
     public RarityModel updateRarity(RarityModel rarityModel) {
+        if (rarityRepository.existsById(rarityModel.getId())) {
+            rarityRepository.save(rarityModel);
+        } else {
+            throw new NoEntityFoundException("Rarity not found with id: " + rarityModel.getId());
+        }
+
         return rarityRepository.save(rarityModel);
     }
 
     public void deleteRarity(int id) {
-        rarityRepository.deleteById(id);
+        if (rarityRepository.existsById(id)) {
+            rarityRepository.deleteById(id);
+        } else {
+            throw new NoEntityFoundException("Rarity not found with id: " + id);
+        }
     }
 
     public List<RarityModel> getAllRarities() {

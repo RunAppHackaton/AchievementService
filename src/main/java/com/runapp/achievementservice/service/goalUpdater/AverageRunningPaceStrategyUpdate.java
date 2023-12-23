@@ -1,4 +1,4 @@
-package com.runapp.achievementservice.service.goalChecker;
+package com.runapp.achievementservice.service.goalUpdater;
 
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.TrainingModel;
@@ -13,12 +13,12 @@ import java.time.Duration;
 import java.util.List;
 
 @Component
-public class TotalTrainingTimeStrategyUpdate implements UpdateGoalStrategy {
+public class AverageRunningPaceStrategyUpdate implements UpdateGoalStrategy {
 
     private final GoalRepository goalRepository;
     private final UserStatisticRepository achievementRepository;
 
-    public TotalTrainingTimeStrategyUpdate(GoalRepository goalRepository, UserStatisticRepository achievementRepository) {
+    public AverageRunningPaceStrategyUpdate(GoalRepository goalRepository, UserStatisticRepository achievementRepository) {
         this.goalRepository = goalRepository;
         this.achievementRepository = achievementRepository;
     }
@@ -27,14 +27,14 @@ public class TotalTrainingTimeStrategyUpdate implements UpdateGoalStrategy {
     public void updateGoal(GoalModel model, List<TrainingModel> allTraining) {
         UserStatistic userProgress = achievementRepository.findById(model.getUserId()).orElse(new UserStatistic());
 
-        Duration sumDurationAllTraining = userProgress.getTotalAmountOfTrainingTime();
-        Duration currentGoalDuration = Duration.parse(model.getGoal());
+        Duration currentAveragePace = userProgress.getAveragePaceRecord();
+        Duration goalAveragePace = Duration.parse(model.getGoal());
 
-        if (sumDurationAllTraining.compareTo(currentGoalDuration) >= 0) {
+        if (currentAveragePace.compareTo(goalAveragePace) < 0) {
             goalRepository.save(GoalMark.finishGoal(model));
         } else {
             model.setCompletionPercentage(
-                    GoalCompletionPercentageCalculator.calculatePercentage(sumDurationAllTraining, currentGoalDuration)
+                    GoalCompletionPercentageCalculator.calculatePercentage(currentAveragePace, goalAveragePace)
             );
             goalRepository.save(model);
         }

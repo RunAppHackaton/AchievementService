@@ -13,5 +13,5 @@ public interface TrainingRepository extends JpaRepository<TrainingModel, Integer
     @Query("SELECT t FROM TrainingModel t ORDER BY t.averagePace ASC NULLS LAST")
     TrainingModel findTrainingWithMinAveragePace();
 
-    List<TrainingModel> findAllByUserId(Integer userId);
+    List<TrainingModel> findAllByUserId(Long userId);
 }

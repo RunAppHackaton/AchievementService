@@ -1,6 +1,5 @@
 package com.runapp.achievementservice.dto.request;
 
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,5 +13,5 @@ public class TrainingRequest {
     private int distance_km;
     private Duration training_duration;
     private Duration pace;
-    private int userId;
+    private Long userId;
 }

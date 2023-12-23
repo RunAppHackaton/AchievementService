@@ -2,16 +2,20 @@ package com.runapp.achievementservice.dto.dtoMapper;
 
 import com.runapp.achievementservice.dto.request.GoalRequest;
 import com.runapp.achievementservice.dto.response.GoalResponse;
+import com.runapp.achievementservice.dto.response.TrainingResponse;
 import com.runapp.achievementservice.exception.NoEntityFoundException;
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.GoalStatusModel;
 import com.runapp.achievementservice.model.GoalTypeModel;
+import com.runapp.achievementservice.model.TrainingModel;
 import com.runapp.achievementservice.util.enums.GoalStatusEnum;
 import com.runapp.achievementservice.util.goalHandler.GoalFactoryHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -43,5 +47,12 @@ public class GoalDtoMapper implements DtoMapper<GoalModel, GoalRequest, GoalResp
                 .finishedDate(goalModel.getFinishedDate())
                 .goal(goalModel.getGoal())
                 .build();
+    }
+
+    @Override
+    public List<GoalResponse> toResponseList(List<GoalModel> goalModels) {
+        return goalModels.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 }

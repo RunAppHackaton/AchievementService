@@ -1,10 +1,8 @@
 package com.runapp.achievementservice.service;
 
+import com.runapp.achievementservice.exception.NoEntityFoundException;
 import com.runapp.achievementservice.model.AchievementModel;
-import com.runapp.achievementservice.model.TrainingModel;
 import com.runapp.achievementservice.repository.AchievementRepository;
-import com.runapp.achievementservice.repository.TrainingRepository;
-import com.runapp.achievementservice.service.goalChecker.GoalChecker;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +13,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AchievementService {
     private final AchievementRepository achievementRepository;
-    private final GoalChecker goalChecker;
-    private final TrainingRepository trainingRepository;
-    private
 
     public AchievementModel createAchievement(AchievementModel achievementModel) {
         return achievementRepository.save(achievementModel);
@@ -28,11 +23,19 @@ public class AchievementService {
     }
 
     public AchievementModel updateAchievement(AchievementModel achievementModel) {
-        return achievementRepository.save(achievementModel);
+        if (achievementRepository.existsById(achievementModel.getId())) {
+            return achievementRepository.save(achievementModel);
+        } else {
+            throw new NoEntityFoundException("Achievement not found with id: " + achievementModel.getId());
+        }
     }
 
     public void deleteAchievement(int id) {
-        achievementRepository.deleteById(id);
+        if (achievementRepository.existsById(id)) {
+            achievementRepository.deleteById(id);
+        } else {
+            throw new NoEntityFoundException("Achievement not found with id: " + id);
+        }
     }
 
     public List<AchievementModel> getAchievementsByStoryId(int storyId) {
@@ -41,13 +44,5 @@ public class AchievementService {
 
     public List<AchievementModel> getAllAchievements() {
         return achievementRepository.findAll();
-    }
-
-    public List<AchievementModel> awardAchievement(TrainingModel trainingModel) {
-        trainingRepository.save(trainingModel);
-        List<TrainingModel> trainingModels = trainingRepository.findAllByUserId(trainingModel.getUserId());
-
-        goalChecker.updateGoal();
-        return null;
     }
 }

@@ -11,5 +11,5 @@ public class TrainingResponse {
     private int distance_km;
     private Duration training_duration;
     private Duration pace;
-    private int userId;
+    private Long userId;
 }
