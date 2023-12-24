@@ -15,11 +15,7 @@ import java.util.List;
 public class GoalStatusModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-
-    @Column(name = "name")
+    @Column(name = "goal_status_name")
     @Enumerated(EnumType.STRING)
     private GoalStatusEnum statusEnum;
 

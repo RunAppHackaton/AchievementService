@@ -4,10 +4,12 @@ import com.runapp.achievementservice.util.enums.GoalStatusEnum;
 import com.runapp.achievementservice.util.enums.GoalTypeEnum;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-@Builder
+@Component
+@Data
 public class GoalResponse {
     private int id;
     private Long userId;

@@ -1,6 +1,6 @@
 package com.runapp.achievementservice.util.supportClasses;
 
-import com.runapp.achievementservice.model.UserStatistic;
+import com.runapp.achievementservice.model.UserStatisticModel;
 import com.runapp.achievementservice.repository.UserStatisticRepository;
 import org.springframework.stereotype.Component;
 
@@ -24,13 +24,13 @@ public class TrainingObserver {
     //////////////////////Create Observer//////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
-    public void createNewObserverForUserAchievements(Long userId, UserStatistic model) {
+    public void createNewObserverForUserGoals(Long userId, UserStatisticModel model) {
         createObserverForCheckPerWeek(userId, model);
         createObserverForCheckPerMonth(userId, model);
         createObserverForCheckPerYear(userId, model);
     }
 
-    private void createObserverForCheckPerWeek(Long userId, UserStatistic model) {
+    private void createObserverForCheckPerWeek(Long userId, UserStatisticModel model) {
         String taskName = TASK_PREFIX_FOR_WORKOUT_EVERY_WEEK + userId;
 
         Runnable taskAction = () -> {
@@ -43,7 +43,7 @@ public class TrainingObserver {
         schedulerService.scheduleTask(taskName, interval, taskAction);
     }
 
-    private void createObserverForCheckPerMonth(Long userId, UserStatistic model) {
+    private void createObserverForCheckPerMonth(Long userId, UserStatisticModel model) {
         String taskName = TASK_PREFIX_FOR_WORKOUT_EVERY_MONTH + userId;
 
         Runnable taskAction = () -> {
@@ -56,7 +56,7 @@ public class TrainingObserver {
         schedulerService.scheduleTask(taskName, interval, taskAction);
     }
 
-    private void createObserverForCheckPerYear(Long userId, UserStatistic model) {
+    private void createObserverForCheckPerYear(Long userId, UserStatisticModel model) {
         String taskName = TASK_PREFIX_FOR_WORKOUT_EVERY_YEAR + userId;
 
         Runnable taskAction = () -> {

@@ -15,8 +15,10 @@ public class TrainingService {
 
     private final GoalUpdater goalUpdater;
     private final TrainingRepository trainingRepository;
+    private final UserStatisticService userStatisticService;
 
     public TrainingModel saveTraining(TrainingModel training) {
+        userStatisticService.startTrackingUserStatisticsIfNone(training.getUserId());
         TrainingModel savedTraining = trainingRepository.save(training);
         goalUpdater.updateAllGoal(savedTraining.getUserId());
         return savedTraining;

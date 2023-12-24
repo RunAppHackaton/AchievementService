@@ -2,11 +2,11 @@ package com.runapp.achievementservice.util.supportClasses;
 
 import java.time.Duration;
 
-public class GoalCompletionPercentageCalculator {
+public class GoalCompletionCalculator {
 
-    public static float calculatePercentage(Duration totalDuration, Duration currentDuration) {
-        float totalMillis = (float) totalDuration.toMillis();
-        float currentMillis = (float) currentDuration.toMillis();
+    public static float calculatePercentage(Duration sumDurationAllTraining, Duration currentGoalDuration) {
+        float totalMillis = (float) sumDurationAllTraining.toMillis();
+        float currentMillis = (float) currentGoalDuration.toMillis();
         return (currentMillis / totalMillis) * 100.0f;
     }
 

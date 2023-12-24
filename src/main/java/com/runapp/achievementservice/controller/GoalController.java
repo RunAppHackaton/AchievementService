@@ -1,5 +1,8 @@
 package com.runapp.achievementservice.controller;
 
+import com.runapp.achievementservice.dto.dtoMapper.DtoMapper;
+import com.runapp.achievementservice.dto.request.GoalRequest;
+import com.runapp.achievementservice.dto.response.GoalResponse;
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.service.GoalService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,65 +24,71 @@ import java.util.List;
 public class GoalController {
 
     private final GoalService goalService;
+    private final DtoMapper<GoalModel, GoalRequest, GoalResponse> goalDtoMapper;
 
     @Operation(
             summary = "Get all goals",
             description = "Retrieve a list of all goals",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Goals found", content = @Content(schema = @Schema(implementation = GoalModel.class)))
+                    @ApiResponse(responseCode = "200", description = "Goals found", content = @Content(schema = @Schema(implementation = GoalResponse.class)))
             }
     )
     @GetMapping
-    public ResponseEntity<List<GoalModel>> getAllGoals() {
-        List<GoalModel> goals = goalService.getAllGoals();
-        return new ResponseEntity<>(goals, HttpStatus.OK);
+    public ResponseEntity<List<GoalResponse>> getAllGoals() {
+        List<GoalResponse> responses = goalDtoMapper.toResponseList(goalService.getAllGoals());
+        return new ResponseEntity<>(responses, HttpStatus.OK);
     }
+
 
     @Operation(
             summary = "Get a goal by ID",
             description = "Retrieve a goal by its ID",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Goal found", content = @Content(schema = @Schema(implementation = GoalModel.class))),
+                    @ApiResponse(responseCode = "200", description = "Goal found", content = @Content(schema = @Schema(implementation = GoalResponse.class))),
                     @ApiResponse(responseCode = "404", description = "Goal not found")
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<GoalModel> getGoalById(@PathVariable int id) {
-        GoalModel goal = goalService.getGoalById(id);
-        return new ResponseEntity<>(goal, HttpStatus.OK);
+    public ResponseEntity<GoalResponse> getGoalById(@PathVariable int id) {
+        GoalResponse goalResponse = goalDtoMapper.toResponse(goalService.getGoalById(id));
+        return new ResponseEntity<>(goalResponse, HttpStatus.OK);
     }
+
 
     @Operation(
             summary = "Create a new goal",
             description = "Create a new goal with the provided data",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = GoalModel.class))),
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = GoalRequest.class))),
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Goal created", content = @Content(schema = @Schema(implementation = GoalModel.class))),
+                    @ApiResponse(responseCode = "201", description = "Goal created", content = @Content(schema = @Schema(implementation = GoalResponse.class))),
                     @ApiResponse(responseCode = "400", description = "Invalid input")
             }
     )
     @PostMapping
-    public ResponseEntity<GoalModel> saveGoal(@RequestBody GoalModel goal) {
-        GoalModel savedGoal = goalService.saveGoal(goal);
-        return new ResponseEntity<>(savedGoal, HttpStatus.CREATED);
+    public ResponseEntity<GoalResponse> saveGoal(@RequestBody GoalRequest goalRequest) {
+        GoalModel goalModel = goalService.saveGoal(goalDtoMapper.toModel(goalRequest));
+        GoalResponse goalResponse = goalDtoMapper.toResponse(goalModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(goalResponse);
     }
+
 
     @Operation(
             summary = "Update a goal by ID",
             description = "Update an existing goal with the provided data",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = GoalModel.class))),
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = GoalRequest.class))),
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Goal updated", content = @Content(schema = @Schema(implementation = GoalModel.class))),
+                    @ApiResponse(responseCode = "200", description = "Goal updated", content = @Content(schema = @Schema(implementation = GoalResponse.class))),
                     @ApiResponse(responseCode = "400", description = "Invalid input"),
                     @ApiResponse(responseCode = "404", description = "Goal not found")
             }
     )
     @PutMapping("/{id}")
-    public ResponseEntity<GoalModel> updateGoal(@PathVariable int id, @RequestBody GoalModel updatedGoal) {
+    public ResponseEntity<GoalResponse> updateGoal(@PathVariable int id, @RequestBody GoalModel updatedGoal) {
         updatedGoal.setId(id);
-        GoalModel goal = goalService.updateGoal(updatedGoal);
-        return new ResponseEntity<>(goal, HttpStatus.OK);
+        GoalResponse goalResponse = goalDtoMapper.toResponse(goalService.updateGoal(updatedGoal));
+        return new ResponseEntity<>(goalResponse, HttpStatus.OK);
     }
+
 
     @Operation(
             summary = "Delete a goal by ID",

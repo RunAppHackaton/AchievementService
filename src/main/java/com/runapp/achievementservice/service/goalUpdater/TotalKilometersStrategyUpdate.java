@@ -3,7 +3,7 @@ package com.runapp.achievementservice.service.goalUpdater;
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.TrainingModel;
 import com.runapp.achievementservice.repository.GoalRepository;
-import com.runapp.achievementservice.util.supportClasses.GoalCompletionPercentageCalculator;
+import com.runapp.achievementservice.util.supportClasses.GoalCompletionCalculator;
 import com.runapp.achievementservice.util.supportClasses.GoalMark;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +30,7 @@ public class TotalKilometersStrategyUpdate implements UpdateGoalStrategy {
             goalRepository.save(GoalMark.finishGoal(model));
         } else {
             model.setCompletionPercentage(
-                    GoalCompletionPercentageCalculator
+                    GoalCompletionCalculator
                             .calculatePercentage(currentKilometers, goalKilometers)
             );
             goalRepository.save(model);

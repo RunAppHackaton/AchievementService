@@ -1,7 +1,7 @@
-insert into goal_status(name)
+insert into goal_status(goal_status_name)
 values ('IN_PROGRESS');
 
-insert into goal_status(name)
+insert into goal_status(goal_status_name)
 values ('FINISHED');
 
 

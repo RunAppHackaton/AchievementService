@@ -10,7 +10,7 @@ import java.time.Duration;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_statistic")
-public class UserStatistic {
+public class UserStatisticModel {
 
     @Id
     @Column(name = "user_id")
