@@ -28,17 +28,8 @@ public class TotalTrainingTimeStrategyUpdate implements UpdateGoalStrategy {
     @Override
     public void updateGoal(GoalModel model, List<TrainingModel> allTraining) {
         UserStatisticModel userProgress = achievementRepository.findById(model.getUserId()).orElse(new UserStatisticModel());
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        LocalTime localTime = LocalTime.parse(model.getGoal(), formatter);
-
-        // Создание объекта Duration на основе значений часов, минут и секунд
-        Duration currentGoalDuration = Duration.ofHours(localTime.getHour())
-                .plusMinutes(localTime.getMinute())
-                .plusSeconds(localTime.getSecond());
-
+        Duration currentGoalDuration = parseGoalStringToDuration(model);
         Duration sumDurationAllTraining = userProgress.getTotalAmountOfTrainingTime();
-//        Duration currentGoalDuration = Duration.parse(model.getGoal());
 
         if (sumDurationAllTraining.compareTo(currentGoalDuration) >= 0) {
             GoalMark.finishGoal(model);
@@ -48,5 +39,13 @@ public class TotalTrainingTimeStrategyUpdate implements UpdateGoalStrategy {
             );
         }
         goalRepository.save(model);
+    }
+
+    private Duration parseGoalStringToDuration(GoalModel model) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime localTime = LocalTime.parse(model.getGoal(), formatter);
+        return Duration.ofHours(localTime.getHour())
+                .plusMinutes(localTime.getMinute())
+                .plusSeconds(localTime.getSecond());
     }
 }

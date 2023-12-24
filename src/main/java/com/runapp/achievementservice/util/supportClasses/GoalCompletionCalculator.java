@@ -6,6 +6,7 @@ public class GoalCompletionCalculator {
 
     public static float calculatePercentage(Duration sumDurationAllTraining, Duration currentGoalDuration) {
         float totalMillis = (float) sumDurationAllTraining.toMillis();
+        if (totalMillis == 0.0f) {return 0.0f;}
         float currentMillis = (float) currentGoalDuration.toMillis();
         return (currentMillis / totalMillis) * 100.0f;
     }

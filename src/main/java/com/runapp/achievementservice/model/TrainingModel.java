@@ -1,5 +1,6 @@
 package com.runapp.achievementservice.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,11 +26,13 @@ public class TrainingModel {
     private Long userId;
 
     @Column(name = "training_duration")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Duration duration;
 
     @Column(name = "distance_km")
     private Integer distanceKm;
 
     @Column(name = "average_pace")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Duration averagePace;
 }
