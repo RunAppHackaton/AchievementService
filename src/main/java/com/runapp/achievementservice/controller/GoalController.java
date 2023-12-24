@@ -4,7 +4,7 @@ import com.runapp.achievementservice.dto.dtoMapper.DtoMapper;
 import com.runapp.achievementservice.dto.request.GoalRequest;
 import com.runapp.achievementservice.dto.response.GoalResponse;
 import com.runapp.achievementservice.model.GoalModel;
-import com.runapp.achievementservice.service.GoalService;
+import com.runapp.achievementservice.service.serviceImpl.GoalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,7 +35,7 @@ public class GoalController {
     )
     @GetMapping
     public ResponseEntity<List<GoalResponse>> getAllGoals() {
-        List<GoalResponse> responses = goalDtoMapper.toResponseList(goalService.getAllGoals());
+        List<GoalResponse> responses = goalDtoMapper.toResponseList(goalService.getAll());
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
@@ -49,8 +49,8 @@ public class GoalController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<GoalResponse> getGoalById(@PathVariable int id) {
-        GoalResponse goalResponse = goalDtoMapper.toResponse(goalService.getGoalById(id));
+    public ResponseEntity<GoalResponse> getGoalById(@PathVariable long id) {
+        GoalResponse goalResponse = goalDtoMapper.toResponse(goalService.getById(id));
         return new ResponseEntity<>(goalResponse, HttpStatus.OK);
     }
 
@@ -66,7 +66,7 @@ public class GoalController {
     )
     @PostMapping
     public ResponseEntity<GoalResponse> saveGoal(@RequestBody GoalRequest goalRequest) {
-        GoalModel goalModel = goalService.saveGoal(goalDtoMapper.toModel(goalRequest));
+        GoalModel goalModel = goalService.add(goalDtoMapper.toModel(goalRequest));
         GoalResponse goalResponse = goalDtoMapper.toResponse(goalModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(goalResponse);
     }
@@ -83,9 +83,9 @@ public class GoalController {
             }
     )
     @PutMapping("/{id}")
-    public ResponseEntity<GoalResponse> updateGoal(@PathVariable int id, @RequestBody GoalModel updatedGoal) {
+    public ResponseEntity<GoalResponse> updateGoal(@PathVariable long id, @RequestBody GoalModel updatedGoal) {
         updatedGoal.setId(id);
-        GoalResponse goalResponse = goalDtoMapper.toResponse(goalService.updateGoal(updatedGoal));
+        GoalResponse goalResponse = goalDtoMapper.toResponse(goalService.update(updatedGoal));
         return new ResponseEntity<>(goalResponse, HttpStatus.OK);
     }
 
@@ -99,8 +99,8 @@ public class GoalController {
             }
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteGoal(@PathVariable int id) {
-        goalService.deleteGoalById(id);
+    public ResponseEntity<Void> deleteGoal(@PathVariable long id) {
+        goalService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

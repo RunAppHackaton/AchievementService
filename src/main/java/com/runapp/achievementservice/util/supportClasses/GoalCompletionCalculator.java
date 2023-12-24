@@ -4,16 +4,11 @@ import java.time.Duration;
 
 public class GoalCompletionCalculator {
 
-    public static float calculatePercentage(Duration sumDurationAllTraining, Duration currentGoalDuration) {
-        float totalMillis = (float) sumDurationAllTraining.toMillis();
-        if (totalMillis == 0.0f) {return 0.0f;}
-        float currentMillis = (float) currentGoalDuration.toMillis();
-        return (currentMillis / totalMillis) * 100.0f;
+    public static double calculatePercentage(Duration sumDurationAllTraining, Duration currentGoalDuration) {
+        return ((double) sumDurationAllTraining.toMillis() / currentGoalDuration.toMillis()) * 100.0;
     }
 
-    public static float calculatePercentage(int totalCountTraining, int currentCountTraining) {
-        float totalCount = totalCountTraining;
-        float currentCount = currentCountTraining;
-        return (currentCount / totalCount) * 100;
+    public static long calculatePercentage(int totalCountTraining, int currentCountTraining) {
+        return ((long) currentCountTraining / (long) totalCountTraining) * 100;
     }
 }

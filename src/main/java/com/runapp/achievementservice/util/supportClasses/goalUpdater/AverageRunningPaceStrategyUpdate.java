@@ -1,4 +1,4 @@
-package com.runapp.achievementservice.service.goalUpdater;
+package com.runapp.achievementservice.util.supportClasses.goalUpdater;
 
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.TrainingModel;
@@ -34,7 +34,7 @@ public class AverageRunningPaceStrategyUpdate implements UpdateGoalStrategy {
             goalRepository.save(GoalMark.finishGoal(model));
         } else {
             model.setCompletionPercentage(
-                    GoalCompletionCalculator.calculatePercentage(currentAveragePace, goalAveragePace)
+                    (float) GoalCompletionCalculator.calculatePercentage(currentAveragePace, goalAveragePace)
             );
             goalRepository.save(model);
         }

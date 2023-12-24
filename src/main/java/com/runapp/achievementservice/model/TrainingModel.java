@@ -17,7 +17,7 @@ public class TrainingModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "training_date")
     private LocalDate dateTraining;
@@ -25,14 +25,14 @@ public class TrainingModel {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "training_duration")
+    @Column(name = "training_duration_mm")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Duration duration;
 
     @Column(name = "distance_km")
     private Integer distanceKm;
 
-    @Column(name = "average_pace")
+    @Column(name = "average_pace_mm")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Duration averagePace;
 }

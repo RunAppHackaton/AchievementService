@@ -1,4 +1,4 @@
-package com.runapp.achievementservice.service.goalUpdater;
+package com.runapp.achievementservice.util.supportClasses.goalUpdater;
 
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.TrainingModel;
@@ -30,12 +30,10 @@ public class TotalNumberTrainingStrategyUpdate implements UpdateGoalStrategy {
         int goalCountTrainings = Integer.parseInt(model.getGoal());
 
         if (currentCountTrainings >= goalCountTrainings) {
-            goalRepository.save(GoalMark.finishGoal(model));
+            GoalMark.finishGoal(model);
         } else {
-            model.setCompletionPercentage(
-                    GoalCompletionCalculator.calculatePercentage(currentCountTrainings, goalCountTrainings)
-            );
-            goalRepository.save(model);
+            model.setCompletionPercentage(GoalCompletionCalculator.calculatePercentage(currentCountTrainings, goalCountTrainings));
         }
+        goalRepository.save(model);
     }
 }

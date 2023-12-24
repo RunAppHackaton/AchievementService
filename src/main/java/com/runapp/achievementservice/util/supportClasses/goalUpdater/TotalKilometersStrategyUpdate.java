@@ -1,4 +1,4 @@
-package com.runapp.achievementservice.service.goalUpdater;
+package com.runapp.achievementservice.util.supportClasses.goalUpdater;
 
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.TrainingModel;
@@ -20,20 +20,20 @@ public class TotalKilometersStrategyUpdate implements UpdateGoalStrategy {
 
     @Override
     public void updateGoal(GoalModel model, List<TrainingModel> allTraining) {
-        int currentKilometers = allTraining.stream()
-                .mapToInt(TrainingModel::getDistanceKm)
-                .sum();
-
+        int currentKilometers = calculateCurrentKilometers(allTraining);
         int goalKilometers = Integer.parseInt(model.getGoal());
 
         if (currentKilometers >= goalKilometers) {
-            goalRepository.save(GoalMark.finishGoal(model));
+            GoalMark.finishGoal(model);
         } else {
-            model.setCompletionPercentage(
-                    GoalCompletionCalculator
-                            .calculatePercentage(currentKilometers, goalKilometers)
-            );
-            goalRepository.save(model);
+            model.setCompletionPercentage(GoalCompletionCalculator.calculatePercentage(currentKilometers, goalKilometers));
         }
+        goalRepository.save(model);
+    }
+
+    private int calculateCurrentKilometers(List<TrainingModel> allTraining) {
+        return allTraining.stream()
+                .mapToInt(TrainingModel::getDistanceKm)
+                .sum();
     }
 }

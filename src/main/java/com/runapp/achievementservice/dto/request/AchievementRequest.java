@@ -17,7 +17,7 @@ public class AchievementRequest {
 
     private String description;
 
-    private int rarity_id;
+    private Long rarity_id;
 
     public AchievementModel ToAchievementModel(RarityModel rarityModel) {
         AchievementModel achievementModel = new AchievementModel();

@@ -1,4 +1,4 @@
-package com.runapp.achievementservice.service.goalUpdater;
+package com.runapp.achievementservice.util.supportClasses.goalUpdater;
 
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.TrainingModel;
@@ -35,7 +35,7 @@ public class TotalTrainingTimeStrategyUpdate implements UpdateGoalStrategy {
             GoalMark.finishGoal(model);
         } else {
             model.setCompletionPercentage(
-                    GoalCompletionCalculator.calculatePercentage(sumDurationAllTraining, currentGoalDuration)
+                    (float) GoalCompletionCalculator.calculatePercentage(sumDurationAllTraining, currentGoalDuration)
             );
         }
         goalRepository.save(model);

@@ -4,7 +4,7 @@ import com.runapp.achievementservice.dto.dtoMapper.DtoMapper;
 import com.runapp.achievementservice.dto.request.TrainingRequest;
 import com.runapp.achievementservice.dto.response.TrainingResponse;
 import com.runapp.achievementservice.model.TrainingModel;
-import com.runapp.achievementservice.service.TrainingService;
+import com.runapp.achievementservice.service.serviceImpl.TrainingServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,7 +24,7 @@ import java.util.List;
 @Tag(name = "Training Management", description = "Operations related to training")
 public class TrainingController {
 
-    private final TrainingService trainingService;
+    private final TrainingServiceImpl trainingServiceImpl;
     private final DtoMapper<TrainingModel, TrainingRequest, TrainingResponse> trainingDtoMapper;
 
     @Operation(
@@ -38,7 +38,7 @@ public class TrainingController {
     )
     @PostMapping
     public ResponseEntity<TrainingResponse> saveTraining(@RequestBody @Valid TrainingRequest trainingRequest) {
-        TrainingModel trainingModel = trainingService.saveTraining(trainingDtoMapper.toModel(trainingRequest));
+        TrainingModel trainingModel = trainingServiceImpl.add(trainingDtoMapper.toModel(trainingRequest));
         TrainingResponse trainingResponse = trainingDtoMapper.toResponse(trainingModel);
         return new ResponseEntity<>(trainingResponse, HttpStatus.CREATED);
     }
@@ -52,8 +52,8 @@ public class TrainingController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<TrainingResponse> getTrainingById(@PathVariable Integer id) {
-        TrainingModel trainingModel = trainingService.getTrainingById(id);
+    public ResponseEntity<TrainingResponse> getTrainingById(@PathVariable Long id) {
+        TrainingModel trainingModel = trainingServiceImpl.getById(id);
         TrainingResponse trainingResponse = trainingDtoMapper.toResponse(trainingModel);
         return ResponseEntity.ok(trainingResponse);
     }
@@ -67,7 +67,7 @@ public class TrainingController {
     )
     @GetMapping
     public ResponseEntity<List<TrainingResponse>> getAllTrainings() {
-        List<TrainingModel> trainingModels = trainingService.getAllTrainings();
+        List<TrainingModel> trainingModels = trainingServiceImpl.getAll();
         List<TrainingResponse> trainingResponses = trainingDtoMapper.toResponseList(trainingModels);
         return ResponseEntity.ok(trainingResponses);
     }
@@ -81,8 +81,8 @@ public class TrainingController {
             }
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTrainingById(@PathVariable Integer id) {
-        trainingService.deleteTrainingById(id);
+    public ResponseEntity<Void> deleteTrainingById(@PathVariable Long id) {
+        trainingServiceImpl.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -95,7 +95,7 @@ public class TrainingController {
     )
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<TrainingResponse>> getAllTrainingsByUserId(@PathVariable Long userId) {
-        List<TrainingModel> trainingModels = trainingService.getAllTrainingsByUserId(userId);
+        List<TrainingModel> trainingModels = trainingServiceImpl.getAllTrainingsByUserId(userId);
         List<TrainingResponse> trainingResponses = trainingDtoMapper.toResponseList(trainingModels);
         return ResponseEntity.ok(trainingResponses);
     }

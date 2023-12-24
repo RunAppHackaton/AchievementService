@@ -31,10 +31,10 @@ public class UserStatisticModel {
     @Column(name = "total_number_of_workouts_for_all_time")
     private Long totalNumberOfWorkoutsForAllTime;
 
-    @Column(name = "total_amount_of_training_time")
+    @Column(name = "total_amount_of_training_time_mm")
     private Duration totalAmountOfTrainingTime;
 
-    @Column(name = "average_pace_record")
+    @Column(name = "average_pace_record_mm")
     private Duration averagePaceRecord;
 
 }

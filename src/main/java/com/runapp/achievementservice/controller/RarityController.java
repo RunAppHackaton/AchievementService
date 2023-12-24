@@ -15,12 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/rarities")
 @Tag(name = "Rarity Management", description = "Operations related to rarities")
 public class RarityController {
+
     private final RarityService rarityService;
 
     @Autowired
@@ -31,11 +31,8 @@ public class RarityController {
     @PostMapping
     @Operation(summary = "Create a new rarity", description = "Create a new rarity with the provided data")
     @ApiResponse(responseCode = "201", description = "Rarity created", content = @Content(schema = @Schema(implementation = RarityModel.class)))
-    @ApiResponse(responseCode = "400", description = "Invalid input")
-    public ResponseEntity<RarityModel> createRarity(
-            @Parameter(description = "Rarity data", required = true)
-            @RequestBody RarityRequest rarityRequest) {
-        RarityModel createdRarity = rarityService.createRarity(rarityRequest.toRarityModel());
+    public ResponseEntity<RarityModel> createRarity(@RequestBody RarityRequest rarityRequest) {
+        RarityModel createdRarity = rarityService.add(rarityRequest.toRarityModel());
         return new ResponseEntity<>(createdRarity, HttpStatus.CREATED);
     }
 
@@ -43,57 +40,34 @@ public class RarityController {
     @Operation(summary = "Get a rarity by ID", description = "Retrieve a rarity by its ID")
     @ApiResponse(responseCode = "200", description = "Rarity found", content = @Content(schema = @Schema(implementation = RarityModel.class)))
     @ApiResponse(responseCode = "404", description = "Rarity not found")
-    public ResponseEntity<Optional<RarityModel>> getRarityById(
-            @Parameter(description = "Rarity ID", required = true)
-            @PathVariable int id) {
-        Optional<RarityModel> rarity = rarityService.getRarityById(id);
-        if (rarity.isPresent()) {
-            return new ResponseEntity<>(rarity, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<RarityModel> getRarityById(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(rarityService.getById(id));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a rarity", description = "Update an existing rarity with the provided data")
     @ApiResponse(responseCode = "200", description = "Rarity updated", content = @Content(schema = @Schema(implementation = RarityModel.class)))
-    @ApiResponse(responseCode = "400", description = "Invalid input")
     @ApiResponse(responseCode = "404", description = "Rarity not found")
     public ResponseEntity<RarityModel> updateRarity(
-            @Parameter(description = "Updated rarity data", required = true)
-            @PathVariable int id,
+            @Parameter(description = "Rarity ID", required = true) @PathVariable Long id,
             @RequestBody RarityRequest rarityRequest) {
-        Optional<RarityModel> existingRarity = rarityService.getRarityById(id);
-        if (existingRarity.isPresent()) {
-            RarityModel rarityModel = rarityRequest.toRarityModel();
-            rarityModel.setId(id);
-            RarityModel updatedRarity = rarityService.updateRarity(rarityModel);
-            return new ResponseEntity<>(updatedRarity, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        RarityModel model = rarityService.update(rarityRequest.toRarityModel());
+        return ResponseEntity.status(HttpStatus.OK).body(model);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a rarity", description = "Delete a rarity by its ID")
     @ApiResponse(responseCode = "204", description = "Rarity deleted")
     @ApiResponse(responseCode = "404", description = "Rarity not found")
-    public ResponseEntity<Void> deleteRarity(
-            @Parameter(description = "Rarity ID", required = true)
-            @PathVariable int id) {
-        Optional<RarityModel> existingRarity = rarityService.getRarityById(id);
-        if (existingRarity.isPresent()) {
-            rarityService.deleteRarity(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> deleteRarity(@PathVariable Long id) {
+        rarityService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping
     @Operation(summary = "Get all rarities", description = "Retrieve a list of all rarities")
     public ResponseEntity<List<RarityModel>> getAllRarities() {
-        List<RarityModel> rarities = rarityService.getAllRarities();
+        List<RarityModel> rarities = rarityService.getAll();
         return new ResponseEntity<>(rarities, HttpStatus.OK);
     }
 }
