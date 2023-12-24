@@ -66,5 +66,7 @@ spring:
             url: ${STORAGE_SERVICE_URL}
           story-manager-service:
             url: ${STORY_MANAGER_SERVICE_URL}
+          profile-service:
+            url: ${PROFILE_SERVICE_URL}
 
 storage-directory: AchievementServiceImpl/

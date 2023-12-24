@@ -2,11 +2,12 @@ package com.runapp.achievementservice.dto.request;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDate;
 
-@Builder
+@Component
 @Data
 public class TrainingRequest {
     private LocalDate training_date;

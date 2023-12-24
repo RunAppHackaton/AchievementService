@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class RarityService implements com.runapp.achievementservice.service.RarityService {
+public class RarityServiceImpl implements com.runapp.achievementservice.service.RarityService {
     private final RarityRepository rarityRepository;
 
     @Autowired
-    public RarityService(RarityRepository rarityRepository) {
+    public RarityServiceImpl(RarityRepository rarityRepository) {
         this.rarityRepository = rarityRepository;
     }
 

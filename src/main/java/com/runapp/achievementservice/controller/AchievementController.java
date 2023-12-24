@@ -5,12 +5,12 @@ import com.runapp.achievementservice.dto.request.AchievementRequest;
 import com.runapp.achievementservice.dto.request.DeleteStorageRequest;
 import com.runapp.achievementservice.dto.response.DeleteResponse;
 import com.runapp.achievementservice.dto.response.StoryResponse;
-import com.runapp.achievementservice.feignService.StorageServiceClient;
-import com.runapp.achievementservice.feignService.StoryManagementServiceClient;
+import com.runapp.achievementservice.feignClient.StorageServiceClient;
+import com.runapp.achievementservice.feignClient.StoryManagementServiceClient;
 import com.runapp.achievementservice.model.AchievementModel;
 import com.runapp.achievementservice.model.RarityModel;
 import com.runapp.achievementservice.service.serviceImpl.AchievementServiceImpl;
-import com.runapp.achievementservice.service.serviceImpl.RarityService;
+import com.runapp.achievementservice.service.serviceImpl.RarityServiceImpl;
 import feign.FeignException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,16 +40,16 @@ public class AchievementController {
     @Autowired
     private StorageServiceClient storageServiceClient;
     private final StoryManagementServiceClient storyManagementServiceClient;
-    private final RarityService rarityService;
+    private final RarityServiceImpl rarityServiceImpl;
 
     @Autowired
     public AchievementController(StoryManagementServiceClient storyManagementServiceClient,
-                                 RarityService rarityService,
+                                 RarityServiceImpl rarityServiceImpl,
                                  AchievementServiceImpl achievementServiceImpl) {
 
         this.achievementServiceImpl = achievementServiceImpl;
         this.storyManagementServiceClient = storyManagementServiceClient;
-        this.rarityService = rarityService;
+        this.rarityServiceImpl = rarityServiceImpl;
     }
 
     @Operation(summary = "Create a new achievement", description = "Create a new achievement with the provided data")
@@ -60,7 +60,7 @@ public class AchievementController {
         try {
             ResponseEntity<StoryResponse> storyResponseEntity = storyManagementServiceClient.getStoryById(achievementRequest.getStory_id());
 
-            RarityModel rarityModel = rarityService.getById(achievementRequest.getRarity_id());
+            RarityModel rarityModel = rarityServiceImpl.getById(achievementRequest.getRarity_id());
             if (rarityModel == null)
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("rarity with id " + achievementRequest.getRarity_id() + " not found");
             AchievementModel createdAchievement = achievementServiceImpl.createAchievement(achievementRequest.ToAchievementModel(rarityModel));
@@ -96,7 +96,7 @@ public class AchievementController {
             ResponseEntity<StoryResponse> storyResponseEntity = storyManagementServiceClient.getStoryById(achievementRequest.getStory_id());
             Optional<AchievementModel> existingAchievement = achievementServiceImpl.getAchievementById(id);
             if (existingAchievement.isPresent()) {
-                RarityModel rarityModel = rarityService.getById(achievementRequest.getRarity_id());
+                RarityModel rarityModel = rarityServiceImpl.getById(achievementRequest.getRarity_id());
                 if (rarityModel == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 AchievementModel createdAchievement = existingAchievement.orElse(null);
                 createdAchievement.setId(id);

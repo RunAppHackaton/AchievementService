@@ -4,7 +4,9 @@ import com.runapp.achievementservice.dto.dtoMapper.DtoMapper;
 import com.runapp.achievementservice.dto.request.GoalRequest;
 import com.runapp.achievementservice.dto.response.GoalResponse;
 import com.runapp.achievementservice.model.GoalModel;
-import com.runapp.achievementservice.service.serviceImpl.GoalService;
+import com.runapp.achievementservice.service.serviceImpl.GoalServiceImpl;
+import com.runapp.achievementservice.util.enums.GoalStatusEnum;
+import com.runapp.achievementservice.util.enums.GoalTypeEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,8 +25,11 @@ import java.util.List;
 @Tag(name = "Goal Management", description = "Operations related to goals")
 public class GoalController {
 
-    private final GoalService goalService;
+    private final GoalServiceImpl goalServiceImpl;
     private final DtoMapper<GoalModel, GoalRequest, GoalResponse> goalDtoMapper;
+
+
+
 
     @Operation(
             summary = "Get all goals",
@@ -35,9 +40,10 @@ public class GoalController {
     )
     @GetMapping
     public ResponseEntity<List<GoalResponse>> getAllGoals() {
-        List<GoalResponse> responses = goalDtoMapper.toResponseList(goalService.getAll());
+        List<GoalResponse> responses = goalDtoMapper.toResponseList(goalServiceImpl.getAll());
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
+
 
 
     @Operation(
@@ -50,9 +56,10 @@ public class GoalController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<GoalResponse> getGoalById(@PathVariable long id) {
-        GoalResponse goalResponse = goalDtoMapper.toResponse(goalService.getById(id));
+        GoalResponse goalResponse = goalDtoMapper.toResponse(goalServiceImpl.getById(id));
         return new ResponseEntity<>(goalResponse, HttpStatus.OK);
     }
+
 
 
     @Operation(
@@ -66,10 +73,11 @@ public class GoalController {
     )
     @PostMapping
     public ResponseEntity<GoalResponse> saveGoal(@RequestBody GoalRequest goalRequest) {
-        GoalModel goalModel = goalService.add(goalDtoMapper.toModel(goalRequest));
+        GoalModel goalModel = goalServiceImpl.add(goalDtoMapper.toModel(goalRequest));
         GoalResponse goalResponse = goalDtoMapper.toResponse(goalModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(goalResponse);
     }
+
 
 
     @Operation(
@@ -85,9 +93,10 @@ public class GoalController {
     @PutMapping("/{id}")
     public ResponseEntity<GoalResponse> updateGoal(@PathVariable long id, @RequestBody GoalModel updatedGoal) {
         updatedGoal.setId(id);
-        GoalResponse goalResponse = goalDtoMapper.toResponse(goalService.update(updatedGoal));
+        GoalResponse goalResponse = goalDtoMapper.toResponse(goalServiceImpl.update(updatedGoal));
         return new ResponseEntity<>(goalResponse, HttpStatus.OK);
     }
+
 
 
     @Operation(
@@ -100,7 +109,35 @@ public class GoalController {
     )
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteGoal(@PathVariable long id) {
-        goalService.deleteById(id);
+        goalServiceImpl.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+
+    @Operation(
+            summary = "Get all Goal Type Enums",
+            description = "Retrieve all available Goal Type Enums",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Goal Type Enums retrieved successfully", content = @Content(schema = @Schema(implementation = GoalTypeEnum[].class)))
+            }
+    )
+    @GetMapping("/goal-type-enums")
+    public ResponseEntity<GoalTypeEnum[]> getAllGoalTypeEnums() {
+        return new ResponseEntity<>(GoalTypeEnum.values(), HttpStatus.OK);
+    }
+
+
+
+    @Operation(
+            summary = "Get all Goal Status Enums",
+            description = "Retrieve all available Goal Status Enums",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Goal Status Enums retrieved successfully", content = @Content(schema = @Schema(implementation = GoalStatusEnum[].class)))
+            }
+    )
+    @GetMapping("/goal-status-enums")
+    public ResponseEntity<GoalStatusEnum[]> getAllGoalStatusEnums() {
+        return new ResponseEntity<>(GoalStatusEnum.values(), HttpStatus.OK);
     }
 }

@@ -1,4 +1,4 @@
-package com.runapp.achievementservice.feignService;
+package com.runapp.achievementservice.feignClient;
 
 import com.runapp.achievementservice.dto.response.StoryResponse;
 import org.springframework.cloud.openfeign.FeignClient;

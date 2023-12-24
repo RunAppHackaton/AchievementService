@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Component
 @Data
 public class GoalResponse {
-    private int id;
+    private Long id;
     private Long userId;
     private float completionPercentage;
     private GoalTypeEnum goal_type;

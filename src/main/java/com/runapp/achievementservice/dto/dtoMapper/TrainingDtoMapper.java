@@ -24,13 +24,13 @@ public class TrainingDtoMapper implements DtoMapper<TrainingModel, TrainingReque
 
     @Override
     public TrainingResponse toResponse(TrainingModel trainingModel) {
-        return TrainingResponse.builder()
-                .training_date(trainingModel.getDateTraining())
-                .userId(trainingModel.getUserId())
-                .training_duration(trainingModel.getDuration())
-                .distance_km(trainingModel.getDistanceKm())
-                .pace(trainingModel.getAveragePace())
-                .build();
+        TrainingResponse response = new TrainingResponse();
+        response.setTraining_date(trainingModel.getDateTraining());
+        response.setUserId(trainingModel.getUserId());
+        response.setTraining_duration(trainingModel.getDuration());
+        response.setDistance_km(trainingModel.getDistanceKm());
+        response.setPace(trainingModel.getAveragePace());
+        return response;
     }
 
     public List<TrainingResponse> toResponseList(List<TrainingModel> trainingModels) {

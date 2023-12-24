@@ -3,6 +3,7 @@ package com.runapp.achievementservice.service.serviceImpl;
 import com.runapp.achievementservice.exception.NoEntityFoundException;
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.repository.GoalRepository;
+import com.runapp.achievementservice.util.supportClasses.UserExistHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +11,14 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class GoalService implements com.runapp.achievementservice.service.GoalService {
+public class GoalServiceImpl implements com.runapp.achievementservice.service.GoalService {
+
     private final GoalRepository goalRepository;
+    private final UserExistHandler userExistHandler;
 
     @Override
     public GoalModel add(GoalModel entity) {
+        userExistHandler.checkUserExist(entity.getUserId());
         return goalRepository.save(entity);
     }
 
@@ -40,6 +44,7 @@ public class GoalService implements com.runapp.achievementservice.service.GoalSe
 
     @Override
     public GoalModel update(GoalModel entity) {
+        userExistHandler.checkUserExist(entity.getUserId());
         if (goalRepository.existsById(entity.getId())) {
             return goalRepository.save(entity);
         } else {
