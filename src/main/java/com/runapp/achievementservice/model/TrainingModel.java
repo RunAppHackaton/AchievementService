@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Training")
+@Table(name = "achievement_training")
 public class TrainingModel {
 
     @Id

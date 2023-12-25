@@ -33,6 +33,10 @@ public class GoalUpdater {
     }
 
     public void updateAllGoal(Long userId) {
+        if (goalRepository.existsByUserId(userId) || trainingRepository.existsByUserId(userId)) {
+            return;
+        }
+
         final List<TrainingModel> userAllTrainings = getAllTrainingsByUserId(userId);
         final List<GoalModel> userAllGoals = getAllGoalsByUserId(userId);
 
