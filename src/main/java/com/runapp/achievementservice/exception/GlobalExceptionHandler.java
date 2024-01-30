@@ -1,5 +1,8 @@
 package com.runapp.achievementservice.exception;
 
+import com.runapp.achievementservice.dto.response.DeleteResponse;
+import com.runapp.achievementservice.model.AchievementModel;
+import feign.FeignException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -17,10 +20,24 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+    @ExceptionHandler(AchievementNotFoundException.class)
+    public ResponseEntity<Object> handleAchievementNotFoundException(AchievementNotFoundException e){
+        return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(FeignException.InternalServerError.class)
+    public ResponseEntity<Object> handleFeignExceptionInternalServerError(FeignException.NotFound e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DeleteResponse("The image does not exist or the data was transferred incorrectly"));
+    }
+    @ExceptionHandler(FeignException.NotFound.class)
+    public ResponseEntity<Object> handleFeignExceptionNotFound(FeignException.NotFound e){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Story not found: " + e.getMessage());}
+
     @ExceptionHandler(NoEntityFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> handleMaxUploadSizeExceededException(NoEntityFoundException ex,

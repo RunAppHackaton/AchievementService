@@ -8,11 +8,16 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.runapp.achievementservice.dto.request.AchievementDeleteRequest;
 import com.runapp.achievementservice.dto.request.AchievementRequest;
 import com.runapp.achievementservice.dto.request.DeleteStorageRequest;
+import com.runapp.achievementservice.exception.AchievementNotFoundException;
+import com.runapp.achievementservice.exception.GlobalExceptionHandler;
 import com.runapp.achievementservice.feignClient.StorageServiceClient;
 import com.runapp.achievementservice.feignClient.StoryManagementServiceClient;
 import com.runapp.achievementservice.model.AchievementModel;
@@ -38,6 +43,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -86,9 +92,9 @@ class AchievementControllerDiffblueTest {
         MockMvcBuilders.standaloneSetup(achievementController)
                 .build()
                 .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(content()
                         .string(
                                 "{\"id\":1,\"name\":\"Name\",\"story_id\":1,\"description\":\"The characteristics of someone or something\","
                                         + "\"achievementImageUrl\":\"https://example.org/example\",\"rarityModel\":{\"id\":1,\"name\":\"Name\"}}"));
@@ -101,11 +107,14 @@ class AchievementControllerDiffblueTest {
     void testGetAchievementById2() throws Exception {
         Optional<AchievementModel> emptyResult = Optional.empty();
         when(achievementServiceImpl.getAchievementById(anyInt())).thenReturn(emptyResult);
+
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(achievementController)
+                .setControllerAdvice(new GlobalExceptionHandler())  // Include the global exception handler
+                .build();
+
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/achievements/{id}", 1);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(achievementController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
+        ResultActions actualPerformResult = mockMvc.perform(requestBuilder);
+        actualPerformResult.andExpect(status().isNotFound());
     }
 
     /**
@@ -163,9 +172,9 @@ class AchievementControllerDiffblueTest {
         MockMvcBuilders.standaloneSetup(achievementController)
                 .build()
                 .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(content()
                         .string(
                                 "{\"id\":1,\"name\":\"Name\",\"story_id\":1,\"description\":\"The characteristics of someone or something\","
                                         + "\"achievementImageUrl\":\"https://example.org/example\",\"rarityModel\":{\"id\":1,\"name\":\"Name\"}}"));
@@ -196,15 +205,16 @@ class AchievementControllerDiffblueTest {
         achievementRequest.setRarity_id(1L);
         achievementRequest.setStory_id(1);
         String content = (new ObjectMapper()).writeValueAsString(achievementRequest);
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(achievementController)
+                .setControllerAdvice(new GlobalExceptionHandler())  // Include the global exception handler
+                .build();
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/achievements/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(achievementController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                .andExpect(MockMvcResultMatchers.content().string("achievement with id 1 not found"));
+        ResultActions actualPerformResult = mockMvc.perform(requestBuilder);
+        actualPerformResult.andExpect(status().isNotFound())
+                .andExpect(content().contentType("text/plain;charset=ISO-8859-1"))
+                .andExpect(content().string("achievement with id 1 not found"));
     }
 
     /**
@@ -227,9 +237,9 @@ class AchievementControllerDiffblueTest {
         MockMvcBuilders.standaloneSetup(achievementController)
                 .build()
                 .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content().string("[]"));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(content().string("[]"));
     }
 
     /**
@@ -256,7 +266,7 @@ class AchievementControllerDiffblueTest {
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(achievementController)
                 .build()
                 .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNoContent());
+        actualPerformResult.andExpect(status().isNoContent());
     }
 
     /**
@@ -269,11 +279,12 @@ class AchievementControllerDiffblueTest {
         doThrow(feignException).when(achievementServiceImpl).deleteAchievement(anyInt());
         Optional<AchievementModel> emptyResult = Optional.empty();
         when(achievementServiceImpl.getAchievementById(anyInt())).thenReturn(emptyResult);
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(achievementController)
+                .setControllerAdvice(new GlobalExceptionHandler())  // Include the global exception handler
+                .build();
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/achievements/{id}", 1);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(achievementController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
+        ResultActions actualPerformResult = mockMvc.perform(requestBuilder);
+        actualPerformResult.andExpect(status().isNotFound());
     }
 
     /**
@@ -287,9 +298,9 @@ class AchievementControllerDiffblueTest {
         MockMvcBuilders.standaloneSetup(achievementController)
                 .build()
                 .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content().string("[]"));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(content().string("[]"));
     }
 
     /**
@@ -297,33 +308,25 @@ class AchievementControllerDiffblueTest {
      * {@link AchievementController#uploadImage(MultipartFile, int)}
      */
     @Test
-    void testUploadImage() throws IOException {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   jakarta.servlet.ServletException: Request processing failed: org.springframework.web.multipart.MultipartException: Current request is not a multipart request
-        //       at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:547)
-        //       at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:614)
-        //   org.springframework.web.multipart.MultipartException: Current request is not a multipart request
-        //       at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:547)
-        //       at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:614)
-        //   See https://diff.blue/R013 to resolve this issue.
+    void testUploadImageNotFound() throws Exception {
+        // Mock the behavior of your service method to throw AchievementNotFoundException
+        when(achievementServiceImpl.getAchievementById(anyInt())).thenThrow(new AchievementNotFoundException("Achievement with id 1 not found"));
 
-        AchievementRepository achievementRepository = mock(AchievementRepository.class);
-        Optional<AchievementModel> emptyResult = Optional.empty();
-        when(achievementRepository.findById(Mockito.<Integer>any())).thenReturn(emptyResult);
-        AchievementServiceImpl achievementServiceImpl = new AchievementServiceImpl(achievementRepository);
-        StoryManagementServiceClient storyManagementServiceClient = mock(StoryManagementServiceClient.class);
-        AchievementController achievementController = new AchievementController(storyManagementServiceClient,
-                new RarityServiceImpl(mock(RarityRepository.class)), achievementServiceImpl);
-        ResponseEntity<Object> actualUploadImageResult = achievementController
-                .uploadImage(new MockMultipartFile("Name", new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))), 1);
-        verify(achievementRepository).findById(Mockito.<Integer>any());
-        assertEquals("Achievement with id 1 not found", actualUploadImageResult.getBody());
-        assertEquals(404, actualUploadImageResult.getStatusCodeValue());
-        assertTrue(actualUploadImageResult.getHeaders().isEmpty());
+        // Set up MockMvc with controller and global exception handler
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(achievementController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
+
+        // Perform the request to upload an image
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test.jpg", "image/jpeg", "AXAXAXAX".getBytes());
+        mockMvc.perform(multipart("/achievements/upload-image")
+                        .file(mockMultipartFile)
+                        .param("achievement_id", "1"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Achievement with id 1 not found"));
+
+        // Verify that the service method was called with the correct argument
+        verify(achievementServiceImpl).getAchievementById(1);
     }
 
     /**
@@ -348,12 +351,13 @@ class AchievementControllerDiffblueTest {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/achievements/delete-image")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(achievementController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                .andExpect(MockMvcResultMatchers.content().string("Achievement with id 1 not found"));
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(achievementController)
+                .setControllerAdvice(new GlobalExceptionHandler())  // Include the global exception handler
+                .build();
+        ResultActions actualPerformResult = mockMvc.perform(requestBuilder);
+        actualPerformResult.andExpect(status().isNotFound())
+                .andExpect(content().contentType("text/plain;charset=ISO-8859-1"))
+                .andExpect(content().string("Achievement with id 1 not found"));
     }
 
     /**
@@ -366,8 +370,8 @@ class AchievementControllerDiffblueTest {
         MockMvcBuilders.standaloneSetup(achievementController)
                 .build()
                 .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content().string("[]"));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(content().string("[]"));
     }
 }

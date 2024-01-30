@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.runapp.achievementservice.dto.request.GoalRequestDiffblueTest
 -------------------------------------------------------------------------------
-Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.034 s - in com.runapp.achievementservice.dto.request.GoalRequestDiffblueTest
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s - in com.runapp.achievementservice.dto.request.GoalRequestDiffblueTest

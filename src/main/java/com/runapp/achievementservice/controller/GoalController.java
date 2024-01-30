@@ -28,9 +28,6 @@ public class GoalController {
     private final GoalServiceImpl goalServiceImpl;
     private final DtoMapper<GoalModel, GoalRequest, GoalResponse> goalDtoMapper;
 
-
-
-
     @Operation(
             summary = "Get all goals",
             description = "Retrieve a list of all goals",

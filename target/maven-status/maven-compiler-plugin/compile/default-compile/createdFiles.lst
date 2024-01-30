@@ -18,6 +18,7 @@ com\runapp\achievementservice\service\serviceImpl\AchievementServiceImpl.class
 com\runapp\achievementservice\model\UserStatisticModel.class
 com\runapp\achievementservice\util\supportClasses\TrainingStatisticsUpdater.class
 com\runapp\achievementservice\dto\response\GoalResponse.class
+com\runapp\achievementservice\exception\AchievementNotFoundException.class
 com\runapp\achievementservice\repository\GoalRepository.class
 com\runapp\achievementservice\util\supportClasses\goalUpdater\TotalKilometersStrategyUpdate.class
 com\runapp\achievementservice\dto\dtoMapper\DtoMapper.class

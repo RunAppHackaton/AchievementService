@@ -13,6 +13,7 @@ D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\dto\request\DeleteStorageRequest.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\util\supportClasses\goalUpdater\GoalUpdater.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\model\TrainingModel.java
+D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\exception\AchievementNotFoundException.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\service\serviceImpl\UserStatisticServiceImpl.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\feignClient\ProfileServiceClient.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\util\supportClasses\goalUpdater\TotalNumberTrainingStrategyUpdate.java
