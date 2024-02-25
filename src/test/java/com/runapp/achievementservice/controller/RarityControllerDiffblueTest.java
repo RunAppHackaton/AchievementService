@@ -1,15 +1,11 @@
 package com.runapp.achievementservice.controller;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.runapp.achievementservice.dto.request.RarityRequest;
 import com.runapp.achievementservice.model.RarityModel;
 import com.runapp.achievementservice.service.RarityService;
-
-import java.util.ArrayList;
-
+import com.runapp.achievementservice.staticObject.StaticRarity;
+import com.runapp.achievementservice.staticObject.ToJson;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -18,11 +14,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.ArrayList;
+
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = {RarityController.class})
 @ExtendWith(SpringExtension.class)
@@ -33,21 +35,27 @@ class RarityControllerDiffblueTest {
     @MockBean
     private RarityService rarityService;
 
+    private MockMvc mockMvc;
+
     /**
      * Method under test: {@link RarityController#createRarity(RarityRequest)}
      */
+
+    @BeforeEach
+    void setup(){
+        mockMvc = MockMvcBuilders.standaloneSetup(rarityController).build();
+    }
+
     @Test
     void testCreateRarity() throws Exception {
         when(rarityService.getAll()).thenReturn(new ArrayList<>());
 
-        RarityRequest rarityRequest = new RarityRequest();
-        rarityRequest.setName("Name");
-        String content = (new ObjectMapper()).writeValueAsString(rarityRequest);
+        RarityRequest rarityRequest = StaticRarity.rarityRequest1();
+        String content = ToJson.asJsonString(rarityRequest);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/rarities")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
-        MockMvcBuilders.standaloneSetup(rarityController)
-                .build()
+        mockMvc
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
@@ -61,8 +69,7 @@ class RarityControllerDiffblueTest {
     void testDeleteRarity() throws Exception {
         doNothing().when(rarityService).deleteById(Mockito.<Long>any());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/rarities/{id}", 1L);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(rarityController)
-                .build()
+        ResultActions actualPerformResult = mockMvc
                 .perform(requestBuilder);
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -75,8 +82,7 @@ class RarityControllerDiffblueTest {
         doNothing().when(rarityService).deleteById(Mockito.<Long>any());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/rarities/{id}", 1L);
         requestBuilder.contentType("https://example.org/example");
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(rarityController)
-                .build()
+        ResultActions actualPerformResult = mockMvc
                 .perform(requestBuilder);
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -88,8 +94,7 @@ class RarityControllerDiffblueTest {
     void testGetAllRarities() throws Exception {
         when(rarityService.getAll()).thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/rarities");
-        MockMvcBuilders.standaloneSetup(rarityController)
-                .build()
+        mockMvc
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
@@ -101,14 +106,10 @@ class RarityControllerDiffblueTest {
      */
     @Test
     void testGetRarityById() throws Exception {
-        RarityModel rarityModel = new RarityModel();
-        rarityModel.setAchievementModelList(new ArrayList<>());
-        rarityModel.setId(1L);
-        rarityModel.setName("Name");
+        RarityModel rarityModel = StaticRarity.rarityModel1();
         when(rarityService.getById(Mockito.<Long>any())).thenReturn(rarityModel);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/rarities/{id}", 1L);
-        MockMvcBuilders.standaloneSetup(rarityController)
-                .build()
+        mockMvc
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
@@ -120,20 +121,16 @@ class RarityControllerDiffblueTest {
      */
     @Test
     void testUpdateRarity() throws Exception {
-        RarityModel rarityModel = new RarityModel();
-        rarityModel.setAchievementModelList(new ArrayList<>());
-        rarityModel.setId(1L);
-        rarityModel.setName("Name");
+        RarityModel rarityModel = StaticRarity.rarityModel1();
         when(rarityService.update(Mockito.<RarityModel>any())).thenReturn(rarityModel);
 
         RarityRequest rarityRequest = new RarityRequest();
         rarityRequest.setName("Name");
-        String content = (new ObjectMapper()).writeValueAsString(rarityRequest);
+        String content = ToJson.asJsonString(rarityRequest);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/rarities/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
-        MockMvcBuilders.standaloneSetup(rarityController)
-                .build()
+        mockMvc
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))

@@ -10,6 +10,8 @@ import java.util.Optional;
 
 @Repository
 public interface TrainingRepository extends JpaRepository<TrainingModel, Long> {
+
+    //no usages - no tests
     @Query("SELECT t FROM TrainingModel t ORDER BY t.averagePace ASC NULLS LAST")
     TrainingModel findTrainingWithMinAveragePace();
 

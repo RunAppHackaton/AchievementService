@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface GoalRepository extends JpaRepository<GoalModel, Long> {
 
+    //no tests for the methods - they are used in private context
     @Query("SELECT g FROM GoalModel g WHERE g.goalType.goalTypeEnum = :goalTypeEnum")
     List<GoalModel> findAllByGoalTypeEnum(@Param("goalTypeEnum") GoalTypeEnum goalTypeEnum);
 

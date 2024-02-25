@@ -19,6 +19,8 @@ import com.runapp.achievementservice.model.GoalStatusModel;
 import com.runapp.achievementservice.model.GoalTypeModel;
 import com.runapp.achievementservice.repository.GoalRepository;
 import com.runapp.achievementservice.service.serviceImpl.GoalServiceImpl;
+import com.runapp.achievementservice.staticObject.StaticGoal;
+import com.runapp.achievementservice.staticObject.ToJson;
 import com.runapp.achievementservice.util.enums.GoalStatusEnum;
 import com.runapp.achievementservice.util.enums.GoalTypeEnum;
 import com.runapp.achievementservice.util.goalHandler.GoalFactoryHandler;
@@ -76,24 +78,6 @@ class GoalControllerDiffblueTest {
      */
     @Test
     void testUpdateGoal() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.achievementservice.model.GoalModel["startDate"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
-
         GoalStatusModel goalStatus = mock(GoalStatusModel.class);
         doNothing().when(goalStatus).setGoalModels(Mockito.<List<GoalModel>>any());
         doNothing().when(goalStatus).setStatusEnum(Mockito.<GoalStatusEnum>any());
@@ -105,9 +89,7 @@ class GoalControllerDiffblueTest {
         goalType.setGoalModels(new ArrayList<>());
         goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
 
-        GoalTypeModel goalTypeModel = new GoalTypeModel();
-        goalTypeModel.setGoalModels(new ArrayList<>());
-        goalTypeModel.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
+        GoalTypeModel goalTypeModel = StaticGoal.goalTypeModel1();
 
         GoalStatusModel goalStatusModel = new GoalStatusModel();
         goalStatusModel.setGoalModels(new ArrayList<>());
@@ -148,23 +130,7 @@ class GoalControllerDiffblueTest {
         GoalController goalController = new GoalController(goalServiceImpl,
                 new GoalDtoMapper(goalFactoryHandler, new SessionDelegatorBaseImpl(null)));
 
-        GoalStatusModel goalStatus2 = new GoalStatusModel();
-        goalStatus2.setGoalModels(new ArrayList<>());
-        goalStatus2.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType2 = new GoalTypeModel();
-        goalType2.setGoalModels(new ArrayList<>());
-        goalType2.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel updatedGoal = new GoalModel();
-        updatedGoal.setCompletionPercentage(10.0f);
-        updatedGoal.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        updatedGoal.setGoal("Goal");
-        updatedGoal.setGoalStatus(goalStatus2);
-        updatedGoal.setGoalType(goalType2);
-        updatedGoal.setId(1L);
-        updatedGoal.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        updatedGoal.setUserId(1L);
+        GoalModel updatedGoal = StaticGoal.goalModel1();
         ResponseEntity<GoalResponse> actualUpdateGoalResult = goalController.updateGoal(1L, updatedGoal);
         verify(profileServiceClient).getUserById(Mockito.<Long>any());
         verify(goalModel).getCompletionPercentage();
@@ -209,24 +175,6 @@ class GoalControllerDiffblueTest {
      */
     @Test
     void testUpdateGoal2() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.achievementservice.model.GoalModel["startDate"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
-
         GoalStatusModel goalStatus = mock(GoalStatusModel.class);
         doNothing().when(goalStatus).setGoalModels(Mockito.<List<GoalModel>>any());
         doNothing().when(goalStatus).setStatusEnum(Mockito.<GoalStatusEnum>any());
@@ -281,23 +229,8 @@ class GoalControllerDiffblueTest {
         GoalController goalController = new GoalController(goalServiceImpl,
                 new GoalDtoMapper(goalFactoryHandler, new SessionDelegatorBaseImpl(null)));
 
-        GoalStatusModel goalStatus2 = new GoalStatusModel();
-        goalStatus2.setGoalModels(new ArrayList<>());
-        goalStatus2.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
+        GoalModel updatedGoal = StaticGoal.goalModel1();
 
-        GoalTypeModel goalType2 = new GoalTypeModel();
-        goalType2.setGoalModels(new ArrayList<>());
-        goalType2.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel updatedGoal = new GoalModel();
-        updatedGoal.setCompletionPercentage(10.0f);
-        updatedGoal.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        updatedGoal.setGoal("Goal");
-        updatedGoal.setGoalStatus(goalStatus2);
-        updatedGoal.setGoalType(goalType2);
-        updatedGoal.setId(1L);
-        updatedGoal.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        updatedGoal.setUserId(1L);
         ResponseEntity<GoalResponse> actualUpdateGoalResult = goalController.updateGoal(1L, updatedGoal);
         verify(goalModel).getCompletionPercentage();
         verify(goalModel).getFinishedDate();
@@ -342,64 +275,16 @@ class GoalControllerDiffblueTest {
      */
     @Test
     void testUpdateGoal3() {
-        //   Diffblue Cover was unable to write a Spring test,
-        //   so wrote a non-Spring test instead.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Java 8 date/time type `java.time.LocalDateTime` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain: com.runapp.achievementservice.model.GoalModel["startDate"])
-        //       at com.fasterxml.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:77)
-        //       at com.fasterxml.jackson.databind.SerializerProvider.reportBadDefinition(SerializerProvider.java:1308)
-        //       at com.fasterxml.jackson.databind.ser.impl.UnsupportedTypeSerializer.serialize(UnsupportedTypeSerializer.java:35)
-        //       at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
-        //       at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
-        //       at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
-        //       at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:318)
-        //       at com.fasterxml.jackson.databind.ObjectMapper._writeValueAndClose(ObjectMapper.java:4719)
-        //       at com.fasterxml.jackson.databind.ObjectMapper.writeValueAsString(ObjectMapper.java:3964)
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        GoalStatusModel goalStatus = new GoalStatusModel();
-        goalStatus.setGoalModels(new ArrayList<>());
-        goalStatus.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType = new GoalTypeModel();
-        goalType.setGoalModels(new ArrayList<>());
-        goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel goalModel = new GoalModel();
-        goalModel.setCompletionPercentage(10.0f);
-        goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setGoal("Goal");
-        goalModel.setGoalStatus(goalStatus);
-        goalModel.setGoalType(goalType);
-        goalModel.setId(1L);
-        goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        GoalModel goalModel = StaticGoal.goalModel1();
         GoalServiceImpl goalServiceImpl = mock(GoalServiceImpl.class);
         when(goalServiceImpl.update(Mockito.<GoalModel>any())).thenReturn(goalModel);
         GoalFactoryHandler goalFactoryHandler = new GoalFactoryHandler();
         GoalController goalController = new GoalController(goalServiceImpl,
                 new GoalDtoMapper(goalFactoryHandler, new SessionDelegatorBaseImpl(null)));
 
-        GoalStatusModel goalStatus2 = new GoalStatusModel();
-        goalStatus2.setGoalModels(new ArrayList<>());
-        goalStatus2.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
 
-        GoalTypeModel goalType2 = new GoalTypeModel();
-        goalType2.setGoalModels(new ArrayList<>());
-        goalType2.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
 
-        GoalModel updatedGoal = new GoalModel();
-        updatedGoal.setCompletionPercentage(10.0f);
-        updatedGoal.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        updatedGoal.setGoal("Goal");
-        updatedGoal.setGoalStatus(goalStatus2);
-        updatedGoal.setGoalType(goalType2);
-        updatedGoal.setId(1L);
-        updatedGoal.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        updatedGoal.setUserId(1L);
+        GoalModel updatedGoal = StaticGoal.goalModel1();
         ResponseEntity<GoalResponse> actualUpdateGoalResult = goalController.updateGoal(1L, updatedGoal);
         verify(goalServiceImpl).update(Mockito.<GoalModel>any());
         GoalResponse body = actualUpdateGoalResult.getBody();
@@ -550,23 +435,7 @@ class GoalControllerDiffblueTest {
      */
     @Test
     void testGetGoalById() throws Exception {
-        GoalStatusModel goalStatus = new GoalStatusModel();
-        goalStatus.setGoalModels(new ArrayList<>());
-        goalStatus.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType = new GoalTypeModel();
-        goalType.setGoalModels(new ArrayList<>());
-        goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel goalModel = new GoalModel();
-        goalModel.setCompletionPercentage(10.0f);
-        goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setGoal("Goal");
-        goalModel.setGoalStatus(goalStatus);
-        goalModel.setGoalType(goalType);
-        goalModel.setId(1L);
-        goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        GoalModel goalModel = StaticGoal.goalModel1();
         when(goalServiceImpl.getById(Mockito.<Long>any())).thenReturn(goalModel);
         when(dtoMapper.toResponse(Mockito.<GoalModel>any())).thenReturn(new GoalResponse());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/goals/{id}", 1L);
@@ -576,9 +445,7 @@ class GoalControllerDiffblueTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content()
-                        .string(
-                                "{\"id\":null,\"userId\":null,\"completionPercentage\":0.0,\"goal_type\":null,\"goal_status\":null,\"startDate\""
-                                        + ":null,\"finishedDate\":null,\"goal\":null}"));
+                        .string(ToJson.asJsonString(new GoalResponse())));
     }
 
     /**
@@ -589,10 +456,7 @@ class GoalControllerDiffblueTest {
         when(goalServiceImpl.getAll()).thenReturn(new ArrayList<>());
         when(dtoMapper.toResponseList(Mockito.<List<GoalModel>>any())).thenReturn(new ArrayList<>());
 
-        GoalRequest goalRequest2 = new GoalRequest();
-        goalRequest2.setGoal("Goal");
-        goalRequest2.setGoal_type(GoalTypeEnum.TOTAL_TRAINING_TIME);
-        goalRequest2.setUserId(1L);
+        GoalRequest goalRequest2 = StaticGoal.goalRequest1();
         String content = (new ObjectMapper()).writeValueAsString(goalRequest2);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/goals")
                 .contentType(MediaType.APPLICATION_JSON)
