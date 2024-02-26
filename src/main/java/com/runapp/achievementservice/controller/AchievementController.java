@@ -33,6 +33,7 @@ import java.util.Optional;
 @RequestMapping("/achievements")
 @Tag(name = "Achievement Management", description = "Operations related to achievements")
 public class AchievementController {
+    //
     private final AchievementServiceImpl achievementServiceImpl;
 
     @Value("${storage-directory}")
