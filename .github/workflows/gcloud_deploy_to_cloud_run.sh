@@ -9,5 +9,4 @@ gcloud run deploy $DOCKER_NAME_CONTAINER \
   --service-account=$GCP_SQL_ACCOUNT_SERVICE_NAME \
   --vpc-connector=$VPC_CONNECTOR_NAME \
   --env-vars-file=./secrets.json \
-
   --allow-unauthenticated
