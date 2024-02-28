@@ -46,34 +46,50 @@ public class TrainingStatisticsUpdater {
     }
 
     private void increaseTotalTrainingTimeByTime(UserStatisticModel statisticModel, long seconds) {
-        statisticModel.setTotalAmountOfTrainingTime(statisticModel.getTotalAmountOfTrainingTime().plus(Duration.ofSeconds(seconds)));
+        Duration currentTotalTrainingTime = statisticModel.getTotalAmountOfTrainingTime();
+        if (currentTotalTrainingTime == null) {
+            currentTotalTrainingTime = Duration.ZERO;
+        }
+        statisticModel.setTotalAmountOfTrainingTime(currentTotalTrainingTime.plus(Duration.ofSeconds(seconds)));
     }
 
     private void updateAverageRunningPace(UserStatisticModel statisticModel, long seconds) {
         Duration paceDuration = Duration.ofSeconds(seconds);
-        if (paceDuration.compareTo(statisticModel.getAveragePaceRecord()) < 0) {
+        Duration currentAveragePace = statisticModel.getAveragePaceRecord();
+
+        if (currentAveragePace == null || paceDuration.compareTo(currentAveragePace) < 0) {
             statisticModel.setAveragePaceRecord(paceDuration);
         }
     }
 
     private void increaseNumberOfWorkoutsPerWeekByValue(UserStatisticModel statisticModel, long value) {
-        statisticModel.setNumberOfWorkoutsPerWeek(statisticModel.getNumberOfWorkoutsPerWeek() + value);
+        Long numberOfWorkoutsPerWeek = statisticModel.getNumberOfWorkoutsPerWeek();
+        long currentValue = numberOfWorkoutsPerWeek != null ? numberOfWorkoutsPerWeek : 0L;
+        statisticModel.setNumberOfWorkoutsPerWeek(currentValue + value);
     }
 
     private void increaseNumberOfWorkoutsPerMonthByValue(UserStatisticModel statisticModel, long value) {
-        statisticModel.setNumberOfWorkoutsPerMonth(statisticModel.getNumberOfWorkoutsPerMonth() + value);
+        Long numberOfWorkoutsPerMonth = statisticModel.getNumberOfWorkoutsPerMonth();
+        long currentValue = numberOfWorkoutsPerMonth != null ? numberOfWorkoutsPerMonth : 0L;
+        statisticModel.setNumberOfWorkoutsPerMonth(currentValue + value);
     }
 
     private void increaseNumberOfWorkoutsPerYearByValue(UserStatisticModel statisticModel, long value) {
-        statisticModel.setNumberOfWorkoutsPerYear(statisticModel.getNumberOfWorkoutsPerYear() + value);
+        Long numberOfWorkoutsPerYear = statisticModel.getNumberOfWorkoutsPerYear();
+        long currentValue = numberOfWorkoutsPerYear != null ? numberOfWorkoutsPerYear : 0L;
+        statisticModel.setNumberOfWorkoutsPerYear(currentValue + value);
     }
 
     private void increaseNumberOfTrainingSessionsOverTimeByValue(UserStatisticModel statisticModel, long value) {
-        statisticModel.setNumberOfTrainingSessionsOverTime(statisticModel.getNumberOfTrainingSessionsOverTime() + value);
+        Long numberOfTrainingSessionsOverTime = statisticModel.getNumberOfTrainingSessionsOverTime();
+        long currentValue = numberOfTrainingSessionsOverTime != null ? numberOfTrainingSessionsOverTime : 0L;
+        statisticModel.setNumberOfTrainingSessionsOverTime(currentValue + value);
     }
 
     private void increaseTotalNumberOfWorkoutsForAllTimeByValue(UserStatisticModel statisticModel, long value) {
-        statisticModel.setTotalNumberOfWorkoutsForAllTime(statisticModel.getTotalNumberOfWorkoutsForAllTime() + value);
+        Long totalNumberOfWorkoutsForAllTime = statisticModel.getTotalNumberOfWorkoutsForAllTime();
+        long currentValue = totalNumberOfWorkoutsForAllTime != null ? totalNumberOfWorkoutsForAllTime : 0L;
+        statisticModel.setTotalNumberOfWorkoutsForAllTime(currentValue + value);
     }
 
 }

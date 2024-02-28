@@ -1,7 +1,5 @@
 package com.runapp.achievementservice.util.supportClasses.goalUpdater;
 
-import static org.mockito.Mockito.when;
-
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.GoalStatusModel;
 import com.runapp.achievementservice.model.GoalTypeModel;
@@ -11,75 +9,85 @@ import com.runapp.achievementservice.repository.UserStatisticRepository;
 import com.runapp.achievementservice.util.enums.GoalStatusEnum;
 import com.runapp.achievementservice.util.enums.GoalTypeEnum;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ContextConfiguration(classes = {AverageRunningPaceStrategyUpdate.class})
-@ExtendWith(SpringExtension.class)
-class AverageRunningPaceStrategyUpdateDiffblueTest {
-    @Autowired
-    private AverageRunningPaceStrategyUpdate averageRunningPaceStrategyUpdate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
-    @MockBean
+
+class AverageRunningPaceStrategyUpdateDiffblueTest {
+    @Mock
     private GoalRepository goalRepository;
 
-    @MockBean
-    private UserStatisticRepository userStatisticRepository;
+    @Mock
+    private UserStatisticRepository achievementRepository;
 
-    /**
-     * Method under test:
-     * {@link AverageRunningPaceStrategyUpdate#updateGoal(GoalModel, List)}
-     */
+    @InjectMocks
+    private AverageRunningPaceStrategyUpdate updateStrategy;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
     @Test
-    @Disabled("TODO: Complete this test")
-    void testUpdateGoal() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.time.format.DateTimeParseException: Text cannot be parsed to a Duration
-        //       at java.base/java.time.Duration.parse(Duration.java:419)
-        //       at com.runapp.achievementservice.util.supportClasses.goalUpdater.AverageRunningPaceStrategyUpdate.updateGoal(AverageRunningPaceStrategyUpdate.java:31)
-        //   See https://diff.blue/R013 to resolve this issue.
+    void updateGoal_CurrentPaceLessThanGoal_SavesFinishedGoal() {
+        GoalModel goalModel = new GoalModel();
+        goalModel.setUserId(1L);
+        goalModel.setGoal("PT4M"); // 4 minutes
+        UserStatisticModel userProgress = new UserStatisticModel();
+        userProgress.setAveragePaceRecord(Duration.ofMinutes(5)); // 5 minutes
 
-        UserStatisticModel userStatisticModel = new UserStatisticModel();
-        userStatisticModel.setNumberOfTrainingSessionsOverTime(1L);
-        userStatisticModel.setNumberOfWorkoutsPerMonth(1L);
-        userStatisticModel.setNumberOfWorkoutsPerWeek(1L);
-        userStatisticModel.setNumberOfWorkoutsPerYear(1L);
-        userStatisticModel.setTotalNumberOfWorkoutsForAllTime(1L);
-        userStatisticModel.setUserId(1L);
-        Optional<UserStatisticModel> ofResult = Optional.of(userStatisticModel);
-        when(userStatisticRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+        when(achievementRepository.findById(goalModel.getUserId())).thenReturn(Optional.of(userProgress));
 
-        GoalStatusModel goalStatus = new GoalStatusModel();
-        goalStatus.setGoalModels(new ArrayList<>());
-        goalStatus.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
+        updateStrategy.updateGoal(goalModel, new ArrayList<>());
 
-        GoalTypeModel goalType = new GoalTypeModel();
-        goalType.setGoalModels(new ArrayList<>());
-        goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
+        verify(goalRepository, times(1)).save(goalModel);
+    }
 
-        GoalModel model = new GoalModel();
-        model.setCompletionPercentage(10.0f);
-        model.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        model.setGoal("Goal");
-        model.setGoalStatus(goalStatus);
-        model.setGoalType(goalType);
-        model.setId(1L);
-        model.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        model.setUserId(1L);
-        averageRunningPaceStrategyUpdate.updateGoal(model, new ArrayList<>());
+    @Test
+    void updateGoal_CurrentPaceGreaterThanGoal_SavesUpdatedGoalWithCompletionPercentage() {
+        GoalModel goalModel = new GoalModel();
+        goalModel.setUserId(1L);
+        goalModel.setGoal("PT5M"); // 5 minutes
+        UserStatisticModel userProgress = new UserStatisticModel();
+        userProgress.setAveragePaceRecord(Duration.ofMinutes(4)); // 4 minutes
+
+        when(achievementRepository.findById(goalModel.getUserId())).thenReturn(Optional.of(userProgress));
+
+        updateStrategy.updateGoal(goalModel, new ArrayList<>());
+
+        verify(goalRepository, times(1)).save(goalModel);
+        assertEquals(80f, goalModel.getCompletionPercentage()); // 4/5 * 100 = 80%
+    }
+
+    @Test
+    void updateGoal_UserProgressNotFound_SavesGoalWithoutCompletionPercentage() {
+        GoalModel goalModel = new GoalModel();
+        goalModel.setUserId(1L);
+        goalModel.setGoal("PT5M"); // 5 minutes
+
+        when(achievementRepository.findById(goalModel.getUserId())).thenReturn(Optional.empty());
+
+        updateStrategy.updateGoal(goalModel, new ArrayList<>());
+
+        verify(goalRepository, times(1)).save(goalModel);
+        assertEquals(goalModel.getCompletionPercentage(), 0);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class AverageRunningPaceStrategyUpdate implements UpdateGoalStrategy {
@@ -25,17 +26,28 @@ public class AverageRunningPaceStrategyUpdate implements UpdateGoalStrategy {
 
     @Override
     public void updateGoal(GoalModel model, List<TrainingModel> allTraining) {
-        UserStatisticModel userProgress = achievementRepository.findById(model.getUserId()).orElse(new UserStatisticModel());
+        Optional<UserStatisticModel> optionalUserProgress = achievementRepository.findById(model.getUserId());
+        if (optionalUserProgress.isPresent()) {
+            UserStatisticModel userProgress = optionalUserProgress.get();
 
-        Duration currentAveragePace = userProgress.getAveragePaceRecord();
-        Duration goalAveragePace = Duration.parse(model.getGoal());
+            Duration currentAveragePace = userProgress.getAveragePaceRecord();
+            Duration goalAveragePace = Duration.parse(model.getGoal());
 
-        if (currentAveragePace.compareTo(goalAveragePace) < 0) {
-            goalRepository.save(GoalMark.finishGoal(model));
+            if (currentAveragePace != null) {
+                double completionPercentage = GoalCompletionCalculator.calculatePercentage(currentAveragePace, goalAveragePace);
+                model.setCompletionPercentage((float) completionPercentage);
+
+                if (completionPercentage < 100) {
+                    goalRepository.save(model);
+                } else {
+                    goalRepository.save(GoalMark.finishGoal(model));
+                }
+            } else {
+                // User progress not found or null, save the goal without completion percentage
+                goalRepository.save(model);
+            }
         } else {
-            model.setCompletionPercentage(
-                    (float) GoalCompletionCalculator.calculatePercentage(currentAveragePace, goalAveragePace)
-            );
+            // User progress not found, save the goal without completion percentage
             goalRepository.save(model);
         }
     }

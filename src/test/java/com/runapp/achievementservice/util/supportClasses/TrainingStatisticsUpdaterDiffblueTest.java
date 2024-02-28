@@ -1,60 +1,54 @@
 package com.runapp.achievementservice.util.supportClasses;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.runapp.achievementservice.model.TrainingModel;
 import com.runapp.achievementservice.model.UserStatisticModel;
 import com.runapp.achievementservice.service.serviceImpl.UserStatisticServiceImpl;
 
+import java.time.Duration;
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ContextConfiguration(classes = {TrainingStatisticsUpdater.class})
-@ExtendWith(SpringExtension.class)
+
 class TrainingStatisticsUpdaterDiffblueTest {
-    @Autowired
-    private TrainingStatisticsUpdater trainingStatisticsUpdater;
+    @Mock
+    private UserStatisticServiceImpl userStatisticService;
 
-    @MockBean
-    private UserStatisticServiceImpl userStatisticServiceImpl;
+    @InjectMocks
+    private TrainingStatisticsUpdater statisticsUpdater;
 
-    /**
-     * Method under test:
-     * {@link TrainingStatisticsUpdater#updateStatisticsByTrainingType(TrainingModel)}
-     */
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
     @Test
-    @Disabled("TODO: Complete this test")
     void testUpdateStatisticsByTrainingType() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException: Cannot invoke "java.time.Duration.getSeconds()" because the return value of "com.runapp.achievementservice.model.TrainingModel.getDuration()" is null
-        //       at com.runapp.achievementservice.util.supportClasses.TrainingStatisticsUpdater.updateStatisticsByTrainingType(TrainingStatisticsUpdater.java:23)
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        UserStatisticModel userStatisticModel = new UserStatisticModel();
-        userStatisticModel.setNumberOfTrainingSessionsOverTime(1L);
-        userStatisticModel.setNumberOfWorkoutsPerMonth(1L);
-        userStatisticModel.setNumberOfWorkoutsPerWeek(1L);
-        userStatisticModel.setNumberOfWorkoutsPerYear(1L);
-        userStatisticModel.setTotalNumberOfWorkoutsForAllTime(1L);
-        userStatisticModel.setUserId(1L);
-        when(userStatisticServiceImpl.getCurrentProgressById(Mockito.<Long>any())).thenReturn(userStatisticModel);
-
         TrainingModel trainingModel = new TrainingModel();
-        trainingModel.setDateTraining(LocalDate.of(1970, 1, 1));
-        trainingModel.setDistanceKm(1);
-        trainingModel.setId(1L);
         trainingModel.setUserId(1L);
-        trainingStatisticsUpdater.updateStatisticsByTrainingType(trainingModel);
+        trainingModel.setDuration(Duration.ofSeconds(3600)); // 1 hour
+        trainingModel.setAveragePace(Duration.ofMinutes(5)); // 5 minutes per kilometer
+        trainingModel.setDistanceKm(10); // 10 kilometers
+
+        UserStatisticModel statisticModel = new UserStatisticModel();
+        when(userStatisticService.getCurrentProgressById(trainingModel.getUserId())).thenReturn(statisticModel);
+
+        statisticsUpdater.updateStatisticsByTrainingType(trainingModel);
+
+        // Verify that the statistics are updated correctly
+        verify(userStatisticService).updateProgress(statisticModel);
     }
 }

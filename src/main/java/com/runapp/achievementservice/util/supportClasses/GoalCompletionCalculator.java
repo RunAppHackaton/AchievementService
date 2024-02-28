@@ -4,8 +4,11 @@ import java.time.Duration;
 
 public class GoalCompletionCalculator {
 
-    public static double calculatePercentage(Duration sumDurationAllTraining, Duration currentGoalDuration) {
-        return ((double) sumDurationAllTraining.toMillis() / currentGoalDuration.toMillis()) * 100.0;
+    public static double calculatePercentage(Duration currentAveragePace, Duration goalAveragePace) {
+        double currentPaceSeconds = (double) currentAveragePace.toMillis() / 1000;
+        double goalPaceSeconds = (double) goalAveragePace.toMillis() / 1000;
+
+        return (currentPaceSeconds / goalPaceSeconds) * 100.0;
     }
 
     public static long calculatePercentage(int totalCountTraining, int currentCountTraining) {
