@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class AchievementDeleteRequest {
 
     private String file_uri;
-    private int achievement_id;
+    private Long achievement_id;
 }

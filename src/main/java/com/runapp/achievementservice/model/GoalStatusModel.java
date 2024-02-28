@@ -6,13 +6,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "goal_status")
-public class GoalStatusModel {
+public class GoalStatusModel implements Serializable {
 
     @Id
     @Column(name = "goal_status_name")

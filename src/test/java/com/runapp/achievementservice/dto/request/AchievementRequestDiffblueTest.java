@@ -41,7 +41,7 @@ class AchievementRequestDiffblueTest {
         assertEquals("DEFAULT", actualToAchievementModelResult.getAchievementImageUrl());
         assertNull(actualToAchievementModelResult.getDescription());
         assertNull(actualToAchievementModelResult.getName());
-        assertEquals(0, actualToAchievementModelResult.getStory_id());
+        assertEquals(null, actualToAchievementModelResult.getStory_id());
         assertSame(rarityModel, actualToAchievementModelResult.getRarityModel());
     }
 
@@ -64,7 +64,7 @@ class AchievementRequestDiffblueTest {
         assertEquals("DEFAULT", actualToAchievementModelResult.getAchievementImageUrl());
         assertNull(actualToAchievementModelResult.getDescription());
         assertNull(actualToAchievementModelResult.getName());
-        assertEquals(0, actualToAchievementModelResult.getStory_id());
+        assertEquals(null, actualToAchievementModelResult.getStory_id());
         assertSame(rarityModel, actualToAchievementModelResult.getRarityModel());
     }
 }

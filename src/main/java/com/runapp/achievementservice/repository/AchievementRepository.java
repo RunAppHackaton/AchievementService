@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AchievementRepository extends JpaRepository<AchievementModel, Integer> {
+public interface AchievementRepository extends JpaRepository<AchievementModel, Long> {
     @Query("SELECT a FROM AchievementModel a WHERE a.story_id = :storyId")
-    List<AchievementModel> findByStory_id(@Param("storyId") int storyId);
+    List<AchievementModel> findByStory_id(@Param("storyId") Long storyId);
 }

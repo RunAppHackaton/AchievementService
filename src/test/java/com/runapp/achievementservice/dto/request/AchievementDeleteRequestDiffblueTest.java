@@ -31,7 +31,7 @@ class AchievementDeleteRequestDiffblueTest {
      *
      * <ul>
      *   <li>{@link AchievementDeleteRequest#AchievementDeleteRequest()}
-     *   <li>{@link AchievementDeleteRequest#setAchievement_id(int)}
+     *   <li>{@link AchievementDeleteRequest#setAchievement_id(Long)}
      *   <li>{@link AchievementDeleteRequest#setFile_uri(String)}
      *   <li>{@link AchievementDeleteRequest#toString()}
      *   <li>{@link AchievementDeleteRequest#getAchievement_id()}
@@ -41,10 +41,10 @@ class AchievementDeleteRequestDiffblueTest {
     @Test
     void testConstructor() {
         AchievementDeleteRequest actualAchievementDeleteRequest = new AchievementDeleteRequest();
-        actualAchievementDeleteRequest.setAchievement_id(1);
+        actualAchievementDeleteRequest.setAchievement_id(1L);
         actualAchievementDeleteRequest.setFile_uri("File uri");
         String actualToStringResult = actualAchievementDeleteRequest.toString();
-        int actualAchievement_id = actualAchievementDeleteRequest.getAchievement_id();
+        Long actualAchievement_id = actualAchievementDeleteRequest.getAchievement_id();
         assertEquals("AchievementDeleteRequest(file_uri=File uri, achievement_id=1)", actualToStringResult);
         assertEquals("File uri", actualAchievementDeleteRequest.getFile_uri());
         assertEquals(1, actualAchievement_id);
@@ -54,8 +54,8 @@ class AchievementDeleteRequestDiffblueTest {
      * Methods under test:
      *
      * <ul>
-     *   <li>{@link AchievementDeleteRequest#AchievementDeleteRequest(String, int)}
-     *   <li>{@link AchievementDeleteRequest#setAchievement_id(int)}
+     *   <li>{@link AchievementDeleteRequest#AchievementDeleteRequest(String, Long)}
+     *   <li>{@link AchievementDeleteRequest#setAchievement_id(Long)}
      *   <li>{@link AchievementDeleteRequest#setFile_uri(String)}
      *   <li>{@link AchievementDeleteRequest#toString()}
      *   <li>{@link AchievementDeleteRequest#getAchievement_id()}
@@ -64,11 +64,11 @@ class AchievementDeleteRequestDiffblueTest {
      */
     @Test
     void testConstructor2() {
-        AchievementDeleteRequest actualAchievementDeleteRequest = new AchievementDeleteRequest("File uri", 1);
-        actualAchievementDeleteRequest.setAchievement_id(1);
+        AchievementDeleteRequest actualAchievementDeleteRequest = new AchievementDeleteRequest("File uri", 1L);
+        actualAchievementDeleteRequest.setAchievement_id(1L);
         actualAchievementDeleteRequest.setFile_uri("File uri");
         String actualToStringResult = actualAchievementDeleteRequest.toString();
-        int actualAchievement_id = actualAchievementDeleteRequest.getAchievement_id();
+        Long actualAchievement_id = actualAchievementDeleteRequest.getAchievement_id();
         assertEquals("AchievementDeleteRequest(file_uri=File uri, achievement_id=1)", actualToStringResult);
         assertEquals("File uri", actualAchievementDeleteRequest.getFile_uri());
         assertEquals(1, actualAchievement_id);
@@ -79,8 +79,8 @@ class AchievementDeleteRequestDiffblueTest {
      */
     @Test
     void testEquals() {
-        assertNotEquals(new AchievementDeleteRequest("File uri", 1), null);
-        assertNotEquals(new AchievementDeleteRequest("File uri", 1), "Different type to AchievementDeleteRequest");
+        assertNotEquals(new AchievementDeleteRequest("File uri", 1L), null);
+        assertNotEquals(new AchievementDeleteRequest("File uri", 1L), "Different type to AchievementDeleteRequest");
     }
 
     /**
@@ -93,7 +93,7 @@ class AchievementDeleteRequestDiffblueTest {
      */
     @Test
     void testEquals2() {
-        AchievementDeleteRequest achievementDeleteRequest = new AchievementDeleteRequest("File uri", 1);
+        AchievementDeleteRequest achievementDeleteRequest = new AchievementDeleteRequest("File uri", 1L);
         assertEquals(achievementDeleteRequest, achievementDeleteRequest);
         int expectedHashCodeResult = achievementDeleteRequest.hashCode();
         assertEquals(expectedHashCodeResult, achievementDeleteRequest.hashCode());
@@ -109,8 +109,8 @@ class AchievementDeleteRequestDiffblueTest {
      */
     @Test
     void testEquals3() {
-        AchievementDeleteRequest achievementDeleteRequest = new AchievementDeleteRequest("File uri", 1);
-        AchievementDeleteRequest achievementDeleteRequest2 = new AchievementDeleteRequest("File uri", 1);
+        AchievementDeleteRequest achievementDeleteRequest = new AchievementDeleteRequest("File uri", 1L);
+        AchievementDeleteRequest achievementDeleteRequest2 = new AchievementDeleteRequest("File uri", 1L);
 
         assertEquals(achievementDeleteRequest, achievementDeleteRequest2);
         int expectedHashCodeResult = achievementDeleteRequest.hashCode();
@@ -122,8 +122,8 @@ class AchievementDeleteRequestDiffblueTest {
      */
     @Test
     void testEquals4() {
-        AchievementDeleteRequest achievementDeleteRequest = new AchievementDeleteRequest(null, 1);
-        assertNotEquals(achievementDeleteRequest, new AchievementDeleteRequest("File uri", 1));
+        AchievementDeleteRequest achievementDeleteRequest = new AchievementDeleteRequest(null, 1L);
+        assertNotEquals(achievementDeleteRequest, new AchievementDeleteRequest("File uri", 1L));
     }
 
     /**
@@ -132,8 +132,8 @@ class AchievementDeleteRequestDiffblueTest {
     @Test
     void testEquals5() {
         AchievementDeleteRequest achievementDeleteRequest = new AchievementDeleteRequest(
-                "com.runapp.achievementservice.dto.request.AchievementDeleteRequest", 1);
-        assertNotEquals(achievementDeleteRequest, new AchievementDeleteRequest("File uri", 1));
+                "com.runapp.achievementservice.dto.request.AchievementDeleteRequest", 1L);
+        assertNotEquals(achievementDeleteRequest, new AchievementDeleteRequest("File uri", 1L));
     }
 
     /**
@@ -141,8 +141,8 @@ class AchievementDeleteRequestDiffblueTest {
      */
     @Test
     void testEquals6() {
-        AchievementDeleteRequest achievementDeleteRequest = new AchievementDeleteRequest("File uri", 2);
-        assertNotEquals(achievementDeleteRequest, new AchievementDeleteRequest("File uri", 1));
+        AchievementDeleteRequest achievementDeleteRequest = new AchievementDeleteRequest("File uri", 2L);
+        assertNotEquals(achievementDeleteRequest, new AchievementDeleteRequest("File uri", 1L));
     }
 
     /**
@@ -155,8 +155,8 @@ class AchievementDeleteRequestDiffblueTest {
      */
     @Test
     void testEquals7() {
-        AchievementDeleteRequest achievementDeleteRequest = new AchievementDeleteRequest(null, 1);
-        AchievementDeleteRequest achievementDeleteRequest2 = new AchievementDeleteRequest(null, 1);
+        AchievementDeleteRequest achievementDeleteRequest = new AchievementDeleteRequest(null, 1L);
+        AchievementDeleteRequest achievementDeleteRequest2 = new AchievementDeleteRequest(null, 1L);
 
         assertEquals(achievementDeleteRequest, achievementDeleteRequest2);
         int expectedHashCodeResult = achievementDeleteRequest.hashCode();

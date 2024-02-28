@@ -8,6 +8,10 @@ import com.runapp.achievementservice.util.supportClasses.goalUpdater.GoalUpdater
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +26,11 @@ public class TrainingServiceImpl implements CrudOperations<TrainingModel> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TrainingServiceImpl.class);
 
     @Override
+    @Caching(put = {
+            @CachePut(value = "achievement-training-statistic", key = "#training.id"),
+            @CachePut(value = "achievement-trainings-by-user-id", key = "#training.userId")},
+            evict = {@CacheEvict(value = "achievement-training-statistic", allEntries = true)}
+    )
     public TrainingModel add(TrainingModel training) {
         LOGGER.info("Training add: {}", training);
         userStatisticServiceImpl.startTrackingUserStatisticsIfNone(training.getUserId());
@@ -32,12 +41,14 @@ public class TrainingServiceImpl implements CrudOperations<TrainingModel> {
     }
 
     @Override
+    @Cacheable(value = "achievement-training-statistic")
     public List<TrainingModel> getAll() {
         LOGGER.info("Training get all");
         return trainingRepository.findAll();
     }
 
     @Override
+    @Cacheable(value = "achievement-training-statistic", key = "#id")
     public TrainingModel getById(Long id) {
         LOGGER.info("Training get by id: {}", id);
         return trainingRepository.findById(id)
@@ -45,6 +56,7 @@ public class TrainingServiceImpl implements CrudOperations<TrainingModel> {
     }
 
     @Override
+    @CacheEvict(value = "achievement-training-statistic", key = "#id")
     public void deleteById(Long id) {
         LOGGER.info("Training delete by id: {}", id);
         if (trainingRepository.existsById(id)) {
@@ -55,6 +67,13 @@ public class TrainingServiceImpl implements CrudOperations<TrainingModel> {
     }
 
     @Override
+    @Caching(put = {
+            @CachePut(value = "achievement-training-statistic", key = "#updatedTraining.id"),
+            @CachePut(value = "achievement-trainings-by-user-id", key = "#updatedTraining.userId")},
+            evict = {
+                    @CacheEvict(value = "achievement-training-statistic", allEntries = true),
+                    @CacheEvict(value = "achievement-training-statistic", key = "#updatedTraining.userId")}
+    )
     public TrainingModel update(TrainingModel updatedTraining) {
         LOGGER.info("Training update: {}", updatedTraining);
         if (trainingRepository.existsById(updatedTraining.getId())) {
@@ -64,6 +83,7 @@ public class TrainingServiceImpl implements CrudOperations<TrainingModel> {
         }
     }
 
+    @Cacheable(value = "achievement-trainings-by-user-id", key = "#userId")
     public List<TrainingModel> getAllTrainingsByUserId(Long userId) {
         LOGGER.info("Training get all by UserId: {}", userId);
         return trainingRepository.findAllByUserId(userId);

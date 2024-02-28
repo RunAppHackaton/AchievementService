@@ -4,22 +4,24 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Achievement")
-public class AchievementModel {
+@Table(name = "achievement")
+public class AchievementModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "story_id")
-    private int story_id;
+    private Long story_id;
 
     @Column(name = "description")
     private String description;
