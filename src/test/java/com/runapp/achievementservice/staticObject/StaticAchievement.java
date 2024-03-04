@@ -17,10 +17,10 @@ public class StaticAchievement {
         AchievementModel achievementModel = new AchievementModel();
         achievementModel.setAchievementImageUrl("https://example.org/example");
         achievementModel.setDescription("The characteristics of someone or something");
-        achievementModel.setId(1);
+        achievementModel.setId(1L);
         achievementModel.setName("Name");
         achievementModel.setRarityModel(rarityModel2);
-        achievementModel.setStory_id(1);
+        achievementModel.setStory_id(1L);
         return achievementModel;
     }
 
@@ -33,10 +33,10 @@ public class StaticAchievement {
         AchievementModel achievementModel = new AchievementModel();
         achievementModel.setAchievementImageUrl("https://example.org/example");
         achievementModel.setDescription("The characteristics of someone or something");
-        achievementModel.setId(2);
+        achievementModel.setId(2L);
         achievementModel.setName("Name");
         achievementModel.setRarityModel(rarityModel2);
-        achievementModel.setStory_id(2);
+        achievementModel.setStory_id(2L);
         return achievementModel;
     }
 
@@ -46,7 +46,7 @@ public class StaticAchievement {
         achievementRequest.setDescription("The characteristics of someone or something");
         achievementRequest.setName("Name");
         achievementRequest.setRarity_id(1L);
-        achievementRequest.setStory_id(1);
+        achievementRequest.setStory_id(1L);
         return achievementRequest;
     }
 

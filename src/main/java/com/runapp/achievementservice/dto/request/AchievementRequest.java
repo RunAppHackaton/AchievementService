@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class AchievementRequest {
     private String name;
 
-    private int story_id;
+    private Long story_id;
 
     private String description;
 

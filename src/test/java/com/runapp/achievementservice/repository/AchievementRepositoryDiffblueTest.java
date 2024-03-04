@@ -34,7 +34,7 @@ public class AchievementRepositoryDiffblueTest {
     @Test
     public void testFindByStoryId() {
         // Given
-        int storyId = 1;
+        Long storyId = 1L;
         List<AchievementModel> mockAchievements = new ArrayList<>();
         mockAchievements.add(StaticAchievement.achievementModel1());
 

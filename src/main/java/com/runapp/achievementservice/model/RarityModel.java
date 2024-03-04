@@ -5,13 +5,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "RarityModel")
-public class RarityModel {
+@Table(name = "rarity_model")
+public class RarityModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +25,12 @@ public class RarityModel {
     @JsonIgnore
     @OneToMany(mappedBy = "rarityModel")
     private List<AchievementModel> achievementModelList;
+
+    @Override
+    public String toString() {
+        return "RarityModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

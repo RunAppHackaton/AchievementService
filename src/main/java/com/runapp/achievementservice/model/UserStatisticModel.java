@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.Duration;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "user_statistic")
-public class UserStatisticModel {
+public class UserStatisticModel implements Serializable {
 
     @Id
     @Column(name = "user_id")

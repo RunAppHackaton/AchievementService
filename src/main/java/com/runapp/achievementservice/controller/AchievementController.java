@@ -58,7 +58,7 @@ public class AchievementController {
     @ApiResponse(responseCode = "400", description = "Invalid input")
     @PostMapping
     public ResponseEntity<Object> createAchievement(@RequestBody AchievementRequest achievementRequest) {
-        ResponseEntity<StoryResponse> storyResponseEntity = storyManagementServiceClient.getStoryById(achievementRequest.getStory_id());
+        ResponseEntity<StoryResponse> storyResponseEntity = storyManagementServiceClient.getStoryById(achievementRequest.getStory_id().intValue());
         RarityModel rarityModel = rarityServiceImpl.getById(achievementRequest.getRarity_id());
         if (rarityModel == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("rarity with id " + achievementRequest.getRarity_id() + " not found");
@@ -71,7 +71,7 @@ public class AchievementController {
     @Operation(summary = "Get an achievement by ID", description = "Retrieve an achievement by its ID")
     @ApiResponse(responseCode = "200", description = "Achievement found", content = @Content(schema = @Schema(implementation = AchievementModel.class)))
     @ApiResponse(responseCode = "404", description = "Achievement not found")
-    public ResponseEntity<Object> getAchievementById(@Parameter(description = "Achievement ID", required = true) @PathVariable int id) {
+    public ResponseEntity<Object> getAchievementById(@Parameter(description = "Achievement ID", required = true) @PathVariable Long id) {
         AchievementModel achievement = achievementServiceImpl.getAchievementById(id).orElseThrow(AchievementNotFoundException::new);;
         return new ResponseEntity<>(achievement, HttpStatus.OK);
     }
@@ -81,9 +81,9 @@ public class AchievementController {
     @ApiResponse(responseCode = "200", description = "Achievement updated", content = @Content(schema = @Schema(implementation = AchievementModel.class)))
     @ApiResponse(responseCode = "400", description = "Invalid input")
     @ApiResponse(responseCode = "404", description = "Achievement not found")
-    public ResponseEntity<Object> updateAchievement(@Parameter(description = "Achievement ID", required = true) @PathVariable int id,
+    public ResponseEntity<Object> updateAchievement(@Parameter(description = "Achievement ID", required = true) @PathVariable Long id,
                                                     @RequestBody AchievementRequest achievementRequest) {
-        ResponseEntity<StoryResponse> storyResponseEntity = storyManagementServiceClient.getStoryById(achievementRequest.getStory_id());
+        ResponseEntity<StoryResponse> storyResponseEntity = storyManagementServiceClient.getStoryById(achievementRequest.getStory_id().intValue());
         AchievementModel createdAchievement = achievementServiceImpl.getAchievementById(id).orElseThrow(()->new AchievementNotFoundException("achievement with id " + id + " not found"));
         RarityModel rarityModel = rarityServiceImpl.getById(achievementRequest.getRarity_id());
         if (rarityModel == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -98,7 +98,7 @@ public class AchievementController {
     @ApiResponse(responseCode = "204", description = "Achievement deleted")
     @ApiResponse(responseCode = "404", description = "Achievement not found")
     public ResponseEntity<Void> deleteAchievement(@Parameter(description = "Achievement ID", required = true)
-                                                  @PathVariable int id) {
+                                                  @PathVariable Long id) {
         achievementServiceImpl.getAchievementById(id).orElseThrow(AchievementNotFoundException::new);
         achievementServiceImpl.deleteAchievement(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -108,7 +108,7 @@ public class AchievementController {
     @Operation(summary = "Get achievements by story ID", description = "Retrieve a list of achievements for a specific story")
     @ApiResponse(responseCode = "200", description = "Achievements found", content = @Content(schema = @Schema(implementation = AchievementModel.class)))
     @ApiResponse(responseCode = "404", description = "Story not found")
-    public ResponseEntity<List<AchievementModel>> getAchievementsByStoryId(@Parameter(description = "Story ID", required = true) @PathVariable int storyId) {
+    public ResponseEntity<List<AchievementModel>> getAchievementsByStoryId(@Parameter(description = "Story ID", required = true) @PathVariable Long storyId) {
         List<AchievementModel> achievements = achievementServiceImpl.getAchievementsByStoryId(storyId);
         return new ResponseEntity<>(achievements, HttpStatus.OK);
     }
@@ -128,7 +128,7 @@ public class AchievementController {
     @ApiResponse(responseCode = "404", description = "Achievement not found")
     public ResponseEntity<Object> uploadImage(
             @Parameter(description = "Image file to upload", required = true) @RequestParam("file") MultipartFile file,
-            @Parameter(description = "ID of the achievement to associate with the uploaded image", required = true) @RequestParam("achievement_id") int achievementId) {
+            @Parameter(description = "ID of the achievement to associate with the uploaded image", required = true) @RequestParam("achievement_id") Long achievementId) {
         AchievementModel achievementModel = achievementServiceImpl.getAchievementById(achievementId).orElseThrow(()->new AchievementNotFoundException("Achievement with id " + achievementId + " not found"));
         achievementModel.setAchievementImageUrl(storageServiceClient.uploadFile(file, storageDirectory).getFile_uri());
         achievementServiceImpl.updateAchievement(achievementModel);
