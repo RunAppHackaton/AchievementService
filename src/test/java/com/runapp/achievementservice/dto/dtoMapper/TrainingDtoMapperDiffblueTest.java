@@ -15,7 +15,9 @@ import com.runapp.achievementservice.model.TrainingModel;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
+import com.runapp.achievementservice.staticObject.StaticTraining;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -50,17 +52,13 @@ class TrainingDtoMapperDiffblueTest {
      */
     @Test
     void testToResponse() {
-        TrainingModel trainingModel = new TrainingModel();
-        trainingModel.setDateTraining(LocalDate.of(1970, 1, 1));
-        trainingModel.setDistanceKm(1);
-        trainingModel.setId(1L);
-        trainingModel.setUserId(1L);
+        TrainingModel trainingModel = StaticTraining.trainingModel1();
         TrainingResponse actualToResponseResult = trainingDtoMapper.toResponse(trainingModel);
         assertEquals("1970-01-01", actualToResponseResult.getTraining_date().toString());
         assertNull(actualToResponseResult.getPace());
         assertNull(actualToResponseResult.getTraining_duration());
         assertEquals(1, actualToResponseResult.getDistance_km());
-        assertEquals(1L, actualToResponseResult.getUserId().longValue());
+        assertEquals("1", actualToResponseResult.getUserId());
     }
 
     /**
@@ -70,18 +68,18 @@ class TrainingDtoMapperDiffblueTest {
     void testToResponse2() {
         TrainingModel trainingModel = mock(TrainingModel.class);
         when(trainingModel.getDistanceKm()).thenReturn(1);
-        when(trainingModel.getUserId()).thenReturn(1L);
+        when(trainingModel.getUserId()).thenReturn("1");
         when(trainingModel.getAveragePace()).thenReturn(null);
         when(trainingModel.getDuration()).thenReturn(null);
         when(trainingModel.getDateTraining()).thenReturn(LocalDate.of(1970, 1, 1));
         doNothing().when(trainingModel).setDateTraining(Mockito.<LocalDate>any());
         doNothing().when(trainingModel).setDistanceKm(Mockito.<Integer>any());
         doNothing().when(trainingModel).setId(Mockito.<Long>any());
-        doNothing().when(trainingModel).setUserId(Mockito.<Long>any());
+        doNothing().when(trainingModel).setUserId(Mockito.<String>any());
         trainingModel.setDateTraining(LocalDate.of(1970, 1, 1));
         trainingModel.setDistanceKm(1);
         trainingModel.setId(1L);
-        trainingModel.setUserId(1L);
+        trainingModel.setUserId("1");
         TrainingResponse actualToResponseResult = trainingDtoMapper.toResponse(trainingModel);
         verify(trainingModel).getAveragePace();
         verify(trainingModel).getDateTraining();
@@ -91,12 +89,12 @@ class TrainingDtoMapperDiffblueTest {
         verify(trainingModel).setDateTraining(Mockito.<LocalDate>any());
         verify(trainingModel).setDistanceKm(Mockito.<Integer>any());
         verify(trainingModel).setId(Mockito.<Long>any());
-        verify(trainingModel).setUserId(Mockito.<Long>any());
+        verify(trainingModel).setUserId(Mockito.<String>any());
         assertEquals("1970-01-01", actualToResponseResult.getTraining_date().toString());
         assertNull(actualToResponseResult.getPace());
         assertNull(actualToResponseResult.getTraining_duration());
         assertEquals(1, actualToResponseResult.getDistance_km());
-        assertEquals(1L, actualToResponseResult.getUserId().longValue());
+        assertEquals("1", actualToResponseResult.getUserId());
     }
 
     /**
@@ -112,11 +110,7 @@ class TrainingDtoMapperDiffblueTest {
      */
     @Test
     void testToResponseList2() {
-        TrainingModel trainingModel = new TrainingModel();
-        trainingModel.setDateTraining(LocalDate.of(1970, 1, 1));
-        trainingModel.setDistanceKm(1);
-        trainingModel.setId(1L);
-        trainingModel.setUserId(1L);
+        TrainingModel trainingModel = StaticTraining.trainingModel1();
 
         ArrayList<TrainingModel> trainingModels = new ArrayList<>();
         trainingModels.add(trainingModel);
@@ -127,7 +121,7 @@ class TrainingDtoMapperDiffblueTest {
         assertNull(getResult.getPace());
         assertNull(getResult.getTraining_duration());
         assertEquals(1, getResult.getDistance_km());
-        assertEquals(1L, getResult.getUserId().longValue());
+        assertEquals("1", getResult.getUserId());
     }
 
     /**
@@ -135,17 +129,9 @@ class TrainingDtoMapperDiffblueTest {
      */
     @Test
     void testToResponseList3() {
-        TrainingModel trainingModel = new TrainingModel();
-        trainingModel.setDateTraining(LocalDate.of(1970, 1, 1));
-        trainingModel.setDistanceKm(1);
-        trainingModel.setId(1L);
-        trainingModel.setUserId(1L);
+        TrainingModel trainingModel = StaticTraining.trainingModel1();
 
-        TrainingModel trainingModel2 = new TrainingModel();
-        trainingModel2.setDateTraining(LocalDate.of(1970, 1, 1));
-        trainingModel2.setDistanceKm(0);
-        trainingModel2.setId(2L);
-        trainingModel2.setUserId(2L);
+        TrainingModel trainingModel2 = StaticTraining.trainingModel2();
 
         ArrayList<TrainingModel> trainingModels = new ArrayList<>();
         trainingModels.add(trainingModel2);
@@ -160,10 +146,10 @@ class TrainingDtoMapperDiffblueTest {
         assertNull(getResult2.getPace());
         assertNull(getResult.getTraining_duration());
         assertNull(getResult2.getTraining_duration());
-        assertEquals(0, getResult.getDistance_km());
+        assertEquals(-1, getResult.getDistance_km());
         assertEquals(1, getResult2.getDistance_km());
-        assertEquals(1L, getResult2.getUserId().longValue());
-        assertEquals(2L, getResult.getUserId().longValue());
+        assertEquals("1", getResult2.getUserId());
+        assertEquals("2", getResult.getUserId());
     }
 
     /**
@@ -173,18 +159,18 @@ class TrainingDtoMapperDiffblueTest {
     void testToResponseList4() {
         TrainingModel trainingModel = mock(TrainingModel.class);
         when(trainingModel.getDistanceKm()).thenReturn(1);
-        when(trainingModel.getUserId()).thenReturn(1L);
+        when(trainingModel.getUserId()).thenReturn("1");
         when(trainingModel.getAveragePace()).thenReturn(null);
         when(trainingModel.getDuration()).thenReturn(null);
         when(trainingModel.getDateTraining()).thenReturn(LocalDate.of(1970, 1, 1));
         doNothing().when(trainingModel).setDateTraining(Mockito.<LocalDate>any());
         doNothing().when(trainingModel).setDistanceKm(Mockito.<Integer>any());
         doNothing().when(trainingModel).setId(Mockito.<Long>any());
-        doNothing().when(trainingModel).setUserId(Mockito.<Long>any());
+        doNothing().when(trainingModel).setUserId(Mockito.<String>any());
         trainingModel.setDateTraining(LocalDate.of(1970, 1, 1));
         trainingModel.setDistanceKm(1);
         trainingModel.setId(1L);
-        trainingModel.setUserId(1L);
+        trainingModel.setUserId("1");
 
         ArrayList<TrainingModel> trainingModels = new ArrayList<>();
         trainingModels.add(trainingModel);
@@ -197,13 +183,13 @@ class TrainingDtoMapperDiffblueTest {
         verify(trainingModel).setDateTraining(Mockito.<LocalDate>any());
         verify(trainingModel).setDistanceKm(Mockito.<Integer>any());
         verify(trainingModel).setId(Mockito.<Long>any());
-        verify(trainingModel).setUserId(Mockito.<Long>any());
+        verify(trainingModel).setUserId(Mockito.<String>any());
         assertEquals(1, actualToResponseListResult.size());
         TrainingResponse getResult = actualToResponseListResult.get(0);
         assertEquals("1970-01-01", getResult.getTraining_date().toString());
         assertNull(getResult.getPace());
         assertNull(getResult.getTraining_duration());
         assertEquals(1, getResult.getDistance_km());
-        assertEquals(1L, getResult.getUserId().longValue());
+        assertEquals("1", getResult.getUserId());
     }
 }

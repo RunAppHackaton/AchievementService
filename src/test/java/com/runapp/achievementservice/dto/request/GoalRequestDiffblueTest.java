@@ -96,7 +96,7 @@ class GoalRequestDiffblueTest {
     @Test
     void testEquals6() {
         GoalRequest goalRequest = new GoalRequest();
-        goalRequest.setUserId(1L);
+        goalRequest.setUserId("1");
         assertNotEquals(goalRequest, new GoalRequest());
     }
 
@@ -132,7 +132,7 @@ class GoalRequestDiffblueTest {
         GoalRequest goalRequest = new GoalRequest();
 
         GoalRequest goalRequest2 = new GoalRequest();
-        goalRequest2.setUserId(1L);
+        goalRequest2.setUserId("1");
         assertNotEquals(goalRequest, goalRequest2);
     }
 
@@ -187,10 +187,10 @@ class GoalRequestDiffblueTest {
     @Test
     void testEquals12() {
         GoalRequest goalRequest = new GoalRequest();
-        goalRequest.setUserId(1L);
+        goalRequest.setUserId("1");
 
         GoalRequest goalRequest2 = new GoalRequest();
-        goalRequest2.setUserId(1L);
+        goalRequest2.setUserId("1");
         assertEquals(goalRequest, goalRequest2);
         int expectedHashCodeResult = goalRequest.hashCode();
         assertEquals(expectedHashCodeResult, goalRequest2.hashCode());
@@ -214,13 +214,13 @@ class GoalRequestDiffblueTest {
         GoalRequest goalRequest = new GoalRequest();
         goalRequest.setGoal("Goal");
         goalRequest.setGoal_type(GoalTypeEnum.TOTAL_TRAINING_TIME);
-        goalRequest.setUserId(1L);
+        goalRequest.setUserId("1");
         String actualToStringResult = goalRequest.toString();
         String actualGoal = goalRequest.getGoal();
         GoalTypeEnum actualGoal_type = goalRequest.getGoal_type();
         assertEquals("Goal", actualGoal);
         assertEquals("GoalRequest(goal_type=TOTAL_TRAINING_TIME, goal=Goal, userId=1)", actualToStringResult);
-        assertEquals(1L, goalRequest.getUserId().longValue());
+        assertEquals("1", goalRequest.getUserId());
         assertEquals(GoalTypeEnum.TOTAL_TRAINING_TIME, actualGoal_type);
     }
 }

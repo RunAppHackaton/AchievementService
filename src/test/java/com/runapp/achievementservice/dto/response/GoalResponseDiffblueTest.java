@@ -92,7 +92,7 @@ class GoalResponseDiffblueTest {
     @Test
     void testEquals5() {
         GoalResponse goalResponse = new GoalResponse();
-        goalResponse.setUserId(1L);
+        goalResponse.setUserId("1");
         assertNotEquals(goalResponse, new GoalResponse());
     }
 
@@ -176,7 +176,7 @@ class GoalResponseDiffblueTest {
         GoalResponse goalResponse = new GoalResponse();
 
         GoalResponse goalResponse2 = new GoalResponse();
-        goalResponse2.setUserId(1L);
+        goalResponse2.setUserId("1");
         assertNotEquals(goalResponse, goalResponse2);
     }
 
@@ -271,10 +271,10 @@ class GoalResponseDiffblueTest {
     @Test
     void testEquals20() {
         GoalResponse goalResponse = new GoalResponse();
-        goalResponse.setUserId(1L);
+        goalResponse.setUserId("1");
 
         GoalResponse goalResponse2 = new GoalResponse();
-        goalResponse2.setUserId(1L);
+        goalResponse2.setUserId("1");
         assertEquals(goalResponse, goalResponse2);
         int expectedHashCodeResult = goalResponse.hashCode();
         assertEquals(expectedHashCodeResult, goalResponse2.hashCode());
@@ -415,7 +415,7 @@ class GoalResponseDiffblueTest {
         goalResponse.setId(1L);
         LocalDateTime startDate = LocalDate.of(1970, 1, 1).atStartOfDay();
         goalResponse.setStartDate(startDate);
-        goalResponse.setUserId(1L);
+        goalResponse.setUserId("1");
         String actualToStringResult = goalResponse.toString();
         float actualCompletionPercentage = goalResponse.getCompletionPercentage();
         LocalDateTime actualFinishedDate = goalResponse.getFinishedDate();
@@ -424,13 +424,13 @@ class GoalResponseDiffblueTest {
         GoalTypeEnum actualGoal_type = goalResponse.getGoal_type();
         Long actualId = goalResponse.getId();
         LocalDateTime actualStartDate = goalResponse.getStartDate();
-        Long actualUserId = goalResponse.getUserId();
+        String actualUserId = goalResponse.getUserId();
         assertEquals("Goal", actualGoal);
         assertEquals("GoalResponse(id=1, userId=1, completionPercentage=10.0, goal_type=TOTAL_TRAINING_TIME, goal_status=IN"
                 + "_PROGRESS, startDate=1970-01-01T00:00, finishedDate=1970-01-01T00:00, goal=Goal)", actualToStringResult);
         assertEquals(10.0f, actualCompletionPercentage);
         assertEquals(1L, actualId.longValue());
-        assertEquals(1L, actualUserId.longValue());
+        assertEquals("1", actualUserId);
         assertEquals(GoalStatusEnum.IN_PROGRESS, actualGoal_status);
         assertEquals(GoalTypeEnum.TOTAL_TRAINING_TIME, actualGoal_type);
         assertSame(finishedDate, actualFinishedDate);

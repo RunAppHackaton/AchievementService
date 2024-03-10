@@ -55,7 +55,7 @@ class TrainingRepositoryDiffblueTest {
         TrainingModel trainingModel2 = StaticTraining.trainingModel2();
         trainingRepository.save(trainingModel);
         trainingRepository.save(trainingModel2);
-        assertTrue(trainingRepository.existsByUserId(1L));
+        assertTrue(trainingRepository.existsByUserId("1"));
     }
 
     /**
@@ -68,6 +68,6 @@ class TrainingRepositoryDiffblueTest {
         TrainingModel trainingModel2 = StaticTraining.trainingModel2();
         trainingRepository.save(trainingModel);
         trainingRepository.save(trainingModel2);
-        assertEquals(1, trainingRepository.findAllByUserId(1L).size());
+        assertEquals(1, trainingRepository.findAllByUserId("1").size());
     }
 }

@@ -37,14 +37,14 @@ public class UserStatisticServiceImpl implements UserStatisticService {
     }
 
     @Override
-    public void deleteTrackingUserStatistics(Long userId) {
+    public void deleteTrackingUserStatistics(String userId) {
         LOGGER.info("UserStatistic delete by id: {}", userId);
         trainingObserver.deleteObserverForUserAchievements(userId);
         progressRepository.deleteById(userId);
     }
 
     @Override
-    public UserStatisticModel getCurrentProgressById(Long userId) {
+    public UserStatisticModel getCurrentProgressById(String userId) {
         LOGGER.info("UserStatistic get by id: {}", userId);
         return progressRepository.findById(userId)
                 .orElseThrow(() -> new NoEntityFoundException("Progress not found with user id: " + userId));
@@ -61,7 +61,7 @@ public class UserStatisticServiceImpl implements UserStatisticService {
     }
 
     @Override
-    public void startTrackingUserStatisticsIfNone(Long userId) {
+    public void startTrackingUserStatisticsIfNone(String userId) {
         LOGGER.info("UserStatistic start tracking if doesn't exist by id: {}", userId);
         if (!progressRepository.existsById(userId)) {
             createEmptyStatistic(userId);
@@ -69,7 +69,7 @@ public class UserStatisticServiceImpl implements UserStatisticService {
         }
     }
 
-    private void createEmptyStatistic(Long userId) {
+    private void createEmptyStatistic(String userId) {
         LOGGER.info("UserStatistic add empty with id: {}", userId);
         UserStatisticModel statisticModel = new UserStatisticModel();
         statisticModel.setUserId(userId);

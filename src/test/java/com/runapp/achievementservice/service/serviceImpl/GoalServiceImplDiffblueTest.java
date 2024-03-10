@@ -13,9 +13,9 @@ import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.GoalStatusModel;
 import com.runapp.achievementservice.model.GoalTypeModel;
 import com.runapp.achievementservice.repository.GoalRepository;
+import com.runapp.achievementservice.staticObject.StaticGoal;
 import com.runapp.achievementservice.util.enums.GoalStatusEnum;
 import com.runapp.achievementservice.util.enums.GoalTypeEnum;
-import com.runapp.achievementservice.util.supportClasses.UserExistHandler;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -39,83 +39,18 @@ class GoalServiceImplDiffblueTest {
     @Autowired
     private GoalServiceImpl goalServiceImpl;
 
-    @MockBean
-    private UserExistHandler userExistHandler;
-
     /**
      * Method under test: {@link GoalServiceImpl#add(GoalModel)}
      */
     @Test
     void testAdd() {
-        GoalStatusModel goalStatus = new GoalStatusModel();
-        goalStatus.setGoalModels(new ArrayList<>());
-        goalStatus.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType = new GoalTypeModel();
-        goalType.setGoalModels(new ArrayList<>());
-        goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel goalModel = new GoalModel();
-        goalModel.setCompletionPercentage(10.0f);
-        goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setGoal("Goal");
-        goalModel.setGoalStatus(goalStatus);
-        goalModel.setGoalType(goalType);
-        goalModel.setId(1L);
-        goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        GoalModel goalModel = StaticGoal.goalModel1();
         when(goalRepository.save(Mockito.<GoalModel>any())).thenReturn(goalModel);
-        doNothing().when(userExistHandler).checkUserExist(Mockito.<Long>any());
 
-        GoalStatusModel goalStatus2 = new GoalStatusModel();
-        goalStatus2.setGoalModels(new ArrayList<>());
-        goalStatus2.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType2 = new GoalTypeModel();
-        goalType2.setGoalModels(new ArrayList<>());
-        goalType2.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel entity = new GoalModel();
-        entity.setCompletionPercentage(10.0f);
-        entity.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        entity.setGoal("Goal");
-        entity.setGoalStatus(goalStatus2);
-        entity.setGoalType(goalType2);
-        entity.setId(1L);
-        entity.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        entity.setUserId(1L);
+        GoalModel entity = StaticGoal.goalModel1();
         GoalModel actualAddResult = goalServiceImpl.add(entity);
-        verify(userExistHandler).checkUserExist(Mockito.<Long>any());
         verify(goalRepository).save(Mockito.<GoalModel>any());
         assertSame(goalModel, actualAddResult);
-    }
-
-    /**
-     * Method under test: {@link GoalServiceImpl#add(GoalModel)}
-     */
-    @Test
-    void testAdd2() {
-        doThrow(new NoEntityFoundException("An error occurred")).when(userExistHandler).checkUserExist(Mockito.<Long>any());
-
-        GoalStatusModel goalStatus = new GoalStatusModel();
-        goalStatus.setGoalModels(new ArrayList<>());
-        goalStatus.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType = new GoalTypeModel();
-        goalType.setGoalModels(new ArrayList<>());
-        goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel entity = new GoalModel();
-        entity.setCompletionPercentage(10.0f);
-        entity.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        entity.setGoal("Goal");
-        entity.setGoalStatus(goalStatus);
-        entity.setGoalType(goalType);
-        entity.setId(1L);
-        entity.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        entity.setUserId(1L);
-        assertThrows(NoEntityFoundException.class, () -> goalServiceImpl.add(entity));
-        verify(userExistHandler).checkUserExist(Mockito.<Long>any());
     }
 
     /**
@@ -123,23 +58,7 @@ class GoalServiceImplDiffblueTest {
      */
     @Test
     void testGetById() {
-        GoalStatusModel goalStatus = new GoalStatusModel();
-        goalStatus.setGoalModels(new ArrayList<>());
-        goalStatus.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType = new GoalTypeModel();
-        goalType.setGoalModels(new ArrayList<>());
-        goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel goalModel = new GoalModel();
-        goalModel.setCompletionPercentage(10.0f);
-        goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setGoal("Goal");
-        goalModel.setGoalStatus(goalStatus);
-        goalModel.setGoalType(goalType);
-        goalModel.setId(1L);
-        goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        GoalModel goalModel = StaticGoal.goalModel1();
         Optional<GoalModel> ofResult = Optional.of(goalModel);
         when(goalRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
         GoalModel actualById = goalServiceImpl.getById(1L);
@@ -230,46 +149,12 @@ class GoalServiceImplDiffblueTest {
      */
     @Test
     void testUpdate() {
-        GoalStatusModel goalStatus = new GoalStatusModel();
-        goalStatus.setGoalModels(new ArrayList<>());
-        goalStatus.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType = new GoalTypeModel();
-        goalType.setGoalModels(new ArrayList<>());
-        goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel goalModel = new GoalModel();
-        goalModel.setCompletionPercentage(10.0f);
-        goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setGoal("Goal");
-        goalModel.setGoalStatus(goalStatus);
-        goalModel.setGoalType(goalType);
-        goalModel.setId(1L);
-        goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        GoalModel goalModel = StaticGoal.goalModel1();
         when(goalRepository.save(Mockito.<GoalModel>any())).thenReturn(goalModel);
         when(goalRepository.existsById(Mockito.<Long>any())).thenReturn(true);
-        doNothing().when(userExistHandler).checkUserExist(Mockito.<Long>any());
 
-        GoalStatusModel goalStatus2 = new GoalStatusModel();
-        goalStatus2.setGoalModels(new ArrayList<>());
-        goalStatus2.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType2 = new GoalTypeModel();
-        goalType2.setGoalModels(new ArrayList<>());
-        goalType2.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel entity = new GoalModel();
-        entity.setCompletionPercentage(10.0f);
-        entity.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        entity.setGoal("Goal");
-        entity.setGoalStatus(goalStatus2);
-        entity.setGoalType(goalType2);
-        entity.setId(1L);
-        entity.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        entity.setUserId(1L);
+        GoalModel entity = StaticGoal.goalModel1();
         GoalModel actualUpdateResult = goalServiceImpl.update(entity);
-        verify(userExistHandler).checkUserExist(Mockito.<Long>any());
         verify(goalRepository).existsById(Mockito.<Long>any());
         verify(goalRepository).save(Mockito.<GoalModel>any());
         assertSame(goalModel, actualUpdateResult);
@@ -278,58 +163,13 @@ class GoalServiceImplDiffblueTest {
     /**
      * Method under test: {@link GoalServiceImpl#update(GoalModel)}
      */
-    @Test
-    void testUpdate2() {
-        doThrow(new NoEntityFoundException("An error occurred")).when(userExistHandler).checkUserExist(Mockito.<Long>any());
 
-        GoalStatusModel goalStatus = new GoalStatusModel();
-        goalStatus.setGoalModels(new ArrayList<>());
-        goalStatus.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType = new GoalTypeModel();
-        goalType.setGoalModels(new ArrayList<>());
-        goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel entity = new GoalModel();
-        entity.setCompletionPercentage(10.0f);
-        entity.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        entity.setGoal("Goal");
-        entity.setGoalStatus(goalStatus);
-        entity.setGoalType(goalType);
-        entity.setId(1L);
-        entity.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        entity.setUserId(1L);
-        assertThrows(NoEntityFoundException.class, () -> goalServiceImpl.update(entity));
-        verify(userExistHandler).checkUserExist(Mockito.<Long>any());
-    }
-
-    /**
-     * Method under test: {@link GoalServiceImpl#update(GoalModel)}
-     */
     @Test
     void testUpdate3() {
         when(goalRepository.existsById(Mockito.<Long>any())).thenReturn(false);
-        doNothing().when(userExistHandler).checkUserExist(Mockito.<Long>any());
 
-        GoalStatusModel goalStatus = new GoalStatusModel();
-        goalStatus.setGoalModels(new ArrayList<>());
-        goalStatus.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType = new GoalTypeModel();
-        goalType.setGoalModels(new ArrayList<>());
-        goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel entity = new GoalModel();
-        entity.setCompletionPercentage(10.0f);
-        entity.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        entity.setGoal("Goal");
-        entity.setGoalStatus(goalStatus);
-        entity.setGoalType(goalType);
-        entity.setId(1L);
-        entity.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        entity.setUserId(1L);
+        GoalModel entity = StaticGoal.goalModel1();
         assertThrows(NoEntityFoundException.class, () -> goalServiceImpl.update(entity));
-        verify(userExistHandler).checkUserExist(Mockito.<Long>any());
         verify(goalRepository).existsById(Mockito.<Long>any());
     }
 }

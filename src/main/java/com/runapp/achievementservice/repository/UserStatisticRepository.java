@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserStatisticRepository extends JpaRepository
         <UserStatisticModel,
-                Long> {
+                String> {
 }

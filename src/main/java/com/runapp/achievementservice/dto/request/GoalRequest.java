@@ -9,5 +9,5 @@ import org.springframework.stereotype.Component;
 public class GoalRequest {
     private GoalTypeEnum goal_type;
     private String goal;
-    private Long userId;
+    private String userId;
 }

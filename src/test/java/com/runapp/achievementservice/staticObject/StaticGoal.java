@@ -28,8 +28,29 @@ public class StaticGoal {
         updatedGoal.setGoalType(goalType2);
         updatedGoal.setId(1L);
         updatedGoal.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        updatedGoal.setUserId(1L);
+        updatedGoal.setUserId("1");
         return updatedGoal;  // Return the created GoalModel
+    }
+
+    public static GoalModel goalModel2(){
+        GoalStatusModel goalStatus2 = new GoalStatusModel();
+        goalStatus2.setGoalModels(new ArrayList<>());
+        goalStatus2.setStatusEnum(GoalStatusEnum.FINISHED);
+
+        GoalTypeModel goalType2 = new GoalTypeModel();
+        goalType2.setGoalModels(new ArrayList<>());
+        goalType2.setGoalTypeEnum(GoalTypeEnum.AVERAGE_RUNNING_PACE);
+
+        GoalModel goalModel2 = new GoalModel();
+        goalModel2.setCompletionPercentage(0.5f);
+        goalModel2.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
+        goalModel2.setGoal("com.runapp.achievementservice.model.GoalModel");
+        goalModel2.setGoalStatus(goalStatus2);
+        goalModel2.setGoalType(goalType2);
+        goalModel2.setId(2L);
+        goalModel2.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
+        goalModel2.setUserId("2");
+        return goalModel2;
     }
 
 
@@ -53,7 +74,7 @@ public class StaticGoal {
         GoalRequest goalRequest2 = new GoalRequest();
         goalRequest2.setGoal("Goal");
         goalRequest2.setGoal_type(GoalTypeEnum.TOTAL_TRAINING_TIME);
-        goalRequest2.setUserId(1L);
+        goalRequest2.setUserId("1");
         return goalRequest2;
     }
 }

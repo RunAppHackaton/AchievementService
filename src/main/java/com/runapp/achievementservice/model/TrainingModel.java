@@ -24,7 +24,7 @@ public class TrainingModel implements Serializable {
     private LocalDate dateTraining;
 
     @Column(name = "user_id")
-    private Long userId;
+    private String userId;
 
     @Column(name = "training_duration_mm")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")

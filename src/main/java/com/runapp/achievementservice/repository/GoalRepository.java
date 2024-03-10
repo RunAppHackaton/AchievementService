@@ -16,7 +16,7 @@ public interface GoalRepository extends JpaRepository<GoalModel, Long> {
     @Query("SELECT g FROM GoalModel g WHERE g.goalType.goalTypeEnum = :goalTypeEnum")
     List<GoalModel> findAllByGoalTypeEnum(@Param("goalTypeEnum") GoalTypeEnum goalTypeEnum);
 
-    boolean existsByUserId(Long userId);
+    boolean existsByUserId(String userId);
 
-    List<GoalModel> findAllByUserId(Long userId);
+    List<GoalModel> findAllByUserId(String userId);
 }

@@ -99,7 +99,7 @@ class TrainingRequestDiffblueTest {
     @Test
     void testEquals6() {
         TrainingRequest trainingRequest = new TrainingRequest();
-        trainingRequest.setUserId(1L);
+        trainingRequest.setUserId("1");
         assertNotEquals(trainingRequest, new TrainingRequest());
     }
 
@@ -123,7 +123,7 @@ class TrainingRequestDiffblueTest {
         TrainingRequest trainingRequest = new TrainingRequest();
 
         TrainingRequest trainingRequest2 = new TrainingRequest();
-        trainingRequest2.setUserId(1L);
+        trainingRequest2.setUserId("1");
         assertNotEquals(trainingRequest, trainingRequest2);
     }
 
@@ -158,10 +158,10 @@ class TrainingRequestDiffblueTest {
     @Test
     void testEquals10() {
         TrainingRequest trainingRequest = new TrainingRequest();
-        trainingRequest.setUserId(1L);
+        trainingRequest.setUserId("1");
 
         TrainingRequest trainingRequest2 = new TrainingRequest();
-        trainingRequest2.setUserId(1L);
+        trainingRequest2.setUserId("1");
         assertEquals(trainingRequest, trainingRequest2);
         int expectedHashCodeResult = trainingRequest.hashCode();
         assertEquals(expectedHashCodeResult, trainingRequest2.hashCode());
@@ -192,7 +192,7 @@ class TrainingRequestDiffblueTest {
         LocalDate training_date = LocalDate.of(1970, 1, 1);
         trainingRequest.setTraining_date(training_date);
         trainingRequest.setTraining_duration(null);
-        trainingRequest.setUserId(1L);
+        trainingRequest.setUserId("1");
         String actualToStringResult = trainingRequest.toString();
         int actualDistance_km = trainingRequest.getDistance_km();
         trainingRequest.getPace();
@@ -202,7 +202,7 @@ class TrainingRequestDiffblueTest {
                 "TrainingRequest(training_date=1970-01-01, distance_km=1, training_duration=null, pace=null," + " userId=1)",
                 actualToStringResult);
         assertEquals(1, actualDistance_km);
-        assertEquals(1L, trainingRequest.getUserId().longValue());
+        assertEquals("1", trainingRequest.getUserId());
         assertSame(training_date, actualTraining_date);
     }
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 public class GoalResponse {
     private Long id;
-    private Long userId;
+    private String userId;
     private float completionPercentage;
     private GoalTypeEnum goal_type;
     private GoalStatusEnum goal_status;

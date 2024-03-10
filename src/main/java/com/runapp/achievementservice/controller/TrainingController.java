@@ -37,7 +37,7 @@ public class TrainingController {
             }
     )
     @PostMapping
-    public ResponseEntity<TrainingResponse> saveTraining(@RequestBody @Valid TrainingRequest trainingRequest) {
+    public ResponseEntity<TrainingResponse> saveTraining(@RequestBody @Valid TrainingRequest trainingRequest, @RequestHeader("X-UserId") String userId) {
         TrainingModel trainingModel = trainingServiceImpl.add(trainingDtoMapper.toModel(trainingRequest));
         TrainingResponse trainingResponse = trainingDtoMapper.toResponse(trainingModel);
         return new ResponseEntity<>(trainingResponse, HttpStatus.CREATED);
@@ -94,7 +94,7 @@ public class TrainingController {
             }
     )
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<TrainingResponse>> getAllTrainingsByUserId(@PathVariable Long userId) {
+    public ResponseEntity<List<TrainingResponse>> getAllTrainingsByUserId(@PathVariable String userId) {
         List<TrainingModel> trainingModels = trainingServiceImpl.getAllTrainingsByUserId(userId);
         List<TrainingResponse> trainingResponses = trainingDtoMapper.toResponseList(trainingModels);
         return ResponseEntity.ok(trainingResponses);

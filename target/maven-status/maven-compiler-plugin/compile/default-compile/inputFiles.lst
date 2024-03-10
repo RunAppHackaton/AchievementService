@@ -17,6 +17,7 @@ D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\service\serviceImpl\UserStatisticServiceImpl.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\feignClient\ProfileServiceClient.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\util\supportClasses\goalUpdater\TotalNumberTrainingStrategyUpdate.java
+D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\config\RedisConfig.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\service\serviceImpl\GoalServiceImpl.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\dto\response\TaskResponse.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\util\goalHandler\TotalTrainingTimeHandler.java
@@ -27,7 +28,6 @@ D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\repository\GoalRepository.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\util\supportClasses\GoalCompletionCalculator.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\util\supportClasses\goalUpdater\UpdateGoalStrategy.java
-D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\util\supportClasses\UserExistHandler.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\dto\response\UserResponse.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\util\supportClasses\goalUpdater\TotalKilometersStrategyUpdate.java
 D:\My Directory\Projects\JavaProjects\Practices\AchievementService\src\main\java\com\runapp\achievementservice\util\supportClasses\TrainingObserver.java

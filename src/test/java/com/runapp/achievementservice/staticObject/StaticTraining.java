@@ -11,7 +11,7 @@ public class StaticTraining {
         trainingModel.setDateTraining(LocalDate.of(1970, 1, 1));
         trainingModel.setDistanceKm(1);
         trainingModel.setId(1L);
-        trainingModel.setUserId(1L);
+        trainingModel.setUserId("1");
 
         return trainingModel;
     }
@@ -20,7 +20,7 @@ public class StaticTraining {
         TrainingModel trainingModel2 = new TrainingModel();
         trainingModel2.setDateTraining(LocalDate.of(1970, 1, 1));
         trainingModel2.setDistanceKm(-1);
-        trainingModel2.setUserId(2L);
+        trainingModel2.setUserId("2");
 
         return trainingModel2;
     }
@@ -29,7 +29,7 @@ public class StaticTraining {
         TrainingRequest trainingRequest2 = new TrainingRequest();
         trainingRequest2.setDistance_km(1);
         trainingRequest2.setTraining_date(null);
-        trainingRequest2.setUserId(1L);
+        trainingRequest2.setUserId("2");
         return trainingRequest2;
     }
 }

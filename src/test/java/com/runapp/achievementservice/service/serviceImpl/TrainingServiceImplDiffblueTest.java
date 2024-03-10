@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import com.runapp.achievementservice.exception.NoEntityFoundException;
 import com.runapp.achievementservice.model.TrainingModel;
 import com.runapp.achievementservice.repository.TrainingRepository;
+import com.runapp.achievementservice.staticObject.StaticTraining;
 import com.runapp.achievementservice.util.supportClasses.goalUpdater.GoalUpdater;
 
 import java.time.LocalDate;
@@ -46,26 +47,18 @@ class TrainingServiceImplDiffblueTest {
      */
     @Test
     void testAdd() {
-        doNothing().when(goalUpdater).updateAllGoal(Mockito.<Long>any());
+        doNothing().when(goalUpdater).updateAllGoal(Mockito.<String>any());
 
-        TrainingModel trainingModel = new TrainingModel();
-        trainingModel.setDateTraining(LocalDate.of(1970, 1, 1));
-        trainingModel.setDistanceKm(1);
-        trainingModel.setId(1L);
-        trainingModel.setUserId(1L);
+        TrainingModel trainingModel = StaticTraining.trainingModel1();
         when(trainingRepository.save(Mockito.<TrainingModel>any())).thenReturn(trainingModel);
         doNothing().when(userStatisticServiceImpl).addTrainingInStatistic(Mockito.<TrainingModel>any());
-        doNothing().when(userStatisticServiceImpl).startTrackingUserStatisticsIfNone(Mockito.<Long>any());
+        doNothing().when(userStatisticServiceImpl).startTrackingUserStatisticsIfNone(Mockito.<String>any());
 
-        TrainingModel training = new TrainingModel();
-        training.setDateTraining(LocalDate.of(1970, 1, 1));
-        training.setDistanceKm(1);
-        training.setId(1L);
-        training.setUserId(1L);
+        TrainingModel training = StaticTraining.trainingModel1();
         TrainingModel actualAddResult = trainingServiceImpl.add(training);
         verify(userStatisticServiceImpl).addTrainingInStatistic(Mockito.<TrainingModel>any());
-        verify(userStatisticServiceImpl).startTrackingUserStatisticsIfNone(Mockito.<Long>any());
-        verify(goalUpdater).updateAllGoal(Mockito.<Long>any());
+        verify(userStatisticServiceImpl).startTrackingUserStatisticsIfNone(Mockito.<String>any());
+        verify(goalUpdater).updateAllGoal(Mockito.<String>any());
         verify(trainingRepository).save(Mockito.<TrainingModel>any());
         assertSame(trainingModel, actualAddResult);
     }
@@ -76,15 +69,11 @@ class TrainingServiceImplDiffblueTest {
     @Test
     void testAdd2() {
         doThrow(new NoEntityFoundException("An error occurred")).when(userStatisticServiceImpl)
-                .startTrackingUserStatisticsIfNone(Mockito.<Long>any());
+                .startTrackingUserStatisticsIfNone(Mockito.<String>any());
 
-        TrainingModel training = new TrainingModel();
-        training.setDateTraining(LocalDate.of(1970, 1, 1));
-        training.setDistanceKm(1);
-        training.setId(1L);
-        training.setUserId(1L);
+        TrainingModel training = StaticTraining.trainingModel1();
         assertThrows(NoEntityFoundException.class, () -> trainingServiceImpl.add(training));
-        verify(userStatisticServiceImpl).startTrackingUserStatisticsIfNone(Mockito.<Long>any());
+        verify(userStatisticServiceImpl).startTrackingUserStatisticsIfNone(Mockito.<String>any());
     }
 
     /**
@@ -115,11 +104,7 @@ class TrainingServiceImplDiffblueTest {
      */
     @Test
     void testGetById() {
-        TrainingModel trainingModel = new TrainingModel();
-        trainingModel.setDateTraining(LocalDate.of(1970, 1, 1));
-        trainingModel.setDistanceKm(1);
-        trainingModel.setId(1L);
-        trainingModel.setUserId(1L);
+        TrainingModel trainingModel = StaticTraining.trainingModel1();
         Optional<TrainingModel> ofResult = Optional.of(trainingModel);
         when(trainingRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
         TrainingModel actualById = trainingServiceImpl.getById(1L);
@@ -187,19 +172,11 @@ class TrainingServiceImplDiffblueTest {
      */
     @Test
     void testUpdate() {
-        TrainingModel trainingModel = new TrainingModel();
-        trainingModel.setDateTraining(LocalDate.of(1970, 1, 1));
-        trainingModel.setDistanceKm(1);
-        trainingModel.setId(1L);
-        trainingModel.setUserId(1L);
+        TrainingModel trainingModel = StaticTraining.trainingModel1();
         when(trainingRepository.save(Mockito.<TrainingModel>any())).thenReturn(trainingModel);
         when(trainingRepository.existsById(Mockito.<Long>any())).thenReturn(true);
 
-        TrainingModel updatedTraining = new TrainingModel();
-        updatedTraining.setDateTraining(LocalDate.of(1970, 1, 1));
-        updatedTraining.setDistanceKm(1);
-        updatedTraining.setId(1L);
-        updatedTraining.setUserId(1L);
+        TrainingModel updatedTraining = StaticTraining.trainingModel1();
         TrainingModel actualUpdateResult = trainingServiceImpl.update(updatedTraining);
         verify(trainingRepository).existsById(Mockito.<Long>any());
         verify(trainingRepository).save(Mockito.<TrainingModel>any());
@@ -215,11 +192,7 @@ class TrainingServiceImplDiffblueTest {
                 .thenThrow(new NoEntityFoundException("An error occurred"));
         when(trainingRepository.existsById(Mockito.<Long>any())).thenReturn(true);
 
-        TrainingModel updatedTraining = new TrainingModel();
-        updatedTraining.setDateTraining(LocalDate.of(1970, 1, 1));
-        updatedTraining.setDistanceKm(1);
-        updatedTraining.setId(1L);
-        updatedTraining.setUserId(1L);
+        TrainingModel updatedTraining = StaticTraining.trainingModel1();
         assertThrows(NoEntityFoundException.class, () -> trainingServiceImpl.update(updatedTraining));
         verify(trainingRepository).existsById(Mockito.<Long>any());
         verify(trainingRepository).save(Mockito.<TrainingModel>any());
@@ -232,11 +205,7 @@ class TrainingServiceImplDiffblueTest {
     void testUpdate3() {
         when(trainingRepository.existsById(Mockito.<Long>any())).thenReturn(false);
 
-        TrainingModel updatedTraining = new TrainingModel();
-        updatedTraining.setDateTraining(LocalDate.of(1970, 1, 1));
-        updatedTraining.setDistanceKm(1);
-        updatedTraining.setId(1L);
-        updatedTraining.setUserId(1L);
+        TrainingModel updatedTraining = StaticTraining.trainingModel1();
         assertThrows(NoEntityFoundException.class, () -> trainingServiceImpl.update(updatedTraining));
         verify(trainingRepository).existsById(Mockito.<Long>any());
     }
@@ -247,9 +216,9 @@ class TrainingServiceImplDiffblueTest {
     @Test
     void testGetAllTrainingsByUserId() {
         ArrayList<TrainingModel> trainingModelList = new ArrayList<>();
-        when(trainingRepository.findAllByUserId(Mockito.<Long>any())).thenReturn(trainingModelList);
-        List<TrainingModel> actualAllTrainingsByUserId = trainingServiceImpl.getAllTrainingsByUserId(1L);
-        verify(trainingRepository).findAllByUserId(Mockito.<Long>any());
+        when(trainingRepository.findAllByUserId(Mockito.<String>any())).thenReturn(trainingModelList);
+        List<TrainingModel> actualAllTrainingsByUserId = trainingServiceImpl.getAllTrainingsByUserId("1");
+        verify(trainingRepository).findAllByUserId(Mockito.<String>any());
         assertTrue(actualAllTrainingsByUserId.isEmpty());
         assertSame(trainingModelList, actualAllTrainingsByUserId);
     }
@@ -259,9 +228,9 @@ class TrainingServiceImplDiffblueTest {
      */
     @Test
     void testGetAllTrainingsByUserId2() {
-        when(trainingRepository.findAllByUserId(Mockito.<Long>any()))
+        when(trainingRepository.findAllByUserId(Mockito.<String>any()))
                 .thenThrow(new NoEntityFoundException("An error occurred"));
-        assertThrows(NoEntityFoundException.class, () -> trainingServiceImpl.getAllTrainingsByUserId(1L));
-        verify(trainingRepository).findAllByUserId(Mockito.<Long>any());
+        assertThrows(NoEntityFoundException.class, () -> trainingServiceImpl.getAllTrainingsByUserId("1"));
+        verify(trainingRepository).findAllByUserId(Mockito.<String>any());
     }
 }

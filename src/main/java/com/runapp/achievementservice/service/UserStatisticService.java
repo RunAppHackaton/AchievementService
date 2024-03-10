@@ -10,13 +10,13 @@ public interface UserStatisticService {
 
     List<UserStatisticModel> getAllProgress();
 
-    void deleteTrackingUserStatistics(Long userId);
+    void deleteTrackingUserStatistics(String userId);
 
-    UserStatisticModel getCurrentProgressById(Long userId);
+    UserStatisticModel getCurrentProgressById(String userId);
 
     UserStatisticModel updateProgress(UserStatisticModel updatedProgress);
 
-    void startTrackingUserStatisticsIfNone(Long userId);
+    void startTrackingUserStatisticsIfNone(String userId);
 
     void addTrainingInStatistic(TrainingModel trainingModel);
 }

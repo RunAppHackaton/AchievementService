@@ -3,7 +3,6 @@ package com.runapp.achievementservice.service.serviceImpl;
 import com.runapp.achievementservice.exception.NoEntityFoundException;
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.repository.GoalRepository;
-import com.runapp.achievementservice.util.supportClasses.UserExistHandler;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +15,11 @@ import java.util.List;
 public class GoalServiceImpl implements com.runapp.achievementservice.service.GoalService {
 
     private final GoalRepository goalRepository;
-    private final UserExistHandler userExistHandler;
     private static final Logger LOGGER = LoggerFactory.getLogger(GoalServiceImpl.class);
 
     @Override
     public GoalModel add(GoalModel entity) {
         LOGGER.info("Goal add: {}", entity);
-        userExistHandler.checkUserExist(entity.getUserId());
         return goalRepository.save(entity);
     }
 
@@ -52,7 +49,6 @@ public class GoalServiceImpl implements com.runapp.achievementservice.service.Go
     @Override
     public GoalModel update(GoalModel entity) {
         LOGGER.info("Goal update: {}", entity);
-        userExistHandler.checkUserExist(entity.getUserId());
         if (goalRepository.existsById(entity.getId())) {
             return goalRepository.save(entity);
         } else {

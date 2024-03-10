@@ -84,7 +84,7 @@ public class TrainingServiceImpl implements CrudOperations<TrainingModel> {
     }
 
     @Cacheable(value = "achievement-trainings-by-user-id", key = "#userId")
-    public List<TrainingModel> getAllTrainingsByUserId(Long userId) {
+    public List<TrainingModel> getAllTrainingsByUserId(String userId) {
         LOGGER.info("Training get all by UserId: {}", userId);
         return trainingRepository.findAllByUserId(userId);
     }

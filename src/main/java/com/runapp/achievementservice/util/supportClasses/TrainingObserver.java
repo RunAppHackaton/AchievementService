@@ -24,13 +24,13 @@ public class TrainingObserver {
     //////////////////////Create Observer//////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
-    public void createNewObserverForUserGoals(Long userId, UserStatisticModel model) {
+    public void createNewObserverForUserGoals(String userId, UserStatisticModel model) {
         createObserverForCheckPerWeek(userId, model);
         createObserverForCheckPerMonth(userId, model);
         createObserverForCheckPerYear(userId, model);
     }
 
-    private void createObserverForCheckPerWeek(Long userId, UserStatisticModel model) {
+    private void createObserverForCheckPerWeek(String userId, UserStatisticModel model) {
         String taskName = TASK_PREFIX_FOR_WORKOUT_EVERY_WEEK + userId;
 
         Runnable taskAction = () -> {
@@ -43,7 +43,7 @@ public class TrainingObserver {
         schedulerService.scheduleTask(taskName, interval, taskAction);
     }
 
-    private void createObserverForCheckPerMonth(Long userId, UserStatisticModel model) {
+    private void createObserverForCheckPerMonth(String userId, UserStatisticModel model) {
         String taskName = TASK_PREFIX_FOR_WORKOUT_EVERY_MONTH + userId;
 
         Runnable taskAction = () -> {
@@ -56,7 +56,7 @@ public class TrainingObserver {
         schedulerService.scheduleTask(taskName, interval, taskAction);
     }
 
-    private void createObserverForCheckPerYear(Long userId, UserStatisticModel model) {
+    private void createObserverForCheckPerYear(String userId, UserStatisticModel model) {
         String taskName = TASK_PREFIX_FOR_WORKOUT_EVERY_YEAR + userId;
 
         Runnable taskAction = () -> {
@@ -73,7 +73,7 @@ public class TrainingObserver {
     //////////////////////Delete Observer//////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
-    public void deleteObserverForUserAchievements(Long userId) {
+    public void deleteObserverForUserAchievements(String userId) {
         schedulerService.cancelTask(TASK_PREFIX_FOR_WORKOUT_EVERY_WEEK + userId);
         schedulerService.cancelTask(TASK_PREFIX_FOR_WORKOUT_EVERY_MONTH + userId);
         schedulerService.cancelTask(TASK_PREFIX_FOR_WORKOUT_EVERY_YEAR + userId);

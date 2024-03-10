@@ -99,7 +99,7 @@ class TrainingResponseDiffblueTest {
     @Test
     void testEquals6() {
         TrainingResponse trainingResponse = new TrainingResponse();
-        trainingResponse.setUserId(1L);
+        trainingResponse.setUserId("1");
         assertNotEquals(trainingResponse, new TrainingResponse());
     }
 
@@ -123,7 +123,7 @@ class TrainingResponseDiffblueTest {
         TrainingResponse trainingResponse = new TrainingResponse();
 
         TrainingResponse trainingResponse2 = new TrainingResponse();
-        trainingResponse2.setUserId(1L);
+        trainingResponse2.setUserId("1");
         assertNotEquals(trainingResponse, trainingResponse2);
     }
 
@@ -158,10 +158,10 @@ class TrainingResponseDiffblueTest {
     @Test
     void testEquals10() {
         TrainingResponse trainingResponse = new TrainingResponse();
-        trainingResponse.setUserId(1L);
+        trainingResponse.setUserId("1");
 
         TrainingResponse trainingResponse2 = new TrainingResponse();
-        trainingResponse2.setUserId(1L);
+        trainingResponse2.setUserId("1");
         assertEquals(trainingResponse, trainingResponse2);
         int expectedHashCodeResult = trainingResponse.hashCode();
         assertEquals(expectedHashCodeResult, trainingResponse2.hashCode());
@@ -192,7 +192,7 @@ class TrainingResponseDiffblueTest {
         LocalDate training_date = LocalDate.of(1970, 1, 1);
         trainingResponse.setTraining_date(training_date);
         trainingResponse.setTraining_duration(null);
-        trainingResponse.setUserId(1L);
+        trainingResponse.setUserId("1");
         String actualToStringResult = trainingResponse.toString();
         int actualDistance_km = trainingResponse.getDistance_km();
         trainingResponse.getPace();
@@ -202,7 +202,7 @@ class TrainingResponseDiffblueTest {
                 "TrainingResponse(training_date=1970-01-01, distance_km=1, training_duration=null, pace=null," + " userId=1)",
                 actualToStringResult);
         assertEquals(1, actualDistance_km);
-        assertEquals(1L, trainingResponse.getUserId().longValue());
+        assertEquals("1", trainingResponse.getUserId());
         assertSame(training_date, actualTraining_date);
     }
 }

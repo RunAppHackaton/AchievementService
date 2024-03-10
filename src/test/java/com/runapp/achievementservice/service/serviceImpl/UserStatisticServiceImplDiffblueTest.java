@@ -68,11 +68,11 @@ class UserStatisticServiceImplDiffblueTest {
      */
     @Test
     void testDeleteTrackingUserStatistics() {
-        doNothing().when(userStatisticRepository).deleteById(Mockito.<Long>any());
-        doNothing().when(trainingObserver).deleteObserverForUserAchievements(Mockito.<Long>any());
-        userStatisticServiceImpl.deleteTrackingUserStatistics(1L);
-        verify(trainingObserver).deleteObserverForUserAchievements(Mockito.<Long>any());
-        verify(userStatisticRepository).deleteById(Mockito.<Long>any());
+        doNothing().when(userStatisticRepository).deleteById(Mockito.<String>any());
+        doNothing().when(trainingObserver).deleteObserverForUserAchievements(Mockito.<String>any());
+        userStatisticServiceImpl.deleteTrackingUserStatistics("1");
+        verify(trainingObserver).deleteObserverForUserAchievements(Mockito.<String>any());
+        verify(userStatisticRepository).deleteById(Mockito.<String>any());
     }
 
     /**
@@ -82,9 +82,9 @@ class UserStatisticServiceImplDiffblueTest {
     @Test
     void testDeleteTrackingUserStatistics2() {
         doThrow(new NoEntityFoundException("An error occurred")).when(trainingObserver)
-                .deleteObserverForUserAchievements(Mockito.<Long>any());
-        assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.deleteTrackingUserStatistics(1L));
-        verify(trainingObserver).deleteObserverForUserAchievements(Mockito.<Long>any());
+                .deleteObserverForUserAchievements(Mockito.<String>any());
+        assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.deleteTrackingUserStatistics("1"));
+        verify(trainingObserver).deleteObserverForUserAchievements(Mockito.<String>any());
     }
 
     /**
@@ -99,11 +99,11 @@ class UserStatisticServiceImplDiffblueTest {
         userStatisticModel.setNumberOfWorkoutsPerWeek(1L);
         userStatisticModel.setNumberOfWorkoutsPerYear(1L);
         userStatisticModel.setTotalNumberOfWorkoutsForAllTime(1L);
-        userStatisticModel.setUserId(1L);
+        userStatisticModel.setUserId("1");
         Optional<UserStatisticModel> ofResult = Optional.of(userStatisticModel);
-        when(userStatisticRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
-        UserStatisticModel actualCurrentProgressById = userStatisticServiceImpl.getCurrentProgressById(1L);
-        verify(userStatisticRepository).findById(Mockito.<Long>any());
+        when(userStatisticRepository.findById(Mockito.<String>any())).thenReturn(ofResult);
+        UserStatisticModel actualCurrentProgressById = userStatisticServiceImpl.getCurrentProgressById("1");
+        verify(userStatisticRepository).findById(Mockito.<String>any());
         assertSame(userStatisticModel, actualCurrentProgressById);
     }
 
@@ -114,9 +114,9 @@ class UserStatisticServiceImplDiffblueTest {
     @Test
     void testGetCurrentProgressById2() {
         Optional<UserStatisticModel> emptyResult = Optional.empty();
-        when(userStatisticRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
-        assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.getCurrentProgressById(1L));
-        verify(userStatisticRepository).findById(Mockito.<Long>any());
+        when(userStatisticRepository.findById(Mockito.<String>any())).thenReturn(emptyResult);
+        assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.getCurrentProgressById("1"));
+        verify(userStatisticRepository).findById(Mockito.<String>any());
     }
 
     /**
@@ -125,10 +125,10 @@ class UserStatisticServiceImplDiffblueTest {
      */
     @Test
     void testGetCurrentProgressById3() {
-        when(userStatisticRepository.findById(Mockito.<Long>any()))
+        when(userStatisticRepository.findById(Mockito.<String>any()))
                 .thenThrow(new NoEntityFoundException("An error occurred"));
-        assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.getCurrentProgressById(1L));
-        verify(userStatisticRepository).findById(Mockito.<Long>any());
+        assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.getCurrentProgressById("1"));
+        verify(userStatisticRepository).findById(Mockito.<String>any());
     }
 
     /**
@@ -143,9 +143,9 @@ class UserStatisticServiceImplDiffblueTest {
         userStatisticModel.setNumberOfWorkoutsPerWeek(1L);
         userStatisticModel.setNumberOfWorkoutsPerYear(1L);
         userStatisticModel.setTotalNumberOfWorkoutsForAllTime(1L);
-        userStatisticModel.setUserId(1L);
+        userStatisticModel.setUserId("1");
         when(userStatisticRepository.save(Mockito.<UserStatisticModel>any())).thenReturn(userStatisticModel);
-        when(userStatisticRepository.existsById(Mockito.<Long>any())).thenReturn(true);
+        when(userStatisticRepository.existsById(Mockito.<String>any())).thenReturn(true);
 
         UserStatisticModel updatedProgress = new UserStatisticModel();
         updatedProgress.setNumberOfTrainingSessionsOverTime(1L);
@@ -153,9 +153,9 @@ class UserStatisticServiceImplDiffblueTest {
         updatedProgress.setNumberOfWorkoutsPerWeek(1L);
         updatedProgress.setNumberOfWorkoutsPerYear(1L);
         updatedProgress.setTotalNumberOfWorkoutsForAllTime(1L);
-        updatedProgress.setUserId(1L);
+        updatedProgress.setUserId("1");
         UserStatisticModel actualUpdateProgressResult = userStatisticServiceImpl.updateProgress(updatedProgress);
-        verify(userStatisticRepository).existsById(Mockito.<Long>any());
+        verify(userStatisticRepository).existsById(Mockito.<String>any());
         verify(userStatisticRepository).save(Mockito.<UserStatisticModel>any());
         assertSame(userStatisticModel, actualUpdateProgressResult);
     }
@@ -168,7 +168,7 @@ class UserStatisticServiceImplDiffblueTest {
     void testUpdateProgress2() {
         when(userStatisticRepository.save(Mockito.<UserStatisticModel>any()))
                 .thenThrow(new NoEntityFoundException("An error occurred"));
-        when(userStatisticRepository.existsById(Mockito.<Long>any())).thenReturn(true);
+        when(userStatisticRepository.existsById(Mockito.<String>any())).thenReturn(true);
 
         UserStatisticModel updatedProgress = new UserStatisticModel();
         updatedProgress.setNumberOfTrainingSessionsOverTime(1L);
@@ -176,9 +176,9 @@ class UserStatisticServiceImplDiffblueTest {
         updatedProgress.setNumberOfWorkoutsPerWeek(1L);
         updatedProgress.setNumberOfWorkoutsPerYear(1L);
         updatedProgress.setTotalNumberOfWorkoutsForAllTime(1L);
-        updatedProgress.setUserId(1L);
+        updatedProgress.setUserId("1");
         assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.updateProgress(updatedProgress));
-        verify(userStatisticRepository).existsById(Mockito.<Long>any());
+        verify(userStatisticRepository).existsById(Mockito.<String>any());
         verify(userStatisticRepository).save(Mockito.<UserStatisticModel>any());
     }
 
@@ -188,7 +188,7 @@ class UserStatisticServiceImplDiffblueTest {
      */
     @Test
     void testUpdateProgress3() {
-        when(userStatisticRepository.existsById(Mockito.<Long>any())).thenReturn(false);
+        when(userStatisticRepository.existsById(Mockito.<String>any())).thenReturn(false);
 
         UserStatisticModel updatedProgress = new UserStatisticModel();
         updatedProgress.setNumberOfTrainingSessionsOverTime(1L);
@@ -196,9 +196,9 @@ class UserStatisticServiceImplDiffblueTest {
         updatedProgress.setNumberOfWorkoutsPerWeek(1L);
         updatedProgress.setNumberOfWorkoutsPerYear(1L);
         updatedProgress.setTotalNumberOfWorkoutsForAllTime(1L);
-        updatedProgress.setUserId(1L);
+        updatedProgress.setUserId("1");
         assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.updateProgress(updatedProgress));
-        verify(userStatisticRepository).existsById(Mockito.<Long>any());
+        verify(userStatisticRepository).existsById(Mockito.<String>any());
     }
 
     /**
@@ -207,9 +207,9 @@ class UserStatisticServiceImplDiffblueTest {
      */
     @Test
     void testStartTrackingUserStatisticsIfNone() {
-        when(userStatisticRepository.existsById(Mockito.<Long>any())).thenReturn(true);
-        userStatisticServiceImpl.startTrackingUserStatisticsIfNone(1L);
-        verify(userStatisticRepository).existsById(Mockito.<Long>any());
+        when(userStatisticRepository.existsById(Mockito.<String>any())).thenReturn(true);
+        userStatisticServiceImpl.startTrackingUserStatisticsIfNone("1");
+        verify(userStatisticRepository).existsById(Mockito.<String>any());
     }
 
     /**
@@ -224,7 +224,7 @@ class UserStatisticServiceImplDiffblueTest {
         userStatisticModel.setNumberOfWorkoutsPerWeek(1L);
         userStatisticModel.setNumberOfWorkoutsPerYear(1L);
         userStatisticModel.setTotalNumberOfWorkoutsForAllTime(1L);
-        userStatisticModel.setUserId(1L);
+        userStatisticModel.setUserId("1");
 
         UserStatisticModel userStatisticModel2 = new UserStatisticModel();
         userStatisticModel2.setNumberOfTrainingSessionsOverTime(1L);
@@ -232,17 +232,17 @@ class UserStatisticServiceImplDiffblueTest {
         userStatisticModel2.setNumberOfWorkoutsPerWeek(1L);
         userStatisticModel2.setNumberOfWorkoutsPerYear(1L);
         userStatisticModel2.setTotalNumberOfWorkoutsForAllTime(1L);
-        userStatisticModel2.setUserId(1L);
+        userStatisticModel2.setUserId("1");
         Optional<UserStatisticModel> ofResult = Optional.of(userStatisticModel2);
-        when(userStatisticRepository.existsById(Mockito.<Long>any())).thenReturn(false);
+        when(userStatisticRepository.existsById(Mockito.<String>any())).thenReturn(false);
         when(userStatisticRepository.save(Mockito.<UserStatisticModel>any())).thenReturn(userStatisticModel);
-        when(userStatisticRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+        when(userStatisticRepository.findById(Mockito.<String>any())).thenReturn(ofResult);
         doNothing().when(trainingObserver)
-                .createNewObserverForUserGoals(Mockito.<Long>any(), Mockito.<UserStatisticModel>any());
-        userStatisticServiceImpl.startTrackingUserStatisticsIfNone(1L);
-        verify(trainingObserver).createNewObserverForUserGoals(Mockito.<Long>any(), Mockito.<UserStatisticModel>any());
-        verify(userStatisticRepository).existsById(Mockito.<Long>any());
-        verify(userStatisticRepository).findById(Mockito.<Long>any());
+                .createNewObserverForUserGoals(Mockito.<String>any(), Mockito.<UserStatisticModel>any());
+        userStatisticServiceImpl.startTrackingUserStatisticsIfNone("1");
+        verify(trainingObserver).createNewObserverForUserGoals(Mockito.<String>any(), Mockito.<UserStatisticModel>any());
+        verify(userStatisticRepository).existsById(Mockito.<String>any());
+        verify(userStatisticRepository).findById(Mockito.<String>any());
         verify(userStatisticRepository).save(Mockito.<UserStatisticModel>any());
     }
 
@@ -258,14 +258,14 @@ class UserStatisticServiceImplDiffblueTest {
         userStatisticModel.setNumberOfWorkoutsPerWeek(1L);
         userStatisticModel.setNumberOfWorkoutsPerYear(1L);
         userStatisticModel.setTotalNumberOfWorkoutsForAllTime(1L);
-        userStatisticModel.setUserId(1L);
-        when(userStatisticRepository.existsById(Mockito.<Long>any())).thenReturn(false);
+        userStatisticModel.setUserId("1");
+        when(userStatisticRepository.existsById(Mockito.<String>any())).thenReturn(false);
         when(userStatisticRepository.save(Mockito.<UserStatisticModel>any())).thenReturn(userStatisticModel);
         Optional<UserStatisticModel> emptyResult = Optional.empty();
-        when(userStatisticRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
-        assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.startTrackingUserStatisticsIfNone(1L));
-        verify(userStatisticRepository).existsById(Mockito.<Long>any());
-        verify(userStatisticRepository).findById(Mockito.<Long>any());
+        when(userStatisticRepository.findById(Mockito.<String>any())).thenReturn(emptyResult);
+        assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.startTrackingUserStatisticsIfNone("1"));
+        verify(userStatisticRepository).existsById(Mockito.<String>any());
+        verify(userStatisticRepository).findById(Mockito.<String>any());
         verify(userStatisticRepository).save(Mockito.<UserStatisticModel>any());
     }
 
@@ -281,7 +281,7 @@ class UserStatisticServiceImplDiffblueTest {
         userStatisticModel.setNumberOfWorkoutsPerWeek(1L);
         userStatisticModel.setNumberOfWorkoutsPerYear(1L);
         userStatisticModel.setTotalNumberOfWorkoutsForAllTime(1L);
-        userStatisticModel.setUserId(1L);
+        userStatisticModel.setUserId("1");
 
         UserStatisticModel userStatisticModel2 = new UserStatisticModel();
         userStatisticModel2.setNumberOfTrainingSessionsOverTime(1L);
@@ -289,17 +289,17 @@ class UserStatisticServiceImplDiffblueTest {
         userStatisticModel2.setNumberOfWorkoutsPerWeek(1L);
         userStatisticModel2.setNumberOfWorkoutsPerYear(1L);
         userStatisticModel2.setTotalNumberOfWorkoutsForAllTime(1L);
-        userStatisticModel2.setUserId(1L);
+        userStatisticModel2.setUserId("1");
         Optional<UserStatisticModel> ofResult = Optional.of(userStatisticModel2);
-        when(userStatisticRepository.existsById(Mockito.<Long>any())).thenReturn(false);
+        when(userStatisticRepository.existsById(Mockito.<String>any())).thenReturn(false);
         when(userStatisticRepository.save(Mockito.<UserStatisticModel>any())).thenReturn(userStatisticModel);
-        when(userStatisticRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+        when(userStatisticRepository.findById(Mockito.<String>any())).thenReturn(ofResult);
         doThrow(new NoEntityFoundException("An error occurred")).when(trainingObserver)
-                .createNewObserverForUserGoals(Mockito.<Long>any(), Mockito.<UserStatisticModel>any());
-        assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.startTrackingUserStatisticsIfNone(1L));
-        verify(trainingObserver).createNewObserverForUserGoals(Mockito.<Long>any(), Mockito.<UserStatisticModel>any());
-        verify(userStatisticRepository).existsById(Mockito.<Long>any());
-        verify(userStatisticRepository).findById(Mockito.<Long>any());
+                .createNewObserverForUserGoals(Mockito.<String>any(), Mockito.<UserStatisticModel>any());
+        assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.startTrackingUserStatisticsIfNone("1"));
+        verify(trainingObserver).createNewObserverForUserGoals(Mockito.<String>any(), Mockito.<UserStatisticModel>any());
+        verify(userStatisticRepository).existsById(Mockito.<String>any());
+        verify(userStatisticRepository).findById(Mockito.<String>any());
         verify(userStatisticRepository).save(Mockito.<UserStatisticModel>any());
     }
 
@@ -310,14 +310,14 @@ class UserStatisticServiceImplDiffblueTest {
     @Test
     void testAddTrainingInStatistic() {
         Optional<UserStatisticModel> emptyResult = Optional.empty();
-        when(userStatisticRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
+        when(userStatisticRepository.findById(Mockito.<String>any())).thenReturn(emptyResult);
 
         TrainingModel trainingModel = new TrainingModel();
         trainingModel.setDateTraining(LocalDate.of(1970, 1, 1));
         trainingModel.setDistanceKm(1);
         trainingModel.setId(1L);
-        trainingModel.setUserId(1L);
+        trainingModel.setUserId("1");
         assertThrows(NoEntityFoundException.class, () -> userStatisticServiceImpl.addTrainingInStatistic(trainingModel));
-        verify(userStatisticRepository).findById(Mockito.<Long>any());
+        verify(userStatisticRepository).findById(Mockito.<String>any());
     }
 }

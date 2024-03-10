@@ -41,7 +41,6 @@ com\runapp\achievementservice\service\serviceImpl\TrainingServiceImpl.class
 com\runapp\achievementservice\dto\response\UserResponse.class
 com\runapp\achievementservice\feignClient\StorageServiceClient.class
 com\runapp\achievementservice\util\supportClasses\goalUpdater\TotalTrainingTimeStrategyUpdate.class
-com\runapp\achievementservice\util\supportClasses\UserExistHandler.class
 com\runapp\achievementservice\util\enums\GoalTypeEnum.class
 com\runapp\achievementservice\controller\AchievementController.class
 com\runapp\achievementservice\util\supportClasses\GoalCompletionCalculator.class
@@ -53,6 +52,7 @@ com\runapp\achievementservice\service\RarityService.class
 com\runapp\achievementservice\util\supportClasses\goalUpdater\GoalUpdater.class
 com\runapp\achievementservice\model\RarityModel.class
 com\runapp\achievementservice\dto\response\TrainingResponse.class
+com\runapp\achievementservice\config\RedisConfig.class
 com\runapp\achievementservice\dto\request\RarityRequest.class
 com\runapp\achievementservice\service\serviceImpl\RarityServiceImpl.class
 com\runapp\achievementservice\util\goalHandler\TotalTrainingTimeHandler.class

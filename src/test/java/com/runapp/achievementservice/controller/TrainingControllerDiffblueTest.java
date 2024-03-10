@@ -65,7 +65,7 @@ class TrainingControllerDiffblueTest {
      */
     @Test
     void testGetAllTrainingsByUserId() throws Exception {
-        when(trainingServiceImpl.getAllTrainingsByUserId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
+        when(trainingServiceImpl.getAllTrainingsByUserId(Mockito.<String>any())).thenReturn(new ArrayList<>());
         when(dtoMapper.toResponseList(Mockito.<List<TrainingModel>>any())).thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trainings/user/{userId}", 1L);
         mockMvc

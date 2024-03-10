@@ -24,7 +24,6 @@ import com.runapp.achievementservice.staticObject.ToJson;
 import com.runapp.achievementservice.util.enums.GoalStatusEnum;
 import com.runapp.achievementservice.util.enums.GoalTypeEnum;
 import com.runapp.achievementservice.util.goalHandler.GoalFactoryHandler;
-import com.runapp.achievementservice.util.supportClasses.UserExistHandler;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -102,7 +101,7 @@ class GoalControllerDiffblueTest {
         when(goalModel.getGoalType()).thenReturn(goalTypeModel);
         when(goalModel.getCompletionPercentage()).thenReturn(10.0f);
         when(goalModel.getId()).thenReturn(1L);
-        when(goalModel.getUserId()).thenReturn(1L);
+        when(goalModel.getUserId()).thenReturn("1");
         doNothing().when(goalModel).setCompletionPercentage(anyFloat());
         doNothing().when(goalModel).setFinishedDate(Mockito.<LocalDateTime>any());
         doNothing().when(goalModel).setGoal(Mockito.<String>any());
@@ -110,7 +109,7 @@ class GoalControllerDiffblueTest {
         doNothing().when(goalModel).setGoalType(Mockito.<GoalTypeModel>any());
         doNothing().when(goalModel).setId(Mockito.<Long>any());
         doNothing().when(goalModel).setStartDate(Mockito.<LocalDateTime>any());
-        doNothing().when(goalModel).setUserId(Mockito.<Long>any());
+        doNothing().when(goalModel).setUserId(Mockito.<String>any());
         goalModel.setCompletionPercentage(10.0f);
         goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
         goalModel.setGoal("Goal");
@@ -118,21 +117,20 @@ class GoalControllerDiffblueTest {
         goalModel.setGoalType(goalType);
         goalModel.setId(1L);
         goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        goalModel.setUserId("1");
         GoalRepository goalRepository = mock(GoalRepository.class);
         when(goalRepository.save(Mockito.<GoalModel>any())).thenReturn(goalModel);
         when(goalRepository.existsById(Mockito.<Long>any())).thenReturn(true);
         ProfileServiceClient profileServiceClient = mock(ProfileServiceClient.class);
-        when(profileServiceClient.getUserById(Mockito.<Long>any())).thenReturn(null);
-        GoalServiceImpl goalServiceImpl = new GoalServiceImpl(goalRepository, new UserExistHandler(profileServiceClient));
+        when(profileServiceClient.getUserById(Mockito.<String>any())).thenReturn(null);
+        GoalServiceImpl goalServiceImpl = new GoalServiceImpl(goalRepository);
 
         GoalFactoryHandler goalFactoryHandler = new GoalFactoryHandler();
         GoalController goalController = new GoalController(goalServiceImpl,
                 new GoalDtoMapper(goalFactoryHandler, new SessionDelegatorBaseImpl(null)));
 
         GoalModel updatedGoal = StaticGoal.goalModel1();
-        ResponseEntity<GoalResponse> actualUpdateGoalResult = goalController.updateGoal(1L, updatedGoal);
-        verify(profileServiceClient).getUserById(Mockito.<Long>any());
+        ResponseEntity<GoalResponse> actualUpdateGoalResult = goalController.updateGoal(1L, updatedGoal, "1");
         verify(goalModel).getCompletionPercentage();
         verify(goalModel).getFinishedDate();
         verify(goalModel).getGoal();
@@ -148,7 +146,7 @@ class GoalControllerDiffblueTest {
         verify(goalModel).setGoalType(Mockito.<GoalTypeModel>any());
         verify(goalModel).setId(Mockito.<Long>any());
         verify(goalModel).setStartDate(Mockito.<LocalDateTime>any());
-        verify(goalModel).setUserId(Mockito.<Long>any());
+        verify(goalModel).setUserId(Mockito.<String>any());
         verify(goalStatus).setGoalModels(Mockito.<List<GoalModel>>any());
         verify(goalStatus).setStatusEnum(Mockito.<GoalStatusEnum>any());
         verify(goalType).setGoalModels(Mockito.<List<GoalModel>>any());
@@ -161,7 +159,6 @@ class GoalControllerDiffblueTest {
         assertEquals("Goal", body.getGoal());
         assertEquals(10.0f, body.getCompletionPercentage());
         assertEquals(1L, body.getId().longValue());
-        assertEquals(1L, body.getUserId().longValue());
         assertEquals(1L, updatedGoal.getId().longValue());
         assertEquals(200, actualUpdateGoalResult.getStatusCodeValue());
         assertEquals(GoalStatusEnum.IN_PROGRESS, body.getGoal_status());
@@ -201,7 +198,7 @@ class GoalControllerDiffblueTest {
         when(goalModel.getGoalType()).thenReturn(goalTypeModel);
         when(goalModel.getCompletionPercentage()).thenReturn(10.0f);
         when(goalModel.getId()).thenReturn(1L);
-        when(goalModel.getUserId()).thenReturn(1L);
+        when(goalModel.getUserId()).thenReturn("1");
         doNothing().when(goalModel).setCompletionPercentage(anyFloat());
         doNothing().when(goalModel).setFinishedDate(Mockito.<LocalDateTime>any());
         doNothing().when(goalModel).setGoal(Mockito.<String>any());
@@ -209,7 +206,7 @@ class GoalControllerDiffblueTest {
         doNothing().when(goalModel).setGoalType(Mockito.<GoalTypeModel>any());
         doNothing().when(goalModel).setId(Mockito.<Long>any());
         doNothing().when(goalModel).setStartDate(Mockito.<LocalDateTime>any());
-        doNothing().when(goalModel).setUserId(Mockito.<Long>any());
+        doNothing().when(goalModel).setUserId(Mockito.<String>any());
         goalModel.setCompletionPercentage(10.0f);
         goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
         goalModel.setGoal("Goal");
@@ -217,13 +214,11 @@ class GoalControllerDiffblueTest {
         goalModel.setGoalType(goalType);
         goalModel.setId(1L);
         goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        goalModel.setUserId("1");
         GoalRepository goalRepository = mock(GoalRepository.class);
         when(goalRepository.save(Mockito.<GoalModel>any())).thenReturn(goalModel);
         when(goalRepository.existsById(Mockito.<Long>any())).thenReturn(true);
-        UserExistHandler userExistHandler = mock(UserExistHandler.class);
-        doNothing().when(userExistHandler).checkUserExist(Mockito.<Long>any());
-        GoalServiceImpl goalServiceImpl = new GoalServiceImpl(goalRepository, userExistHandler);
+        GoalServiceImpl goalServiceImpl = new GoalServiceImpl(goalRepository);
 
         GoalFactoryHandler goalFactoryHandler = new GoalFactoryHandler();
         GoalController goalController = new GoalController(goalServiceImpl,
@@ -231,7 +226,7 @@ class GoalControllerDiffblueTest {
 
         GoalModel updatedGoal = StaticGoal.goalModel1();
 
-        ResponseEntity<GoalResponse> actualUpdateGoalResult = goalController.updateGoal(1L, updatedGoal);
+        ResponseEntity<GoalResponse> actualUpdateGoalResult = goalController.updateGoal(1L, updatedGoal,"1");
         verify(goalModel).getCompletionPercentage();
         verify(goalModel).getFinishedDate();
         verify(goalModel).getGoal();
@@ -247,12 +242,11 @@ class GoalControllerDiffblueTest {
         verify(goalModel).setGoalType(Mockito.<GoalTypeModel>any());
         verify(goalModel).setId(Mockito.<Long>any());
         verify(goalModel).setStartDate(Mockito.<LocalDateTime>any());
-        verify(goalModel).setUserId(Mockito.<Long>any());
+        verify(goalModel).setUserId(Mockito.<String>any());
         verify(goalStatus).setGoalModels(Mockito.<List<GoalModel>>any());
         verify(goalStatus).setStatusEnum(Mockito.<GoalStatusEnum>any());
         verify(goalType).setGoalModels(Mockito.<List<GoalModel>>any());
         verify(goalType).setGoalTypeEnum(Mockito.<GoalTypeEnum>any());
-        verify(userExistHandler).checkUserExist(Mockito.<Long>any());
         verify(goalRepository).existsById(Mockito.<Long>any());
         verify(goalRepository).save(Mockito.<GoalModel>any());
         GoalResponse body = actualUpdateGoalResult.getBody();
@@ -261,7 +255,7 @@ class GoalControllerDiffblueTest {
         assertEquals("Goal", body.getGoal());
         assertEquals(10.0f, body.getCompletionPercentage());
         assertEquals(1L, body.getId().longValue());
-        assertEquals(1L, body.getUserId().longValue());
+        assertEquals("1", body.getUserId());
         assertEquals(1L, updatedGoal.getId().longValue());
         assertEquals(200, actualUpdateGoalResult.getStatusCodeValue());
         assertEquals(GoalStatusEnum.IN_PROGRESS, body.getGoal_status());
@@ -285,7 +279,7 @@ class GoalControllerDiffblueTest {
 
 
         GoalModel updatedGoal = StaticGoal.goalModel1();
-        ResponseEntity<GoalResponse> actualUpdateGoalResult = goalController.updateGoal(1L, updatedGoal);
+        ResponseEntity<GoalResponse> actualUpdateGoalResult = goalController.updateGoal(1L, updatedGoal, "1");
         verify(goalServiceImpl).update(Mockito.<GoalModel>any());
         GoalResponse body = actualUpdateGoalResult.getBody();
         assertEquals("00:00", body.getFinishedDate().toLocalTime().toString());
@@ -293,7 +287,7 @@ class GoalControllerDiffblueTest {
         assertEquals("Goal", body.getGoal());
         assertEquals(10.0f, body.getCompletionPercentage());
         assertEquals(1L, body.getId().longValue());
-        assertEquals(1L, body.getUserId().longValue());
+        assertEquals("1", body.getUserId());
         assertEquals(1L, updatedGoal.getId().longValue());
         assertEquals(200, actualUpdateGoalResult.getStatusCodeValue());
         assertEquals(GoalStatusEnum.IN_PROGRESS, body.getGoal_status());

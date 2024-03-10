@@ -69,7 +69,8 @@ public class GoalController {
             }
     )
     @PostMapping
-    public ResponseEntity<GoalResponse> saveGoal(@RequestBody GoalRequest goalRequest) {
+    public ResponseEntity<GoalResponse> saveGoal(@RequestBody GoalRequest goalRequest, @RequestHeader("X-UserId") String userId) {
+        goalRequest.setUserId(userId);
         GoalModel goalModel = goalServiceImpl.add(goalDtoMapper.toModel(goalRequest));
         GoalResponse goalResponse = goalDtoMapper.toResponse(goalModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(goalResponse);
@@ -88,8 +89,9 @@ public class GoalController {
             }
     )
     @PutMapping("/{id}")
-    public ResponseEntity<GoalResponse> updateGoal(@PathVariable long id, @RequestBody GoalModel updatedGoal) {
+    public ResponseEntity<GoalResponse> updateGoal(@PathVariable long id, @RequestBody GoalModel updatedGoal, @RequestHeader("X-UserId") String userId) {
         updatedGoal.setId(id);
+        updatedGoal.setUserId(userId);
         GoalResponse goalResponse = goalDtoMapper.toResponse(goalServiceImpl.update(updatedGoal));
         return new ResponseEntity<>(goalResponse, HttpStatus.OK);
     }

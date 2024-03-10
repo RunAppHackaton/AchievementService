@@ -15,7 +15,7 @@ public interface TrainingRepository extends JpaRepository<TrainingModel, Long> {
     @Query("SELECT t FROM TrainingModel t ORDER BY t.averagePace ASC NULLS LAST")
     TrainingModel findTrainingWithMinAveragePace();
 
-    boolean existsByUserId(Long userId);
+    boolean existsByUserId(String userId);
 
-    List<TrainingModel> findAllByUserId(Long userId);
+    List<TrainingModel> findAllByUserId(String userId);
 }

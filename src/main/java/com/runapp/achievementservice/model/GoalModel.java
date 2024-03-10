@@ -22,7 +22,7 @@ public class GoalModel implements Serializable {
     private float completionPercentage;
 
     @Column(name = "user_id")
-    private Long userId;
+    private String userId;
 
     @ManyToOne
     @JoinColumn(name = "goal_type_id")

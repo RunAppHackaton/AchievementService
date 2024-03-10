@@ -18,6 +18,7 @@ import com.runapp.achievementservice.exception.NoEntityFoundException;
 import com.runapp.achievementservice.model.GoalModel;
 import com.runapp.achievementservice.model.GoalStatusModel;
 import com.runapp.achievementservice.model.GoalTypeModel;
+import com.runapp.achievementservice.staticObject.StaticGoal;
 import com.runapp.achievementservice.util.enums.GoalStatusEnum;
 import com.runapp.achievementservice.util.enums.GoalTypeEnum;
 import com.runapp.achievementservice.util.goalHandler.GoalFactoryHandler;
@@ -106,30 +107,14 @@ class GoalDtoMapperDiffblueTest {
      */
     @Test
     void testToResponse() {
-        GoalStatusModel goalStatus = new GoalStatusModel();
-        goalStatus.setGoalModels(new ArrayList<>());
-        goalStatus.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType = new GoalTypeModel();
-        goalType.setGoalModels(new ArrayList<>());
-        goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel goalModel = new GoalModel();
-        goalModel.setCompletionPercentage(10.0f);
-        goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setGoal("Goal");
-        goalModel.setGoalStatus(goalStatus);
-        goalModel.setGoalType(goalType);
-        goalModel.setId(1L);
-        goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        GoalModel goalModel = StaticGoal.goalModel1();
         GoalResponse actualToResponseResult = goalDtoMapper.toResponse(goalModel);
         assertEquals("00:00", actualToResponseResult.getStartDate().toLocalTime().toString());
         assertEquals("1970-01-01", actualToResponseResult.getFinishedDate().toLocalDate().toString());
         assertEquals("Goal", actualToResponseResult.getGoal());
         assertEquals(10.0f, actualToResponseResult.getCompletionPercentage());
         assertEquals(1L, actualToResponseResult.getId().longValue());
-        assertEquals(1L, actualToResponseResult.getUserId().longValue());
+        assertEquals("1", actualToResponseResult.getUserId());
         assertEquals(GoalStatusEnum.IN_PROGRESS, actualToResponseResult.getGoal_status());
         assertEquals(GoalTypeEnum.TOTAL_TRAINING_TIME, actualToResponseResult.getGoal_type());
     }
@@ -162,7 +147,7 @@ class GoalDtoMapperDiffblueTest {
         when(goalModel.getGoalType()).thenReturn(goalTypeModel);
         when(goalModel.getCompletionPercentage()).thenReturn(10.0f);
         when(goalModel.getId()).thenReturn(1L);
-        when(goalModel.getUserId()).thenReturn(1L);
+        when(goalModel.getUserId()).thenReturn("1");
         doNothing().when(goalModel).setCompletionPercentage(anyFloat());
         doNothing().when(goalModel).setFinishedDate(Mockito.<LocalDateTime>any());
         doNothing().when(goalModel).setGoal(Mockito.<String>any());
@@ -170,7 +155,7 @@ class GoalDtoMapperDiffblueTest {
         doNothing().when(goalModel).setGoalType(Mockito.<GoalTypeModel>any());
         doNothing().when(goalModel).setId(Mockito.<Long>any());
         doNothing().when(goalModel).setStartDate(Mockito.<LocalDateTime>any());
-        doNothing().when(goalModel).setUserId(Mockito.<Long>any());
+        doNothing().when(goalModel).setUserId(Mockito.<String>any());
         goalModel.setCompletionPercentage(10.0f);
         goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
         goalModel.setGoal("Goal");
@@ -178,7 +163,7 @@ class GoalDtoMapperDiffblueTest {
         goalModel.setGoalType(goalType);
         goalModel.setId(1L);
         goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        goalModel.setUserId("1");
         GoalResponse actualToResponseResult = goalDtoMapper.toResponse(goalModel);
         verify(goalModel).getCompletionPercentage();
         verify(goalModel).getFinishedDate();
@@ -195,13 +180,13 @@ class GoalDtoMapperDiffblueTest {
         verify(goalModel).setGoalType(Mockito.<GoalTypeModel>any());
         verify(goalModel).setId(Mockito.<Long>any());
         verify(goalModel).setStartDate(Mockito.<LocalDateTime>any());
-        verify(goalModel).setUserId(Mockito.<Long>any());
+        verify(goalModel).setUserId(Mockito.<String>any());
         assertEquals("00:00", actualToResponseResult.getStartDate().toLocalTime().toString());
         assertEquals("1970-01-01", actualToResponseResult.getFinishedDate().toLocalDate().toString());
         assertEquals("Goal", actualToResponseResult.getGoal());
         assertEquals(10.0f, actualToResponseResult.getCompletionPercentage());
         assertEquals(1L, actualToResponseResult.getId().longValue());
-        assertEquals(1L, actualToResponseResult.getUserId().longValue());
+        assertEquals("1", actualToResponseResult.getUserId());
         assertEquals(GoalStatusEnum.IN_PROGRESS, actualToResponseResult.getGoal_status());
         assertEquals(GoalTypeEnum.TOTAL_TRAINING_TIME, actualToResponseResult.getGoal_type());
     }
@@ -232,7 +217,7 @@ class GoalDtoMapperDiffblueTest {
         when(goalModel.getGoalType()).thenReturn(goalTypeModel);
         when(goalModel.getCompletionPercentage()).thenReturn(10.0f);
         when(goalModel.getId()).thenReturn(1L);
-        when(goalModel.getUserId()).thenReturn(1L);
+        when(goalModel.getUserId()).thenReturn("1");
         doNothing().when(goalModel).setCompletionPercentage(anyFloat());
         doNothing().when(goalModel).setFinishedDate(Mockito.<LocalDateTime>any());
         doNothing().when(goalModel).setGoal(Mockito.<String>any());
@@ -240,7 +225,7 @@ class GoalDtoMapperDiffblueTest {
         doNothing().when(goalModel).setGoalType(Mockito.<GoalTypeModel>any());
         doNothing().when(goalModel).setId(Mockito.<Long>any());
         doNothing().when(goalModel).setStartDate(Mockito.<LocalDateTime>any());
-        doNothing().when(goalModel).setUserId(Mockito.<Long>any());
+        doNothing().when(goalModel).setUserId(Mockito.<String>any());
         goalModel.setCompletionPercentage(10.0f);
         goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
         goalModel.setGoal("Goal");
@@ -248,7 +233,7 @@ class GoalDtoMapperDiffblueTest {
         goalModel.setGoalType(goalType);
         goalModel.setId(1L);
         goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        goalModel.setUserId("1");
         assertThrows(NoEntityFoundException.class, () -> goalDtoMapper.toResponse(goalModel));
         verify(goalModel).getCompletionPercentage();
         verify(goalModel).getGoalStatus();
@@ -263,7 +248,7 @@ class GoalDtoMapperDiffblueTest {
         verify(goalModel).setGoalType(Mockito.<GoalTypeModel>any());
         verify(goalModel).setId(Mockito.<Long>any());
         verify(goalModel).setStartDate(Mockito.<LocalDateTime>any());
-        verify(goalModel).setUserId(Mockito.<Long>any());
+        verify(goalModel).setUserId(Mockito.<String>any());
     }
 
     /**
@@ -279,23 +264,7 @@ class GoalDtoMapperDiffblueTest {
      */
     @Test
     void testToResponseList2() {
-        GoalStatusModel goalStatus = new GoalStatusModel();
-        goalStatus.setGoalModels(new ArrayList<>());
-        goalStatus.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
-
-        GoalTypeModel goalType = new GoalTypeModel();
-        goalType.setGoalModels(new ArrayList<>());
-        goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel goalModel = new GoalModel();
-        goalModel.setCompletionPercentage(10.0f);
-        goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setGoal("Goal");
-        goalModel.setGoalStatus(goalStatus);
-        goalModel.setGoalType(goalType);
-        goalModel.setId(1L);
-        goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        GoalModel goalModel = StaticGoal.goalModel1();
 
         ArrayList<GoalModel> goalModels = new ArrayList<>();
         goalModels.add(goalModel);
@@ -307,41 +276,9 @@ class GoalDtoMapperDiffblueTest {
      */
     @Test
     void testToResponseList3() {
-        GoalStatusModel goalStatus = new GoalStatusModel();
-        goalStatus.setGoalModels(new ArrayList<>());
-        goalStatus.setStatusEnum(GoalStatusEnum.IN_PROGRESS);
+        GoalModel goalModel = StaticGoal.goalModel1();
 
-        GoalTypeModel goalType = new GoalTypeModel();
-        goalType.setGoalModels(new ArrayList<>());
-        goalType.setGoalTypeEnum(GoalTypeEnum.TOTAL_TRAINING_TIME);
-
-        GoalModel goalModel = new GoalModel();
-        goalModel.setCompletionPercentage(10.0f);
-        goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setGoal("Goal");
-        goalModel.setGoalStatus(goalStatus);
-        goalModel.setGoalType(goalType);
-        goalModel.setId(1L);
-        goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
-
-        GoalStatusModel goalStatus2 = new GoalStatusModel();
-        goalStatus2.setGoalModels(new ArrayList<>());
-        goalStatus2.setStatusEnum(GoalStatusEnum.FINISHED);
-
-        GoalTypeModel goalType2 = new GoalTypeModel();
-        goalType2.setGoalModels(new ArrayList<>());
-        goalType2.setGoalTypeEnum(GoalTypeEnum.AVERAGE_RUNNING_PACE);
-
-        GoalModel goalModel2 = new GoalModel();
-        goalModel2.setCompletionPercentage(0.5f);
-        goalModel2.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel2.setGoal("com.runapp.achievementservice.model.GoalModel");
-        goalModel2.setGoalStatus(goalStatus2);
-        goalModel2.setGoalType(goalType2);
-        goalModel2.setId(2L);
-        goalModel2.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel2.setUserId(2L);
+        GoalModel goalModel2 = StaticGoal.goalModel2();
 
         ArrayList<GoalModel> goalModels = new ArrayList<>();
         goalModels.add(goalModel2);
@@ -377,7 +314,7 @@ class GoalDtoMapperDiffblueTest {
         when(goalModel.getGoalType()).thenReturn(goalTypeModel);
         when(goalModel.getCompletionPercentage()).thenReturn(10.0f);
         when(goalModel.getId()).thenReturn(1L);
-        when(goalModel.getUserId()).thenReturn(1L);
+        when(goalModel.getUserId()).thenReturn("1");
         doNothing().when(goalModel).setCompletionPercentage(anyFloat());
         doNothing().when(goalModel).setFinishedDate(Mockito.<LocalDateTime>any());
         doNothing().when(goalModel).setGoal(Mockito.<String>any());
@@ -385,7 +322,7 @@ class GoalDtoMapperDiffblueTest {
         doNothing().when(goalModel).setGoalType(Mockito.<GoalTypeModel>any());
         doNothing().when(goalModel).setId(Mockito.<Long>any());
         doNothing().when(goalModel).setStartDate(Mockito.<LocalDateTime>any());
-        doNothing().when(goalModel).setUserId(Mockito.<Long>any());
+        doNothing().when(goalModel).setUserId(Mockito.<String>any());
         goalModel.setCompletionPercentage(10.0f);
         goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
         goalModel.setGoal("Goal");
@@ -393,7 +330,7 @@ class GoalDtoMapperDiffblueTest {
         goalModel.setGoalType(goalType);
         goalModel.setId(1L);
         goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        goalModel.setUserId("1");
 
         ArrayList<GoalModel> goalModels = new ArrayList<>();
         goalModels.add(goalModel);
@@ -413,7 +350,7 @@ class GoalDtoMapperDiffblueTest {
         verify(goalModel).setGoalType(Mockito.<GoalTypeModel>any());
         verify(goalModel).setId(Mockito.<Long>any());
         verify(goalModel).setStartDate(Mockito.<LocalDateTime>any());
-        verify(goalModel).setUserId(Mockito.<Long>any());
+        verify(goalModel).setUserId(Mockito.<String>any());
         assertEquals(1, actualToResponseListResult.size());
     }
 
@@ -443,7 +380,7 @@ class GoalDtoMapperDiffblueTest {
         when(goalModel.getGoalType()).thenReturn(goalTypeModel);
         when(goalModel.getCompletionPercentage()).thenReturn(10.0f);
         when(goalModel.getId()).thenReturn(1L);
-        when(goalModel.getUserId()).thenReturn(1L);
+        when(goalModel.getUserId()).thenReturn("1");
         doNothing().when(goalModel).setCompletionPercentage(anyFloat());
         doNothing().when(goalModel).setFinishedDate(Mockito.<LocalDateTime>any());
         doNothing().when(goalModel).setGoal(Mockito.<String>any());
@@ -451,7 +388,7 @@ class GoalDtoMapperDiffblueTest {
         doNothing().when(goalModel).setGoalType(Mockito.<GoalTypeModel>any());
         doNothing().when(goalModel).setId(Mockito.<Long>any());
         doNothing().when(goalModel).setStartDate(Mockito.<LocalDateTime>any());
-        doNothing().when(goalModel).setUserId(Mockito.<Long>any());
+        doNothing().when(goalModel).setUserId(Mockito.<String>any());
         goalModel.setCompletionPercentage(10.0f);
         goalModel.setFinishedDate(LocalDate.of(1970, 1, 1).atStartOfDay());
         goalModel.setGoal("Goal");
@@ -459,7 +396,7 @@ class GoalDtoMapperDiffblueTest {
         goalModel.setGoalType(goalType);
         goalModel.setId(1L);
         goalModel.setStartDate(LocalDate.of(1970, 1, 1).atStartOfDay());
-        goalModel.setUserId(1L);
+        goalModel.setUserId("1");
 
         ArrayList<GoalModel> goalModels = new ArrayList<>();
         goalModels.add(goalModel);
@@ -477,6 +414,6 @@ class GoalDtoMapperDiffblueTest {
         verify(goalModel).setGoalType(Mockito.<GoalTypeModel>any());
         verify(goalModel).setId(Mockito.<Long>any());
         verify(goalModel).setStartDate(Mockito.<LocalDateTime>any());
-        verify(goalModel).setUserId(Mockito.<Long>any());
+        verify(goalModel).setUserId(Mockito.<String>any());
     }
 }

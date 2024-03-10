@@ -14,5 +14,5 @@ public class TrainingRequest {
     private int distance_km;
     private Duration training_duration;
     private Duration pace;
-    private Long userId;
+    private String userId;
 }

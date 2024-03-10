@@ -32,7 +32,7 @@ public class GoalUpdater {
         strategyHashMap = initializationStrategyHashMap(goalRepository, userStatisticRepository);
     }
 
-    public void updateAllGoal(Long userId) {
+    public void updateAllGoal(String userId) {
         if (goalRepository.existsByUserId(userId) || trainingRepository.existsByUserId(userId)) {
             return;
         }
@@ -70,7 +70,7 @@ public class GoalUpdater {
     }
 
 
-    private List<TrainingModel> getAllTrainingsByUserId(Long userId) {
+    private List<TrainingModel> getAllTrainingsByUserId(String userId) {
         final List<TrainingModel> userAllTrainings = trainingRepository.findAllByUserId(userId);
         if (userAllTrainings.isEmpty()) {
             throw new NoEntityFoundException("the user with the ID " + userId + " does not have a single training");
@@ -78,7 +78,7 @@ public class GoalUpdater {
         return userAllTrainings;
     }
 
-    private List<GoalModel> getAllGoalsByUserId(Long userId) {
+    private List<GoalModel> getAllGoalsByUserId(String userId) {
         final List<GoalModel> userAllGoals = goalRepository.findAllByUserId(userId);
         if (userAllGoals.isEmpty()) {
             throw new NoEntityFoundException("the user with the ID " + userId + " does not have a single goal");
