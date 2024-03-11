@@ -14,7 +14,7 @@ management:
         include: ${ENDPOINTS_INCLUDE:*}
   endpoint:
     health:
-      show-details: ${HEALTH_SHOW_DeTAILS:always}
+      show-details: ${HEALTH_SHOW_DETAILS:always}
 springdoc:
   packagesToScan: com.runapp.achievementservice
 
